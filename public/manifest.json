@@ -1,0 +1,16 @@
+﻿{
+  "name": "AccuLedger",
+  "short_name": "AccuLedger",
+  "description": "Intelligent Accounting Solution",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "uz",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0a0e1a",
+  "icons": [
+    { "src": "/logo.png", "sizes": "382x512", "type": "image/png", "purpose": "any" }
+  ]
+}
