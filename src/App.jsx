@@ -202,6 +202,13 @@ function MainApp({foydalanuvchi}) {
   const [tahrirK,setTahrirK]=useState(null);
   const [bottomModal,setBottomModal]=useState(false);
   const [pwaPrompt,setPwaPrompt]=useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  useEffect(()=>{
+    const check=()=>setIsMobile(window.innerWidth<640);
+    window.addEventListener("resize",check);
+    return()=>window.removeEventListener("resize",check);
+  },[]);
 
   useEffect(()=>{
     const onPrompt=e=>{e.preventDefault();setPwaPrompt(e);};
@@ -526,13 +533,6 @@ function MainApp({foydalanuvchi}) {
       <div style={{color:T.muted,fontSize:14,fontWeight:600}}>Ma'lumotlar yuklanmoqda…</div>
     </div>
   );
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
-  useEffect(()=>{
-    const check=()=>setIsMobile(window.innerWidth<640);
-    window.addEventListener("resize",check);
-    return()=>window.removeEventListener("resize",check);
-  },[]);
 
   return(
     <div style={{fontFamily:"system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",background:T.bg,minHeight:"100vh",paddingBottom: isMobile ? 80 : 20}}>
