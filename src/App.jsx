@@ -1,110 +1,29 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { auth, db } from "./firebase";
+import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
+import { auth } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import {
-  BarChart, Bar, LineChart, Line, AreaChart, Area,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer, PieChart, Pie, Cell,
-} from "recharts";
+  OYLAR, OYLAR_TO, HOZ_YIL, HOZ_OY, DEF_KATEGORIYALAR, DEF_MOL,
+  fmt, fmtN, P, PCT, cl, mkKey,
+  fbGet, fbSetDebounced, flushPendingWrites,
+  T, NAV_TABS, SIDEBAR_W, Ico, NAV_ICO,
+} from "./lib/shared.jsx";
 
-// ─── Konstantalar ───────────────────────────────────────
-const OYLAR    = ["Yan","Feb","Mar","Apr","May","Iyn","Iyl","Avg","Sen","Okt","Noy","Dek"];
-const OYLAR_TO = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
-const HOZ_YIL  = new Date().getFullYear();
-const HOZ_OY   = new Date().getMonth();
+// ─── Lazy yuklanadigan grafiklar (recharts) ─────────────
+const InventarPieChart      = lazy(()=>import("./components/Charts.jsx").then(m=>({default:m.InventarPieChart})));
+const DaromadXarajatBarChart= lazy(()=>import("./components/Charts.jsx").then(m=>({default:m.DaromadXarajatBarChart})));
+const SofFoydaAreaChart     = lazy(()=>import("./components/Charts.jsx").then(m=>({default:m.SofFoydaAreaChart})));
+const InventarLineChart     = lazy(()=>import("./components/Charts.jsx").then(m=>({default:m.InventarLineChart})));
 
-const DEF_KATEGORIYALAR = [
-  {id:"k1",nom:"Ofis jihozlari",  birlik:"dona", limit:50, min:10,color:"#2d5a3d",icon:"📎"},
-  {id:"k2",nom:"Xom ashyo",       birlik:"kg",   limit:200,min:30,color:"#4a7c59",icon:"🏗"},
-  {id:"k3",nom:"Tayyor mahsulot", birlik:"dona", limit:100,min:20,color:"#3d6b4f",icon:"📦"},
-  {id:"k4",nom:"Qadoqlash",       birlik:"rulon",limit:80, min:15,color:"#6b8f5e",icon:"🎁"},
-  {id:"k5",nom:"Yozuv mollari",   birlik:"paket",limit:30, min:5, color:"#5c8a3c",icon:"✏️"},
-  {id:"k6",nom:"Elektronika",     birlik:"dona", limit:20, min:3, color:"#3a6045",icon:"💻"},
-  {id:"k7",nom:"Tozalash vosita", birlik:"shish",limit:40, min:8, color:"#4d7a6a",icon:"🧴"},
-  {id:"k8",nom:"Asbob-uskunalar", birlik:"dona", limit:15, min:3, color:"#5a8a72",icon:"🔧"},
-  {id:"k9",nom:"Oziq-ovqat",      birlik:"dona", limit:60, min:10,color:"#4a6b3a",icon:"☕"},
-  {id:"k10",nom:"Xavfsizlik vosita",birlik:"dona",limit:25,min:5,color:"#3b5c4a",icon:"🦺"},
-];
-const DEF_MOL = {
-  daromad:0,xarajat:0,aktiv:0,passiv:0,debitor:0,kreditor:0,
-  pul_oqimi:0,soliq:15,byudjet:0,ish_haqi:0,amortizatsiya:0,boshqa_daromad:0
-};
-
-// ─── Yordamchi funksiyalar ──────────────────────────────
-const fmt  = n => Number(n||0).toLocaleString("uz-UZ",{minimumFractionDigits:2,maximumFractionDigits:2});
-const fmtN = n => Number(n||0).toLocaleString("uz-UZ");
-const P    = n => Math.round((Number(n)+Number.EPSILON)*100)/100;
-const PCT  = (a,b) => b>0 ? P((a/b)*100) : 0;
-const cl   = (v,lo,hi) => Math.min(hi,Math.max(lo,v));
-const mkKey= (m,y) => `${y}-${String(m).padStart(2,"0")}`;
-
-// ─── Firestore ──────────────────────────────────────────
-const userDoc = (uid,col) => doc(db,"users",uid,"data",col);
-const fbGet = async(uid,col,def) => {
-  try { const s=await getDoc(userDoc(uid,col)); return s.exists()?s.data().value:def; }
-  catch { return def; }
-};
-const fbSet = async(uid,col,value) => {
-  try { await setDoc(userDoc(uid,col),{value},{merge:true}); }
-  catch(e) { console.error("fbSet xato:",e); }
-};
-
-// ─── DIZAYN TOKENLARI ───────────────────────────────────
-const T = {
-  // Ranglar
-  bg:       "#f5f4f0",
-  card:     "#ffffff",
-  accent:   "#1e3a2b",   // qoʻyu yashil
-  accent2:  "#2d5a3d",
-  accent3:  "#4a7c59",
-  cream:    "#f8f7f3",
-  border:   "#e4e0d8",
-  muted:    "#8a8878",
-  danger:   "#c0392b",
-  warn:     "#c47d0e",
-  info:     "#2a5f8a",
-  text:     "#1a1a1a",
-  textMid:  "#444",
-  green:    "#22c55e",
-  red:      "#ef4444",
-  // Spacing
-  r:  "14px",  // radius karta
-  rs: "10px",  // radius kichik
-  rx: "20px",  // radius katta
-  // Shadows
-  shadow: "0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05)",
-  shadowMd: "0 6px 24px rgba(0,0,0,0.1)",
-};
-
-const NAV_TABS = ["Bosh sahifa","Inventar","Tranzaksiyalar","Moliya","Kategoriyalar","Tahlil","Sozlamalar"];
-const SIDEBAR_W = 232;
-
-// ─── IKONLAR ───────────────────────────────────────────
-const Ico = {
-  home:  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-  inv:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>,
-  tx:    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
-  mol:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-  kat:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
-  chart: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-  sett:  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>,
-  plus:  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  bell:  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
-  undo:  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>,
-  logout:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
-  del:   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>,
-  edit:  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
-  csv:   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
-  search:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-};
-
-const NAV_ICO = [Ico.home, Ico.inv, Ico.tx, Ico.mol, Ico.kat, Ico.chart, Ico.sett];
+const ChartFallback = ()=>(
+  <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:180,color:T.muted,fontSize:12}}>
+    Grafik yuklanmoqda…
+  </div>
+);
 
 // ═══════════════════════════════════════════════════════
 // LOGIN
@@ -223,11 +142,16 @@ function MainApp({foydalanuvchi}) {
     setPwaPrompt(null);
   };
 
-  const setKatlar=useCallback(async(v)=>{const val=typeof v==="function"?v(katlar):v;setKatlarState(val);await fbSet(uid,"katlar",val);},[uid,katlar]);
-  const setMData =useCallback(async(v)=>{const val=typeof v==="function"?v(mData):v; setMDataState(val); await fbSet(uid,"mdata",val);},[uid,mData]);
-  const setMol   =useCallback(async(v)=>{const val=typeof v==="function"?v(mol):v;   setMolState(val);   await fbSet(uid,"mol",val);},[uid,mol]);
-  const setMMol  =useCallback(async(v)=>{const val=typeof v==="function"?v(mMol):v;  setMMolState(val);  await fbSet(uid,"mmol",val);},[uid,mMol]);
-  const setSozl  =useCallback(async(v)=>{const val=typeof v==="function"?v(sozl):v;  setSozlState(val);  await fbSet(uid,"sozl",val);},[uid,sozl]);
+  const setKatlar=useCallback(async(v)=>{const val=typeof v==="function"?v(katlar):v;setKatlarState(val);fbSetDebounced(uid,"katlar",val);},[uid,katlar]);
+  const setMData =useCallback(async(v)=>{const val=typeof v==="function"?v(mData):v; setMDataState(val); fbSetDebounced(uid,"mdata",val);},[uid,mData]);
+  const setMol   =useCallback(async(v)=>{const val=typeof v==="function"?v(mol):v;   setMolState(val);   fbSetDebounced(uid,"mol",val);},[uid,mol]);
+  const setMMol  =useCallback(async(v)=>{const val=typeof v==="function"?v(mMol):v;  setMMolState(val);  fbSetDebounced(uid,"mmol",val);},[uid,mMol]);
+  const setSozl  =useCallback(async(v)=>{const val=typeof v==="function"?v(sozl):v;  setSozlState(val);  fbSetDebounced(uid,"sozl",val);},[uid,sozl]);
+
+  useEffect(()=>{
+    window.addEventListener("beforeunload",flushPendingWrites);
+    return()=>{window.removeEventListener("beforeunload",flushPendingWrites);flushPendingWrites();};
+  },[]);
 
   useEffect(()=>{
     (async()=>{
@@ -330,7 +254,7 @@ function MainApp({foydalanuvchi}) {
     if(!tarix.length){showXabar("Bekor qilishga narsa yo'q","ogoh");return;}
     const [oldingi,...qolgan]=tarix;
     setMDataState(oldingi.mData);setMMolState(oldingi.mMol);
-    await fbSet(uid,"mdata",oldingi.mData);await fbSet(uid,"mmol",oldingi.mMol);
+    fbSetDebounced(uid,"mdata",oldingi.mData);fbSetDebounced(uid,"mmol",oldingi.mMol);
     setTarix(qolgan);showXabar("↩ Bekor qilindi","info");
   };
 
@@ -519,7 +443,7 @@ function MainApp({foydalanuvchi}) {
         <button onClick={bekorQilish} className="alc-nav-item" style={{display:"flex",alignItems:"center",gap:12,border:"none",background:"transparent",color:tarix.length>0?T.warn:T.muted,borderRadius:10,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",textAlign:"left",width:"100%"}}>
           {Ico.undo} <span>Bekor qilish</span>
         </button>
-        <button onClick={()=>signOut(auth)} className="alc-nav-item" style={{display:"flex",alignItems:"center",gap:12,border:"none",background:"transparent",color:T.muted,borderRadius:10,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",textAlign:"left",width:"100%"}}>
+        <button onClick={()=>{flushPendingWrites();signOut(auth);}} className="alc-nav-item" style={{display:"flex",alignItems:"center",gap:12,border:"none",background:"transparent",color:T.muted,borderRadius:10,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",textAlign:"left",width:"100%"}}>
           {Ico.logout} <span>Chiqish</span>
         </button>
       </div>
@@ -636,7 +560,7 @@ function MainApp({foydalanuvchi}) {
             <button onClick={bekorQilish} style={{width:34,height:34,borderRadius:10,border:`1px solid ${T.border}`,background:tarix.length>0?"#fff9ef":T.cream,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:tarix.length>0?T.warn:T.muted}}>
               {Ico.undo}
             </button>
-            <button onClick={()=>signOut(auth)} style={{width:34,height:34,borderRadius:10,border:`1px solid ${T.border}`,background:T.cream,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:T.muted}}>
+            <button onClick={()=>{flushPendingWrites();signOut(auth);}} style={{width:34,height:34,borderRadius:10,border:`1px solid ${T.border}`,background:T.cream,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:T.muted}}>
               {Ico.logout}
             </button>
           </div>
@@ -821,14 +745,9 @@ function MainApp({foydalanuvchi}) {
               <div style={{display:"flex",flexDirection:"column",gap:12}}>
                 <Card>
                   <H2>🥧 Taqsimot</H2>
-                  {pieData.length===0
-                    ?<div style={{textAlign:"center",padding:"30px 0",color:T.muted}}>Ma'lumot yo'q.</div>
-                    :<ResponsiveContainer width="100%" height={220}>
-                      <PieChart><Pie data={pieData} dataKey="miqdor" nameKey="nom" cx="50%" cy="50%" outerRadius={85} innerRadius={35} paddingAngle={2}>
-                        {pieData.map(k=><Cell key={k.id} fill={k.color}/>)}
-                      </Pie><Tooltip formatter={(v,n)=>[`${fmtN(v)}`,n]}/><Legend wrapperStyle={{fontSize:11}} iconSize={10}/></PieChart>
-                    </ResponsiveContainer>
-                  }
+                  <Suspense fallback={<ChartFallback/>}>
+                    <InventarPieChart pieData={pieData}/>
+                  </Suspense>
                 </Card>
                 {!isMobile&&(
                   <Card>
@@ -1050,40 +969,22 @@ function MainApp({foydalanuvchi}) {
             </div>
             <Card style={{marginBottom:12}}>
               <H2>📊 Daromad va xarajat — {sy}</H2>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={yillikData} margin={{top:4,right:12,left:0,bottom:0}}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={T.border}/>
-                  <XAxis dataKey="oy" tick={{fontSize:11}}/><YAxis tick={{fontSize:10}}/>
-                  <Tooltip formatter={v=>`${fmt(v)} ${sozl.valyuta}`}/><Legend wrapperStyle={{fontSize:11}}/>
-                  <Bar dataKey="daromad" fill={T.accent} name="Daromad" radius={[4,4,0,0]}/>
-                  <Bar dataKey="xarajat" fill={T.danger} name="Xarajat" radius={[4,4,0,0]}/>
-                </BarChart>
-              </ResponsiveContainer>
+              <Suspense fallback={<ChartFallback/>}>
+                <DaromadXarajatBarChart yillikData={yillikData} valyuta={sozl.valyuta}/>
+              </Suspense>
             </Card>
             <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:12,marginBottom:12}}>
               <Card>
                 <H2>📉 Sof foyda dinamikasi</H2>
-                <ResponsiveContainer width="100%" height={180}>
-                  <AreaChart data={yillikData} margin={{top:4,right:12,left:0,bottom:0}}>
-                    <defs><linearGradient id="grd" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={T.accent} stopOpacity={0.25}/><stop offset="95%" stopColor={T.accent} stopOpacity={0}/>
-                    </linearGradient></defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke={T.border}/>
-                    <XAxis dataKey="oy" tick={{fontSize:10}}/><YAxis tick={{fontSize:10}}/>
-                    <Tooltip formatter={v=>`${fmt(v)} ${sozl.valyuta}`}/>
-                    <Area type="monotone" dataKey="foyda" stroke={T.accent} fill="url(#grd)" strokeWidth={2} name="Sof foyda" dot={{r:3}}/>
-                  </AreaChart>
-                </ResponsiveContainer>
+                <Suspense fallback={<ChartFallback/>}>
+                  <SofFoydaAreaChart yillikData={yillikData} valyuta={sozl.valyuta}/>
+                </Suspense>
               </Card>
               <Card>
                 <H2>📦 Inventar harakati</H2>
-                <ResponsiveContainer width="100%" height={180}>
-                  <LineChart data={yillikData} margin={{top:4,right:12,left:0,bottom:0}}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={T.border}/>
-                    <XAxis dataKey="oy" tick={{fontSize:10}}/><YAxis tick={{fontSize:10}}/>
-                    <Tooltip/><Line type="monotone" dataKey="inventar" stroke={T.accent2} strokeWidth={2} dot={{r:3}} name="Dona"/>
-                  </LineChart>
-                </ResponsiveContainer>
+                <Suspense fallback={<ChartFallback/>}>
+                  <InventarLineChart yillikData={yillikData}/>
+                </Suspense>
               </Card>
             </div>
             <Card>
@@ -1160,7 +1061,7 @@ function MainApp({foydalanuvchi}) {
                     showXabar("Barcha ma'lumotlar tozalandi","info");
                   }
                 }} style={{justifyContent:"center"}}>⚠ Barcha ma'lumotlarni o'chirish</Btn>
-                <Btn ghost onClick={()=>signOut(auth)} style={{justifyContent:"center",color:T.muted,borderColor:T.border}}>
+                <Btn ghost onClick={()=>{flushPendingWrites();signOut(auth);}} style={{justifyContent:"center",color:T.muted,borderColor:T.border}}>
                   {Ico.logout} Hisobdan chiqish
                 </Btn>
               </div>
