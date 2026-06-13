@@ -139,3 +139,57 @@ export const Sel=({label,value,onChange,children})=>(
     </select>
   </div>
 );
+
+// Quyidagilar ham xuddi shu sababga ko'ra modul darajasida: Card/H2/Btn
+// kabi o'rovchi komponentlar MainApp ichida e'lon qilinsa, har bir
+// qayta render'da yangi turga aylanadi va ichidagi inputlarni
+// (Inp/Sel) ham qayta o'rnatib, fokusni yo'qotadi.
+export const Card=({children,style={}})=>(
+  <div style={{background:T.card,borderRadius:T.r,border:`1px solid ${T.border}`,padding:16,boxShadow:T.shadow,...style}}>
+    {children}
+  </div>
+);
+
+export const H2=({children})=>(
+  <div style={{fontSize:14,fontWeight:800,color:T.text,marginBottom:14,display:"flex",alignItems:"center",gap:6}}>
+    {children}
+  </div>
+);
+
+export const Btn=({children,onClick,color=T.accent,small=false,ghost=false,danger=false,style={}})=>{
+  const bg=danger?"#fef2f2":ghost?"transparent":color;
+  const col=danger?T.danger:ghost?T.accent:"#fff";
+  const border=danger?`1.5px solid #fecaca`:ghost?`1.5px solid ${T.accent}`:"none";
+  return(
+    <button onClick={onClick} className="alc-btn" style={{background:bg,color:col,border,borderRadius:T.rs,padding:small?"6px 12px":"10px 18px",fontSize:small?12:13,cursor:"pointer",fontWeight:700,display:"inline-flex",alignItems:"center",gap:5,...style}}>
+      {children}
+    </button>
+  );
+};
+
+export const Tag=({tur})=>(
+  <span style={{fontSize:11,fontWeight:700,padding:"3px 9px",borderRadius:20,background:tur==="kirim"?"#dcfce7":"#fee2e2",color:tur==="kirim"?"#166534":"#991b1b",display:"inline-block"}}>
+    {tur==="kirim"?"↑ Kirim":"↓ Chiqim"}
+  </span>
+);
+
+export const Badge=({oshgan,kamaygan,val})=>(
+  <span style={{fontSize:11,padding:"3px 9px",borderRadius:20,fontWeight:700,background:oshgan?"#fee2e2":kamaygan?"#fef9c3":"#dcfce7",color:oshgan?"#991b1b":kamaygan?"#713f12":"#166534"}}>
+    {oshgan?"LIMIT":kamaygan?"⚠ MIN":val}
+  </span>
+);
+
+export const Prog=({pct,oshgan,kamaygan})=>(
+  <div style={{background:"#e8e5de",borderRadius:8,height:7,overflow:"hidden",marginTop:5}}>
+    <div style={{height:"100%",width:`${Math.min(100,pct)}%`,background:oshgan?T.danger:kamaygan?T.warn:T.accent,borderRadius:8,transition:"width 0.5s ease"}}/>
+  </div>
+);
+
+export const Met=({label,val,sub,color=T.accent,icon})=>(
+  <div style={{background:T.card,borderRadius:T.r,padding:"14px 16px",border:`1px solid ${T.border}`,boxShadow:T.shadow,borderLeft:`3px solid ${color}`,position:"relative",overflow:"hidden"}}>
+    <div style={{position:"absolute",right:10,top:8,fontSize:20,opacity:0.1}}>{icon}</div>
+    <div style={{fontSize:10,color:T.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.6,marginBottom:4}}>{label}</div>
+    <div style={{fontSize:20,fontWeight:900,color:T.text,lineHeight:1.2}}>{val}</div>
+    {sub&&<div style={{fontSize:11,color:T.muted,marginTop:3}}>{sub}</div>}
+  </div>
+);

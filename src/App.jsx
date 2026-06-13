@@ -11,7 +11,7 @@ import {
   fmt, fmtN, P, PCT, cl, mkKey,
   fbGet, fbSetDebounced, flushPendingWrites,
   T, NAV_TABS, SIDEBAR_W, Ico, NAV_ICO,
-  Inp, Sel,
+  Inp, Sel, Card, H2, Btn, Tag, Badge, Prog, Met,
 } from "./lib/shared.jsx";
 
 // ─── Lazy yuklanadigan grafiklar (recharts) ─────────────
@@ -314,57 +314,10 @@ function MainApp({foydalanuvchi}) {
   const pieData=invXulosa.filter(k=>k.miqdor>0);
 
   // ── STYLE YORDAMCHILAR ──────────────────────────────
-  const Card=({children,style={}})=>(
-    <div style={{background:T.card,borderRadius:T.r,border:`1px solid ${T.border}`,padding:16,boxShadow:T.shadow,...style}}>
-      {children}
-    </div>
-  );
-
-  const H2=({children})=>(
-    <div style={{fontSize:14,fontWeight:800,color:T.text,marginBottom:14,display:"flex",alignItems:"center",gap:6}}>
-      {children}
-    </div>
-  );
-
-  const Btn=({children,onClick,color=T.accent,small=false,ghost=false,danger=false,style={}})=>{
-    const bg=danger?"#fef2f2":ghost?"transparent":color;
-    const col=danger?T.danger:ghost?T.accent:"#fff";
-    const border=danger?`1.5px solid #fecaca`:ghost?`1.5px solid ${T.accent}`:"none";
-    return(
-      <button onClick={onClick} className="alc-btn" style={{background:bg,color:col,border,borderRadius:T.rs,padding:small?"6px 12px":"10px 18px",fontSize:small?12:13,cursor:"pointer",fontWeight:700,display:"inline-flex",alignItems:"center",gap:5,...style}}>
-        {children}
-      </button>
-    );
-  };
-
-  const Tag=({tur})=>(
-    <span style={{fontSize:11,fontWeight:700,padding:"3px 9px",borderRadius:20,background:tur==="kirim"?"#dcfce7":"#fee2e2",color:tur==="kirim"?"#166534":"#991b1b",display:"inline-block"}}>
-      {tur==="kirim"?"↑ Kirim":"↓ Chiqim"}
-    </span>
-  );
-
-  const Badge=({oshgan,kamaygan,val})=>(
-    <span style={{fontSize:11,padding:"3px 9px",borderRadius:20,fontWeight:700,background:oshgan?"#fee2e2":kamaygan?"#fef9c3":"#dcfce7",color:oshgan?"#991b1b":kamaygan?"#713f12":"#166534"}}>
-      {oshgan?"LIMIT":kamaygan?"⚠ MIN":val}
-    </span>
-  );
-
-  const Prog=({pct,oshgan,kamaygan})=>(
-    <div style={{background:"#e8e5de",borderRadius:8,height:7,overflow:"hidden",marginTop:5}}>
-      <div style={{height:"100%",width:`${Math.min(100,pct)}%`,background:oshgan?T.danger:kamaygan?T.warn:T.accent,borderRadius:8,transition:"width 0.5s ease"}}/>
-    </div>
-  );
-
-  const Met=({label,val,sub,color=T.accent,icon})=>(
-    <div style={{background:T.card,borderRadius:T.r,padding:"14px 16px",border:`1px solid ${T.border}`,boxShadow:T.shadow,borderLeft:`3px solid ${color}`,position:"relative",overflow:"hidden"}}>
-      <div style={{position:"absolute",right:10,top:8,fontSize:20,opacity:0.1}}>{icon}</div>
-      <div style={{fontSize:10,color:T.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.6,marginBottom:4}}>{label}</div>
-      <div style={{fontSize:20,fontWeight:900,color:T.text,lineHeight:1.2}}>{val}</div>
-      {sub&&<div style={{fontSize:11,color:T.muted,marginTop:3}}>{sub}</div>}
-    </div>
-  );
-
-  const TxForm=()=>(
+  // Eslatma: Card/H2/Btn/Tag/Badge/Prog/Met/Inp/Sel — barchasi
+  // src/lib/shared.jsx'da modul darajasida (fokus yo'qolishining
+  // oldini olish uchun, yuqoridagi izohga qarang).
+  const txFormJSX=(
     <div>
       <Sel label="Kategoriya" value={txF.katId} onChange={e=>setTxF(f=>({...f,katId:e.target.value}))}>
         <option value="">Tanlang…</option>
@@ -395,7 +348,7 @@ function MainApp({foydalanuvchi}) {
   );
 
   // ── SIDEBAR (desktop) ───────────────────────────────
-  const Sidebar=()=>(
+  const sidebarJSX=(
     <div style={{position:"fixed",left:0,top:0,bottom:0,width:SIDEBAR_W,background:T.card,borderRight:`1px solid ${T.border}`,display:"flex",flexDirection:"column",zIndex:100,boxShadow:"2px 0 12px rgba(0,0,0,0.04)"}}>
       <div style={{display:"flex",alignItems:"center",gap:10,padding:"18px 18px 16px",borderBottom:`1px solid ${T.border}`}}>
         <img src="/logo.png" alt="AccuLedger" style={{width:38,height:38,objectFit:"contain",borderRadius:9,flexShrink:0}}/>
@@ -517,13 +470,13 @@ function MainApp({foydalanuvchi}) {
           <div className="alc-sheet" style={{background:T.card,borderRadius:"20px 20px 0 0",padding:"20px 20px 40px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto"}} onClick={e=>e.stopPropagation()}>
             <div style={{width:36,height:4,background:T.border,borderRadius:100,margin:"0 auto 18px"}}/>
             <H2>{Ico.plus} Yangi yozuv qo'shish</H2>
-            <TxForm/>
+            {txFormJSX}
           </div>
         </div>
       )}
 
       {/* ── SIDEBAR (desktop) ──────────────────────────── */}
-      {!isMobile&&<Sidebar/>}
+      {!isMobile&&sidebarJSX}
 
       <div style={{marginLeft:isMobile?0:SIDEBAR_W,transition:"margin-left 0.25s ease"}}>
 
@@ -739,7 +692,7 @@ function MainApp({foydalanuvchi}) {
                 {!isMobile&&(
                   <Card>
                     <H2>⚡ Harakatni qayd etish</H2>
-                    <TxForm/>
+                    {txFormJSX}
                   </Card>
                 )}
               </div>
