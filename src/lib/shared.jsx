@@ -117,3 +117,25 @@ export const Ico = {
 };
 
 export const NAV_ICO = [Ico.home, Ico.inv, Ico.tx, Ico.mol, Ico.kat, Ico.chart, Ico.sett];
+
+// ─── UMUMIY KICHIK KOMPONENTLAR ─────────────────────────
+// Eslatma: bular modul darajasida turishi shart — agar komponent
+// ichida qayta e'lon qilinsa, har bir render'da yangi funksiya
+// turi hosil bo'ladi va React inputni qayta o'rnatib, fokusni
+// (va mobil klaviaturani) yo'qotadi.
+export const Inp=({label,type="text",value,onChange,placeholder=""})=>(
+  <div style={{marginBottom:10}}>
+    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:4}}>{label}</label>}
+    <input type={type} value={value} onChange={onChange} placeholder={placeholder}
+      style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"10px 12px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}/>
+  </div>
+);
+
+export const Sel=({label,value,onChange,children})=>(
+  <div style={{marginBottom:10}}>
+    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:4}}>{label}</label>}
+    <select value={value} onChange={onChange} style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"10px 12px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}>
+      {children}
+    </select>
+  </div>
+);

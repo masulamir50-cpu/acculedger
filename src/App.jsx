@@ -11,6 +11,7 @@ import {
   fmt, fmtN, P, PCT, cl, mkKey,
   fbGet, fbSetDebounced, flushPendingWrites,
   T, NAV_TABS, SIDEBAR_W, Ico, NAV_ICO,
+  Inp, Sel,
 } from "./lib/shared.jsx";
 
 // ─── Lazy yuklanadigan grafiklar (recharts) ─────────────
@@ -310,23 +311,6 @@ function MainApp({foydalanuvchi}) {
   const pieData=invXulosa.filter(k=>k.miqdor>0);
 
   // ── STYLE YORDAMCHILAR ──────────────────────────────
-  const Inp=({label,type="text",value,onChange,placeholder=""})=>(
-    <div style={{marginBottom:10}}>
-      {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:4}}>{label}</label>}
-      <input type={type} value={value} onChange={onChange} placeholder={placeholder}
-        style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"10px 12px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}/>
-    </div>
-  );
-
-  const Sel=({label,value,onChange,children})=>(
-    <div style={{marginBottom:10}}>
-      {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:4}}>{label}</label>}
-      <select value={value} onChange={onChange} style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"10px 12px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}>
-        {children}
-      </select>
-    </div>
-  );
-
   const Card=({children,style={}})=>(
     <div style={{background:T.card,borderRadius:T.r,border:`1px solid ${T.border}`,padding:16,boxShadow:T.shadow,...style}}>
       {children}
