@@ -118,6 +118,7 @@ function MainApp({foydalanuvchi}) {
   const [tarix,setTarix]=useState([]);
   const [txF,setTxF]=useState({katId:"",tur:"kirim",miqdor:"",eslatma:"",oy:HOZ_OY,yil:HOZ_YIL,narx:"",yetkazuvchi:""});
   const [molF,setMolF]=useState({...DEF_MOL});
+  const [sozlF,setSozlF]=useState({valyuta:"so'm",kompaniya:"Mening Kompaniyam",soliq:15});
   const [yangiK,setYangiK]=useState({nom:"",birlik:"dona",limit:0,min:0,icon:"📦"});
   const [tahrirK,setTahrirK]=useState(null);
   const [bottomModal,setBottomModal]=useState(false);
@@ -165,7 +166,9 @@ function MainApp({foydalanuvchi}) {
       setMDataState(m&&typeof m==="object"?m:{});
       setMolState(mo&&typeof mo==="object"?{...DEF_MOL,...mo}:DEF_MOL);
       setMMolState(mm&&typeof mm==="object"?mm:{});
-      setSozlState(s&&typeof s==="object"?s:{valyuta:"so'm",kompaniya:"Mening Kompaniyam",soliq:15});
+      const sVal=s&&typeof s==="object"?s:{valyuta:"so'm",kompaniya:"Mening Kompaniyam",soliq:15};
+      setSozlState(sVal);
+      setSozlF(sVal);
       setYuklanmoqda(false);
     })();
   },[uid]);
@@ -1015,9 +1018,9 @@ function MainApp({foydalanuvchi}) {
             <Card>
               <H2>⚙️ Ilova sozlamalari</H2>
               {[["Kompaniya nomi","kompaniya","text"],["Valyuta belgisi","valyuta","text"],["Soliq stavkasi (%)","soliq","number"]].map(([l,k,t])=>(
-                <Inp key={k} label={l} type={t} value={sozl[k]||""} onChange={e=>setSozlState(prev=>({...prev,[k]:e.target.value}))}/>
+                <Inp key={k} label={l} type={t} value={sozlF[k]??""} onChange={e=>setSozlF(prev=>({...prev,[k]:e.target.value}))}/>
               ))}
-              <Btn onClick={()=>setSozl({...sozl})} style={{width:"100%",justifyContent:"center"}}>Saqlash</Btn>
+              <Btn onClick={()=>{setSozl(sozlF);showXabar("Sozlamalar saqlandi","muvaffaq");}} style={{width:"100%",justifyContent:"center"}}>Saqlash</Btn>
               <div style={{marginTop:16,padding:14,background:"#e8f5e9",borderRadius:T.rs,border:`1px solid ${T.accent}25`}}>
                 <div style={{fontSize:12,fontWeight:700,color:T.accent,marginBottom:6}}>✅ Hisob ma'lumotlari</div>
                 <div style={{fontSize:12,color:T.muted,marginBottom:3}}>Email: <strong>{foydalanuvchi.email}</strong></div>
