@@ -9,16 +9,16 @@ export const HOZ_YIL  = new Date().getFullYear();
 export const HOZ_OY   = new Date().getMonth();
 
 export const DEF_KATEGORIYALAR = [
-  {id:"k1",nom:"Ofis jihozlari",  birlik:"dona", limit:50, min:10,color:"#2d5a3d",icon:"📎"},
+  {id:"k1",nom:"Ofis jihozlari",  birlik:"dona", limit:50, min:10,color:"#c9a84c",icon:"📎"},
   {id:"k2",nom:"Xom ashyo",       birlik:"kg",   limit:200,min:30,color:"#4a7c59",icon:"🏗"},
-  {id:"k3",nom:"Tayyor mahsulot", birlik:"dona", limit:100,min:20,color:"#3d6b4f",icon:"📦"},
-  {id:"k4",nom:"Qadoqlash",       birlik:"rulon",limit:80, min:15,color:"#6b8f5e",icon:"🎁"},
-  {id:"k5",nom:"Yozuv mollari",   birlik:"paket",limit:30, min:5, color:"#5c8a3c",icon:"✏️"},
-  {id:"k6",nom:"Elektronika",     birlik:"dona", limit:20, min:3, color:"#3a6045",icon:"💻"},
-  {id:"k7",nom:"Tozalash vosita", birlik:"shish",limit:40, min:8, color:"#4d7a6a",icon:"🧴"},
-  {id:"k8",nom:"Asbob-uskunalar", birlik:"dona", limit:15, min:3, color:"#5a8a72",icon:"🔧"},
-  {id:"k9",nom:"Oziq-ovqat",      birlik:"dona", limit:60, min:10,color:"#4a6b3a",icon:"☕"},
-  {id:"k10",nom:"Xavfsizlik vosita",birlik:"dona",limit:25,min:5,color:"#3b5c4a",icon:"🦺"},
+  {id:"k3",nom:"Tayyor mahsulot", birlik:"dona", limit:100,min:20,color:"#3b82f6",icon:"📦"},
+  {id:"k4",nom:"Qadoqlash",       birlik:"rulon",limit:80, min:15,color:"#a855f7",icon:"🎁"},
+  {id:"k5",nom:"Yozuv mollari",   birlik:"paket",limit:30, min:5, color:"#22c55e",icon:"✏️"},
+  {id:"k6",nom:"Elektronika",     birlik:"dona", limit:20, min:3, color:"#06b6d4",icon:"💻"},
+  {id:"k7",nom:"Tozalash vosita", birlik:"shish",limit:40, min:8, color:"#ec4899",icon:"🧴"},
+  {id:"k8",nom:"Asbob-uskunalar", birlik:"dona", limit:15, min:3, color:"#f97316",icon:"🔧"},
+  {id:"k9",nom:"Oziq-ovqat",      birlik:"dona", limit:60, min:10,color:"#84cc16",icon:"☕"},
+  {id:"k10",nom:"Xavfsizlik vosita",birlik:"dona",limit:25,min:5,color:"#14b8a6",icon:"🦺"},
 ];
 export const DEF_MOL = {
   daromad:0,xarajat:0,aktiv:0,passiv:0,debitor:0,kreditor:0,
@@ -67,35 +67,48 @@ export function flushPendingWrites() {
   pendingWrites.clear();
 }
 
-// ─── DIZAYN TOKENLARI ───────────────────────────────────
+// ─── DIZAYN TOKENLARI — Dark Premium Fintech ────────────
 export const T = {
-  // Ranglar
-  bg:       "#f5f4f0",
-  card:     "#ffffff",
-  accent:   "#1e3a2b",   // qoʻyu yashil
-  accent2:  "#2d5a3d",
-  accent3:  "#4a7c59",
-  cream:    "#f8f7f3",
-  border:   "#e4e0d8",
-  muted:    "#8a8878",
-  danger:   "#c0392b",
-  warn:     "#c47d0e",
-  info:     "#2a5f8a",
-  text:     "#1a1a1a",
-  textMid:  "#444",
+  // Asosiy ranglar
+  bg:       "#0a0e1a",
+  card:     "#111827",
+  card2:    "#1a2235",
+  accent:   "#c9a84c",
+  accent2:  "#d4b96a",
+  accent3:  "#a8853d",
+  cream:    "#0d1526",
+  border:   "rgba(255,255,255,0.08)",
+  muted:    "#6b7a99",
+  danger:   "#ef4444",
+  warn:     "#f59e0b",
+  info:     "#60a5fa",
+  text:     "#f0f4ff",
+  textMid:  "#b0bbd4",
   green:    "#22c55e",
   red:      "#ef4444",
-  // Spacing
-  r:  "14px",  // radius karta
-  rs: "10px",  // radius kichik
-  rx: "20px",  // radius katta
-  // Shadows
-  shadow: "0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05)",
-  shadowMd: "0 6px 24px rgba(0,0,0,0.1)",
+  // Semantik fonlar
+  dangerBg:  "rgba(239,68,68,0.1)",
+  warnBg:    "rgba(245,158,11,0.1)",
+  successBg: "rgba(34,197,94,0.1)",
+  infoBg:    "rgba(96,165,250,0.1)",
+  accentBg:  "rgba(201,168,76,0.1)",
+  joriyBg:   "rgba(201,168,76,0.06)",
+  // Semantik chegaralar
+  dangerBdr: "rgba(239,68,68,0.3)",
+  warnBdr:   "rgba(245,158,11,0.3)",
+  accentBdr: "rgba(201,168,76,0.25)",
+  // Radius
+  r:  "16px",
+  rs: "12px",
+  rx: "24px",
+  // Soyalar
+  shadow:    "0 4px 20px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.2)",
+  shadowMd:  "0 8px 40px rgba(0,0,0,0.5)",
+  shadowGold:"0 0 30px rgba(201,168,76,0.2), 0 0 60px rgba(201,168,76,0.08)",
 };
 
 export const NAV_TABS = ["Bosh sahifa","Inventar","Tranzaksiyalar","Moliya","Kategoriyalar","Tahlil","Sozlamalar"];
-export const SIDEBAR_W = 232;
+export const SIDEBAR_W = 240;
 
 // ─── IKONLAR ───────────────────────────────────────────
 export const Ico = {
@@ -118,78 +131,84 @@ export const Ico = {
 
 export const NAV_ICO = [Ico.home, Ico.inv, Ico.tx, Ico.mol, Ico.kat, Ico.chart, Ico.sett];
 
-// ─── UMUMIY KICHIK KOMPONENTLAR ─────────────────────────
-// Eslatma: bular modul darajasida turishi shart — agar komponent
-// ichida qayta e'lon qilinsa, har bir render'da yangi funksiya
-// turi hosil bo'ladi va React inputni qayta o'rnatib, fokusni
-// (va mobil klaviaturani) yo'qotadi.
+// ─── UMUMIY KOMPONENTLAR (module scope — fokus xatosini oldini olish) ──────
 export const Inp=({label,type="text",value,onChange,placeholder=""})=>(
   <div style={{marginBottom:10}}>
-    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:4}}>{label}</label>}
+    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:5,textTransform:"uppercase",letterSpacing:0.5}}>{label}</label>}
     <input type={type} value={value} onChange={onChange} placeholder={placeholder}
-      style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"10px 12px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}/>
+      style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"11px 14px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text,transition:"border-color 0.2s"}}/>
   </div>
 );
 
 export const Sel=({label,value,onChange,children})=>(
   <div style={{marginBottom:10}}>
-    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:4}}>{label}</label>}
-    <select value={value} onChange={onChange} style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"10px 12px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}>
+    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:5,textTransform:"uppercase",letterSpacing:0.5}}>{label}</label>}
+    <select value={value} onChange={onChange} style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"11px 14px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}>
       {children}
     </select>
   </div>
 );
 
-// Quyidagilar ham xuddi shu sababga ko'ra modul darajasida: Card/H2/Btn
-// kabi o'rovchi komponentlar MainApp ichida e'lon qilinsa, har bir
-// qayta render'da yangi turga aylanadi va ichidagi inputlarni
-// (Inp/Sel) ham qayta o'rnatib, fokusni yo'qotadi.
 export const Card=({children,style={}})=>(
-  <div style={{background:T.card,borderRadius:T.r,border:`1px solid ${T.border}`,padding:16,boxShadow:T.shadow,...style}}>
+  <div style={{background:T.card,borderRadius:T.r,border:`1px solid ${T.border}`,padding:20,boxShadow:T.shadow,...style}}>
     {children}
   </div>
 );
 
-export const H2=({children})=>(
-  <div style={{fontSize:14,fontWeight:800,color:T.text,marginBottom:14,display:"flex",alignItems:"center",gap:6}}>
+export const H2=({children,style={}})=>(
+  <div style={{fontSize:14,fontWeight:800,color:T.text,marginBottom:14,display:"flex",alignItems:"center",gap:6,...style}}>
     {children}
   </div>
 );
 
 export const Btn=({children,onClick,color=T.accent,small=false,ghost=false,danger=false,style={}})=>{
-  const bg=danger?"#fef2f2":ghost?"transparent":color;
-  const col=danger?T.danger:ghost?T.accent:"#fff";
-  const border=danger?`1.5px solid #fecaca`:ghost?`1.5px solid ${T.accent}`:"none";
+  const bg=danger?T.dangerBg:ghost?"transparent":color;
+  const col=danger?T.danger:ghost?T.accent:color===T.accent||color===T.accent2||color===T.accent3?"#0a0e1a":"#fff";
+  const border=danger?`1.5px solid ${T.dangerBdr}`:ghost?`1.5px solid ${T.border}`:"none";
+  const shadow=(!ghost&&!danger)?`0 4px 14px ${color}35`:"none";
   return(
-    <button onClick={onClick} className="alc-btn" style={{background:bg,color:col,border,borderRadius:T.rs,padding:small?"6px 12px":"10px 18px",fontSize:small?12:13,cursor:"pointer",fontWeight:700,display:"inline-flex",alignItems:"center",gap:5,...style}}>
+    <button onClick={onClick} className="alc-btn"
+      style={{background:bg,color:col,border,borderRadius:T.rs,padding:small?"6px 12px":"10px 18px",
+              fontSize:small?12:13,cursor:"pointer",fontWeight:700,display:"inline-flex",
+              alignItems:"center",gap:5,boxShadow:shadow,...style}}>
       {children}
     </button>
   );
 };
 
 export const Tag=({tur})=>(
-  <span style={{fontSize:11,fontWeight:700,padding:"3px 9px",borderRadius:20,background:tur==="kirim"?"#dcfce7":"#fee2e2",color:tur==="kirim"?"#166534":"#991b1b",display:"inline-block"}}>
+  <span style={{fontSize:11,fontWeight:700,padding:"3px 9px",borderRadius:20,
+    background:tur==="kirim"?"rgba(34,197,94,0.15)":"rgba(239,68,68,0.15)",
+    color:tur==="kirim"?"#22c55e":"#ef4444",display:"inline-block"}}>
     {tur==="kirim"?"↑ Kirim":"↓ Chiqim"}
   </span>
 );
 
 export const Badge=({oshgan,kamaygan,val})=>(
-  <span style={{fontSize:11,padding:"3px 9px",borderRadius:20,fontWeight:700,background:oshgan?"#fee2e2":kamaygan?"#fef9c3":"#dcfce7",color:oshgan?"#991b1b":kamaygan?"#713f12":"#166534"}}>
+  <span style={{fontSize:11,padding:"3px 9px",borderRadius:20,fontWeight:700,
+    background:oshgan?"rgba(239,68,68,0.15)":kamaygan?"rgba(245,158,11,0.15)":"rgba(34,197,94,0.15)",
+    color:oshgan?"#ef4444":kamaygan?"#f59e0b":"#22c55e"}}>
     {oshgan?"LIMIT":kamaygan?"⚠ MIN":val}
   </span>
 );
 
 export const Prog=({pct,oshgan,kamaygan})=>(
-  <div style={{background:"#e8e5de",borderRadius:8,height:7,overflow:"hidden",marginTop:5}}>
-    <div style={{height:"100%",width:`${Math.min(100,pct)}%`,background:oshgan?T.danger:kamaygan?T.warn:T.accent,borderRadius:8,transition:"width 0.5s ease"}}/>
+  <div style={{background:"rgba(255,255,255,0.06)",borderRadius:8,height:6,overflow:"hidden",marginTop:6}}>
+    <div style={{height:"100%",width:`${Math.min(100,pct)}%`,
+      background:oshgan?"#ef4444":kamaygan?"#f59e0b":"#c9a84c",
+      borderRadius:8,transition:"width 0.5s ease",
+      boxShadow:oshgan?"0 0 8px rgba(239,68,68,0.5)":kamaygan?"0 0 8px rgba(245,158,11,0.5)":"0 0 8px rgba(201,168,76,0.5)"}}/>
   </div>
 );
 
 export const Met=({label,val,sub,color=T.accent,icon})=>(
-  <div style={{background:T.card,borderRadius:T.r,padding:"14px 16px",border:`1px solid ${T.border}`,boxShadow:T.shadow,borderLeft:`3px solid ${color}`,position:"relative",overflow:"hidden"}}>
-    <div style={{position:"absolute",right:10,top:8,fontSize:20,opacity:0.1}}>{icon}</div>
-    <div style={{fontSize:10,color:T.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.6,marginBottom:4}}>{label}</div>
+  <div style={{background:T.card,borderRadius:T.r,padding:"16px 18px",border:`1px solid ${T.border}`,
+    boxShadow:T.shadow,position:"relative",overflow:"hidden"}}>
+    <div style={{position:"absolute",right:12,top:10,fontSize:26,opacity:0.1}}>{icon}</div>
+    <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,
+      background:`linear-gradient(90deg, ${color}, transparent)`,opacity:0.7,borderRadius:"0 0 16px 16px"}}/>
+    <div style={{fontSize:10,color:T.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.7,marginBottom:6}}>{label}</div>
     <div style={{fontSize:20,fontWeight:900,color:T.text,lineHeight:1.2}}>{val}</div>
-    {sub&&<div style={{fontSize:11,color:T.muted,marginTop:3}}>{sub}</div>}
+    {sub&&<div style={{fontSize:11,color:color,marginTop:4,fontWeight:600}}>{sub}</div>}
   </div>
 );
