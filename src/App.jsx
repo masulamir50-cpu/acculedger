@@ -151,6 +151,9 @@ function MainApp() {
       minHeight: "100vh",
       paddingBottom: isMobile ? 88 : 24,
     }}>
+      <div className="alc-orb alc-orb-1"/>
+      <div className="alc-orb alc-orb-2"/>
+      <div className="alc-orb alc-orb-3"/>
 
       {/* ── TOAST ── */}
       {xabar && (

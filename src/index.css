@@ -276,3 +276,43 @@ option { background: #0d1428; color: #e8eeff; }
     transition: none !important;
   }
 }
+
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 30px) scale(1.08); }
+  66% { transform: translate(25px, -35px) scale(0.92); }
+}
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, 40px) scale(1.06); }
+}
+.alc-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.alc-orb-1 {
+  width: 500px; height: 500px;
+  top: -150px; left: -100px;
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, rgba(124,58,237,0.06) 50%, transparent 70%);
+  animation: orb-float-1 12s ease-in-out infinite;
+}
+.alc-orb-2 {
+  width: 400px; height: 400px;
+  top: 30%; right: -100px;
+  background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, rgba(0,212,255,0.04) 50%, transparent 70%);
+  animation: orb-float-2 15s ease-in-out infinite;
+}
+.alc-orb-3 {
+  width: 350px; height: 350px;
+  bottom: -80px; left: 30%;
+  background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, rgba(201,168,76,0.03) 50%, transparent 70%);
+  animation: orb-float-3 18s ease-in-out infinite;
+}
