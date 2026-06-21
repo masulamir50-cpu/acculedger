@@ -7,12 +7,12 @@ import {
 import { T, fmt, fmtN } from "../lib/shared.jsx";
 
 const ttStyle = {
-  background: "#1a2235",
-  border: "1px solid rgba(255,255,255,0.1)",
-  borderRadius: 10,
+  background: "rgba(8,12,24,0.97)",
+  border: "1px solid rgba(0,212,255,0.18)",
+  borderRadius: 12,
   fontSize: 12,
   color: "#f0f4ff",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+  boxShadow: "0 12px 36px rgba(0,0,0,0.7), 0 0 12px rgba(0,212,255,0.06)",
 };
 const ttLabelStyle = { color: "#c9a84c", fontWeight: 700 };
 const axisStyle = { fill: "#6b7a99", fontSize: 11 };

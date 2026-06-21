@@ -25,7 +25,7 @@ export const DEF_MOL = {
   pul_oqimi:0,soliq:15,byudjet:0,ish_haqi:0,amortizatsiya:0,boshqa_daromad:0
 };
 
-// ─── Yordamchi funksiyalar (moliya formulalari) ─────────
+// ─── Yordamchi funksiyalar ──────────────────────────────
 export const fmt  = n => Number(n||0).toLocaleString("uz-UZ",{minimumFractionDigits:2,maximumFractionDigits:2});
 export const fmtN = n => Number(n||0).toLocaleString("uz-UZ");
 export const P    = n => Math.round((Number(n)+Number.EPSILON)*100)/100;
@@ -67,148 +67,347 @@ export function flushPendingWrites() {
   pendingWrites.clear();
 }
 
-// ─── DIZAYN TOKENLARI — Dark Premium Fintech ────────────
+// ─── PREMIUM DIZAYN TOKENLARI — Marcelo-style Dark Fintech ──
 export const T = {
-  // Asosiy ranglar
-  bg:       "#0a0e1a",
-  card:     "#111827",
-  card2:    "#1a2235",
-  accent:   "#c9a84c",
-  accent2:  "#d4b96a",
-  accent3:  "#a8853d",
-  cream:    "#0d1526",
-  border:   "rgba(255,255,255,0.08)",
-  muted:    "#6b7a99",
+  // Core backgrounds
+  bg:       "#050810",
+  card:     "rgba(13,20,40,0.75)",
+  card2:    "rgba(18,28,55,0.8)",
+  cardSolid:"#0d1428",
+  cream:    "rgba(10,16,32,0.9)",
+
+  // Accent palette
+  accent:   "#c9a84c",           // gold primary
+  accent2:  "#d4b96a",           // gold light
+  accent3:  "#a8853d",           // gold deep
+  cyan:     "#00d4ff",           // neon cyan (signature)
+  cyanDim:  "rgba(0,212,255,0.15)",
+  violet:   "#7c3aed",           // violet accent
+  violetDim:"rgba(124,58,237,0.12)",
+
+  // Text
+  text:     "#e8eeff",
+  textMid:  "#9aa8cc",
+  muted:    "#5a6a8a",
+
+  // Semantic
+  green:    "#22c55e",
+  red:      "#ef4444",
   danger:   "#ef4444",
   warn:     "#f59e0b",
   info:     "#60a5fa",
-  text:     "#f0f4ff",
-  textMid:  "#b0bbd4",
-  green:    "#22c55e",
-  red:      "#ef4444",
-  // Semantik fonlar
-  dangerBg:  "rgba(239,68,68,0.1)",
-  warnBg:    "rgba(245,158,11,0.1)",
-  successBg: "rgba(34,197,94,0.1)",
-  infoBg:    "rgba(96,165,250,0.1)",
+
+  // Semantic backgrounds
+  dangerBg:  "rgba(239,68,68,0.08)",
+  warnBg:    "rgba(245,158,11,0.08)",
+  successBg: "rgba(34,197,94,0.08)",
+  infoBg:    "rgba(96,165,250,0.08)",
   accentBg:  "rgba(201,168,76,0.1)",
-  joriyBg:   "rgba(201,168,76,0.06)",
-  // Semantik chegaralar
+  cyanBg:    "rgba(0,212,255,0.06)",
+  joriyBg:   "rgba(0,212,255,0.04)",
+
+  // Semantic borders
+  border:    "rgba(255,255,255,0.07)",
+  borderGlow:"rgba(0,212,255,0.2)",
   dangerBdr: "rgba(239,68,68,0.3)",
   warnBdr:   "rgba(245,158,11,0.3)",
   accentBdr: "rgba(201,168,76,0.25)",
+  cyanBdr:   "rgba(0,212,255,0.25)",
+
   // Radius
   r:  "16px",
   rs: "12px",
-  rx: "24px",
-  // Soyalar
-  shadow:    "0 4px 20px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.2)",
-  shadowMd:  "0 8px 40px rgba(0,0,0,0.5)",
-  shadowGold:"0 0 30px rgba(201,168,76,0.2), 0 0 60px rgba(201,168,76,0.08)",
+  rx: "20px",
+  rxx:"28px",
+
+  // Shadows
+  shadow:     "0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
+  shadowMd:   "0 12px 48px rgba(0,0,0,0.6)",
+  shadowLg:   "0 24px 80px rgba(0,0,0,0.7)",
+  shadowGold: "0 0 32px rgba(201,168,76,0.2), 0 0 64px rgba(201,168,76,0.08)",
+  shadowCyan: "0 0 24px rgba(0,212,255,0.15), 0 0 48px rgba(0,212,255,0.06)",
+
+  // Gradients (strings for reuse)
+  gradAccent: "linear-gradient(135deg, #d4b96a 0%, #c9a84c 50%, #a8853d 100%)",
+  gradCyan:   "linear-gradient(135deg, #00d4ff 0%, #0099cc 100%)",
+  gradDark:   "linear-gradient(135deg, #0d1428 0%, #08101e 100%)",
+  gradHero:   "linear-gradient(135deg, #0a0c18 0%, #050d1a 40%, #050810 100%)",
+
+  // Backdrop
+  blur: "blur(20px) saturate(1.4)",
 };
 
 export const NAV_TABS = ["Bosh sahifa","Inventar","Tranzaksiyalar","Moliya","Kategoriyalar","Tahlil","Sozlamalar"];
-export const SIDEBAR_W = 240;
+export const SIDEBAR_W = 248;
 
 // ─── IKONLAR ───────────────────────────────────────────
 export const Ico = {
-  home:  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-  inv:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>,
-  tx:    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
-  mol:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-  kat:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
-  chart: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-  sett:  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>,
-  plus:  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  bell:  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
-  undo:  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>,
-  logout:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
-  del:   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>,
-  edit:  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
-  csv:   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
-  search:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+  home:  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+  inv:   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>,
+  tx:    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
+  mol:   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+  kat:   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
+  chart: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+  sett:  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>,
+  plus:  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+  bell:  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+  undo:  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>,
+  logout:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
+  del:   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>,
+  edit:  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+  csv:   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+  search:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
 };
 
 export const NAV_ICO = [Ico.home, Ico.inv, Ico.tx, Ico.mol, Ico.kat, Ico.chart, Ico.sett];
 
-// ─── UMUMIY KOMPONENTLAR (module scope — fokus xatosini oldini olish) ──────
-export const Inp=({label,type="text",value,onChange,placeholder=""})=>(
-  <div style={{marginBottom:10}}>
-    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:5,textTransform:"uppercase",letterSpacing:0.5}}>{label}</label>}
-    <input type={type} value={value} onChange={onChange} placeholder={placeholder}
-      style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"11px 14px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text,transition:"border-color 0.2s"}}/>
+// ─── UMUMIY KOMPONENTLAR ──────────────────────────────
+export const Inp = ({ label, type="text", value, onChange, placeholder="" }) => (
+  <div style={{ marginBottom: 14 }}>
+    {label && (
+      <label style={{
+        fontSize: 11, color: T.muted, fontWeight: 600, display: "block",
+        marginBottom: 6, textTransform: "uppercase", letterSpacing: 1,
+      }}>{label}</label>
+    )}
+    <input
+      type={type} value={value} onChange={onChange} placeholder={placeholder}
+      style={{
+        width: "100%",
+        border: `1px solid ${T.border}`,
+        borderRadius: T.rs,
+        padding: "11px 14px",
+        fontSize: 13,
+        background: "rgba(255,255,255,0.03)",
+        outline: "none",
+        boxSizing: "border-box",
+        color: T.text,
+        transition: "border-color 0.2s, box-shadow 0.2s",
+        backdropFilter: "blur(8px)",
+      }}
+    />
   </div>
 );
 
-export const Sel=({label,value,onChange,children})=>(
-  <div style={{marginBottom:10}}>
-    {label&&<label style={{fontSize:11,color:T.muted,fontWeight:700,display:"block",marginBottom:5,textTransform:"uppercase",letterSpacing:0.5}}>{label}</label>}
-    <select value={value} onChange={onChange} style={{width:"100%",border:`1.5px solid ${T.border}`,borderRadius:T.rs,padding:"11px 14px",fontSize:13,background:T.cream,outline:"none",boxSizing:"border-box",color:T.text}}>
+export const Sel = ({ label, value, onChange, children }) => (
+  <div style={{ marginBottom: 14 }}>
+    {label && (
+      <label style={{
+        fontSize: 11, color: T.muted, fontWeight: 600, display: "block",
+        marginBottom: 6, textTransform: "uppercase", letterSpacing: 1,
+      }}>{label}</label>
+    )}
+    <select
+      value={value} onChange={onChange}
+      style={{
+        width: "100%",
+        border: `1px solid ${T.border}`,
+        borderRadius: T.rs,
+        padding: "11px 14px",
+        fontSize: 13,
+        background: "rgba(10,16,32,0.95)",
+        outline: "none",
+        boxSizing: "border-box",
+        color: T.text,
+      }}
+    >
       {children}
     </select>
   </div>
 );
 
-export const Card=({children,style={}})=>(
-  <div style={{background:T.card,borderRadius:T.r,border:`1px solid ${T.border}`,padding:20,boxShadow:T.shadow,...style}}>
+export const Card = ({ children, style={}, className="" }) => (
+  <div
+    className={className}
+    style={{
+      background: T.card,
+      backdropFilter: T.blur,
+      WebkitBackdropFilter: T.blur,
+      borderRadius: T.r,
+      border: `1px solid ${T.border}`,
+      padding: 20,
+      boxShadow: T.shadow,
+      position: "relative",
+      overflow: "hidden",
+      ...style,
+    }}
+  >
     {children}
   </div>
 );
 
-export const H2=({children,style={}})=>(
-  <div style={{fontSize:14,fontWeight:800,color:T.text,marginBottom:14,display:"flex",alignItems:"center",gap:6,...style}}>
+export const H2 = ({ children, style={} }) => (
+  <div style={{
+    fontSize: 13,
+    fontWeight: 700,
+    color: T.textMid,
+    marginBottom: 16,
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    ...style,
+  }}>
     {children}
   </div>
 );
 
-export const Btn=({children,onClick,color=T.accent,small=false,ghost=false,danger=false,style={}})=>{
-  const bg=danger?T.dangerBg:ghost?"transparent":color;
-  const col=danger?T.danger:ghost?T.accent:color===T.accent||color===T.accent2||color===T.accent3?"#0a0e1a":"#fff";
-  const border=danger?`1.5px solid ${T.dangerBdr}`:ghost?`1.5px solid ${T.border}`:"none";
-  const shadow=(!ghost&&!danger)?`0 4px 14px ${color}35`:"none";
-  return(
-    <button onClick={onClick} className="alc-btn"
-      style={{background:bg,color:col,border,borderRadius:T.rs,padding:small?"6px 12px":"10px 18px",
-              fontSize:small?12:13,cursor:"pointer",fontWeight:700,display:"inline-flex",
-              alignItems:"center",gap:5,boxShadow:shadow,...style}}>
+export const Btn = ({ children, onClick, color=T.accent, small=false, ghost=false, danger=false, style={} }) => {
+  const isGold = color === T.accent || color === T.accent2 || color === T.accent3;
+  const bg = danger
+    ? T.dangerBg
+    : ghost
+    ? "rgba(255,255,255,0.04)"
+    : isGold
+    ? `linear-gradient(135deg, ${T.accent2} 0%, ${T.accent} 60%, ${T.accent3} 100%)`
+    : color;
+  const col = danger ? T.danger : ghost ? T.textMid : isGold ? "#0a0c18" : "#fff";
+  const border = danger
+    ? `1px solid ${T.dangerBdr}`
+    : ghost
+    ? `1px solid ${T.border}`
+    : isGold
+    ? "1px solid rgba(201,168,76,0.3)"
+    : "none";
+  const shadow = !ghost && !danger && isGold
+    ? `0 4px 20px rgba(201,168,76,0.3), 0 2px 6px rgba(0,0,0,0.4)`
+    : "none";
+  return (
+    <button
+      onClick={onClick}
+      className="alc-btn"
+      style={{
+        background: bg,
+        color: col,
+        border,
+        borderRadius: T.rs,
+        padding: small ? "6px 12px" : "10px 18px",
+        fontSize: small ? 11 : 13,
+        cursor: "pointer",
+        fontWeight: 700,
+        letterSpacing: 0.3,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 5,
+        boxShadow: shadow,
+        ...style,
+      }}
+    >
       {children}
     </button>
   );
 };
 
-export const Tag=({tur})=>(
-  <span style={{fontSize:11,fontWeight:700,padding:"3px 9px",borderRadius:20,
-    background:tur==="kirim"?"rgba(34,197,94,0.15)":"rgba(239,68,68,0.15)",
-    color:tur==="kirim"?"#22c55e":"#ef4444",display:"inline-block"}}>
-    {tur==="kirim"?"↑ Kirim":"↓ Chiqim"}
+export const Tag = ({ tur }) => (
+  <span style={{
+    fontSize: 10,
+    fontWeight: 700,
+    padding: "3px 8px",
+    borderRadius: 20,
+    background: tur === "kirim" ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
+    color: tur === "kirim" ? "#22c55e" : "#ef4444",
+    border: `1px solid ${tur === "kirim" ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)"}`,
+    display: "inline-block",
+    letterSpacing: 0.3,
+  }}>
+    {tur === "kirim" ? "↑ Kirim" : "↓ Chiqim"}
   </span>
 );
 
-export const Badge=({oshgan,kamaygan,val})=>(
-  <span style={{fontSize:11,padding:"3px 9px",borderRadius:20,fontWeight:700,
-    background:oshgan?"rgba(239,68,68,0.15)":kamaygan?"rgba(245,158,11,0.15)":"rgba(34,197,94,0.15)",
-    color:oshgan?"#ef4444":kamaygan?"#f59e0b":"#22c55e"}}>
-    {oshgan?"LIMIT":kamaygan?"⚠ MIN":val}
+export const Badge = ({ oshgan, kamaygan, val }) => (
+  <span style={{
+    fontSize: 10,
+    padding: "3px 9px",
+    borderRadius: 20,
+    fontWeight: 700,
+    letterSpacing: 0.3,
+    background: oshgan
+      ? "rgba(239,68,68,0.12)"
+      : kamaygan
+      ? "rgba(245,158,11,0.12)"
+      : "rgba(34,197,94,0.1)",
+    color: oshgan ? "#ef4444" : kamaygan ? "#f59e0b" : "#22c55e",
+    border: `1px solid ${oshgan ? "rgba(239,68,68,0.25)" : kamaygan ? "rgba(245,158,11,0.25)" : "rgba(34,197,94,0.2)"}`,
+  }}>
+    {oshgan ? "LIMIT" : kamaygan ? "⚠ MIN" : val}
   </span>
 );
 
-export const Prog=({pct,oshgan,kamaygan})=>(
-  <div style={{background:"rgba(255,255,255,0.06)",borderRadius:8,height:6,overflow:"hidden",marginTop:6}}>
-    <div style={{height:"100%",width:`${Math.min(100,pct)}%`,
-      background:oshgan?"#ef4444":kamaygan?"#f59e0b":"#c9a84c",
-      borderRadius:8,transition:"width 0.5s ease",
-      boxShadow:oshgan?"0 0 8px rgba(239,68,68,0.5)":kamaygan?"0 0 8px rgba(245,158,11,0.5)":"0 0 8px rgba(201,168,76,0.5)"}}/>
-  </div>
-);
+export const Prog = ({ pct, oshgan, kamaygan }) => {
+  const color = oshgan ? "#ef4444" : kamaygan ? "#f59e0b" : T.cyan;
+  const glow  = oshgan
+    ? "0 0 8px rgba(239,68,68,0.5)"
+    : kamaygan
+    ? "0 0 8px rgba(245,158,11,0.4)"
+    : "0 0 8px rgba(0,212,255,0.4)";
+  return (
+    <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, height: 5, overflow: "hidden", marginTop: 8 }}>
+      <div
+        className="alc-progress-fill"
+        style={{
+          height: "100%",
+          width: `${Math.min(100, pct)}%`,
+          background: oshgan
+            ? "#ef4444"
+            : kamaygan
+            ? "#f59e0b"
+            : `linear-gradient(90deg, ${T.cyan}, #7c3aed)`,
+          borderRadius: 8,
+          boxShadow: glow,
+        }}
+      />
+    </div>
+  );
+};
 
-export const Met=({label,val,sub,color=T.accent,icon})=>(
-  <div style={{background:T.card,borderRadius:T.r,padding:"16px 18px",border:`1px solid ${T.border}`,
-    boxShadow:T.shadow,position:"relative",overflow:"hidden"}}>
-    <div style={{position:"absolute",right:12,top:10,fontSize:26,opacity:0.1}}>{icon}</div>
-    <div style={{position:"absolute",bottom:0,left:0,right:0,height:3,
-      background:`linear-gradient(90deg, ${color}, transparent)`,opacity:0.7,borderRadius:"0 0 16px 16px"}}/>
-    <div style={{fontSize:10,color:T.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:0.7,marginBottom:6}}>{label}</div>
-    <div style={{fontSize:20,fontWeight:900,color:T.text,lineHeight:1.2}}>{val}</div>
-    {sub&&<div style={{fontSize:11,color:color,marginTop:4,fontWeight:600}}>{sub}</div>}
+export const Met = ({ label, val, sub, color=T.accent, icon }) => (
+  <div
+    className="alc-met-card"
+    style={{
+      background: T.card,
+      backdropFilter: T.blur,
+      WebkitBackdropFilter: T.blur,
+      borderRadius: T.r,
+      padding: "18px 20px",
+      border: `1px solid ${T.border}`,
+      boxShadow: T.shadow,
+      position: "relative",
+      overflow: "hidden",
+    }}
+  >
+    {/* Mesh glow */}
+    <div style={{
+      position: "absolute",
+      top: -20,
+      right: -20,
+      width: 80,
+      height: 80,
+      borderRadius: "50%",
+      background: `radial-gradient(circle, ${color}18 0%, transparent 70%)`,
+      pointerEvents: "none",
+    }}/>
+    {/* Bottom accent line */}
+    <div style={{
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 2,
+      background: `linear-gradient(90deg, ${color}, transparent)`,
+      opacity: 0.6,
+    }}/>
+    <div style={{ position: "absolute", right: 14, top: 12, fontSize: 22, opacity: 0.12 }}>{icon}</div>
+    <div style={{
+      fontSize: 10, color: T.muted, fontWeight: 600,
+      textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 8,
+    }}>{label}</div>
+    <div style={{
+      fontSize: 19, fontWeight: 800, color: T.text,
+      lineHeight: 1.2, letterSpacing: -0.3,
+    }}>{val}</div>
+    {sub && (
+      <div style={{ fontSize: 11, color, marginTop: 5, fontWeight: 600 }}>{sub}</div>
+    )}
   </div>
 );

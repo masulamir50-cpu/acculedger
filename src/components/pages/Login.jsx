@@ -4,11 +4,12 @@ import { auth } from '../../firebase';
 import { T } from '../../lib/shared.jsx';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [parol, setParol] = useState('');
-  const [rejim, setRejim] = useState('kirish');
-  const [xato,  setXato]  = useState('');
-  const [yukl,  setYukl]  = useState(false);
+  const [email, setEmail]  = useState('');
+  const [parol, setParol]  = useState('');
+  const [rejim, setRejim]  = useState('kirish');
+  const [xato,  setXato]   = useState('');
+  const [yukl,  setYukl]   = useState(false);
+  const [focus, setFocus]  = useState('');
 
   const submit = async () => {
     if (!email || !parol) { setXato("Email va parolni kiriting!"); return; }
@@ -29,51 +30,282 @@ export default function Login() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(ellipse at top, #1a1400 0%, #0a0e1a 65%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-      <div style={{ background: T.card, borderRadius: T.rx, padding: '40px 36px', width: '100%', maxWidth: 400, boxShadow: '0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)' }}>
+    <div style={{
+      minHeight: '100vh',
+      background: T.bg,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 20,
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 36 }}>
-          <div style={{ position: 'relative', marginBottom: 18 }}>
-            <div style={{ position: 'absolute', inset: -20, background: 'radial-gradient(circle, rgba(201,168,76,0.2) 0%, transparent 70%)', borderRadius: '50%', animation: 'alc-glow-pulse 2.5s ease-in-out infinite' }} />
-            <img src="/logo.png" alt="AccuLedger" style={{ width: 80, height: 80, objectFit: 'contain', borderRadius: 18, position: 'relative', zIndex: 1, filter: 'drop-shadow(0 0 12px rgba(201,168,76,0.4))' }} />
+      {/* Ambient orbs */}
+      <div style={{
+        position: 'absolute', top: '-10%', left: '-5%',
+        width: 500, height: 500, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 65%)',
+        pointerEvents: 'none',
+      }}/>
+      <div style={{
+        position: 'absolute', bottom: '-10%', right: '-5%',
+        width: 420, height: 420, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 65%)',
+        pointerEvents: 'none',
+      }}/>
+      <div style={{
+        position: 'absolute', top: '40%', right: '20%',
+        width: 240, height: 240, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(124,58,237,0.04) 0%, transparent 65%)',
+        pointerEvents: 'none',
+      }}/>
+
+      {/* Grid pattern */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)
+        `,
+        backgroundSize: '60px 60px',
+        pointerEvents: 'none',
+      }}/>
+
+      {/* Card */}
+      <div style={{
+        background: 'rgba(10,16,30,0.88)',
+        backdropFilter: 'blur(32px) saturate(1.5)',
+        WebkitBackdropFilter: 'blur(32px) saturate(1.5)',
+        borderRadius: 28,
+        padding: '44px 40px 36px',
+        width: '100%',
+        maxWidth: 420,
+        border: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: '0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,212,255,0.06), inset 0 1px 0 rgba(255,255,255,0.06)',
+        position: 'relative',
+      }}>
+        {/* Top neon line */}
+        <div style={{
+          position: 'absolute', top: 0, left: '20%', right: '20%', height: 1,
+          background: 'linear-gradient(90deg, transparent, rgba(0,212,255,0.5), transparent)',
+          borderRadius: 1,
+        }}/>
+
+        {/* Logo */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 40 }}>
+          <div style={{ position: 'relative', marginBottom: 20 }}>
+            {/* Outer ring */}
+            <div className="alc-spin" style={{
+              position: 'absolute', inset: -10,
+              borderRadius: '50%',
+              border: '1.5px conic-gradient(from 0deg, rgba(0,212,255,0.7), transparent, rgba(201,168,76,0.5), transparent) 1px solid',
+              opacity: 0.7,
+            }}/>
+            {/* Glow */}
+            <div style={{
+              position: 'absolute', inset: -16,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(0,212,255,0.12) 0%, rgba(201,168,76,0.06) 50%, transparent 70%)',
+            }}/>
+            <img
+              src="/logo.png"
+              alt="AccuLedger"
+              className="alc-pulse"
+              style={{
+                width: 76, height: 76,
+                objectFit: 'contain',
+                borderRadius: 18,
+                position: 'relative', zIndex: 1,
+                filter: 'drop-shadow(0 0 16px rgba(0,212,255,0.3)) drop-shadow(0 0 32px rgba(201,168,76,0.15))',
+              }}
+            />
           </div>
-          <div style={{ fontSize: 26, fontWeight: 900, color: T.accent, letterSpacing: -0.5, lineHeight: 1 }}>AccuLedger</div>
-          <div style={{ fontSize: 12, color: T.muted, marginTop: 6, letterSpacing: 0.5 }}>Moliyaviy boshqaruv tizimi</div>
+
+          <div style={{
+            fontSize: 28, fontWeight: 900,
+            background: `linear-gradient(135deg, ${T.text} 20%, ${T.accent} 60%, ${T.cyan} 100%)`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            letterSpacing: -0.8, lineHeight: 1,
+            marginBottom: 6,
+          }}>AccuLedger</div>
+
+          <div style={{
+            fontSize: 11, color: T.muted,
+            fontWeight: 500, letterSpacing: 2,
+            textTransform: 'uppercase',
+          }}>Moliyaviy boshqaruv tizimi</div>
         </div>
 
-        <div style={{ textAlign: 'center', fontSize: 13, color: T.muted, marginBottom: 24, background: T.cream, borderRadius: T.rs, padding: '8px 16px', border: `1px solid ${T.border}` }}>
-          {rejim === 'kirish' ? "Hisobingizga kiring" : "Yangi hisob yarating"}
+        {/* Tab switcher */}
+        <div style={{
+          display: 'flex',
+          background: 'rgba(255,255,255,0.03)',
+          borderRadius: 12,
+          padding: 4,
+          marginBottom: 28,
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}>
+          {[['kirish','Kirish'], ['royxat',"Ro'yxat"]].map(([k, l]) => (
+            <button
+              key={k}
+              onClick={() => { setRejim(k); setXato(''); }}
+              style={{
+                flex: 1,
+                padding: '9px',
+                borderRadius: 9,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 13,
+                fontWeight: rejim === k ? 700 : 500,
+                background: rejim === k
+                  ? 'rgba(0,212,255,0.1)'
+                  : 'transparent',
+                color: rejim === k ? T.cyan : T.muted,
+                boxShadow: rejim === k
+                  ? 'inset 0 0 0 1px rgba(0,212,255,0.2), 0 0 12px rgba(0,212,255,0.08)'
+                  : 'none',
+                transition: 'all 0.2s',
+                letterSpacing: 0.3,
+              }}
+            >{l}</button>
+          ))}
         </div>
 
-        {xato && <div style={{ background: T.dangerBg, color: T.danger, border: `1px solid ${T.dangerBdr}`, borderRadius: T.rs, padding: '10px 14px', fontSize: 13, marginBottom: 16 }}>⚠ {xato}</div>}
+        {/* Error */}
+        {xato && (
+          <div style={{
+            background: 'rgba(239,68,68,0.08)',
+            color: '#ff6b6b',
+            border: '1px solid rgba(239,68,68,0.3)',
+            borderRadius: 12,
+            padding: '11px 14px',
+            fontSize: 13,
+            marginBottom: 20,
+            fontWeight: 500,
+          }}>⚠ {xato}</div>
+        )}
 
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ fontSize: 11, color: T.muted, fontWeight: 700, display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>Email</label>
+        {/* Email field */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{
+            fontSize: 10, color: T.muted,
+            fontWeight: 600, display: 'block',
+            marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1.2,
+          }}>Email</label>
           <input
-            style={{ width: '100%', border: `1.5px solid ${T.border}`, borderRadius: T.rs, padding: '13px 16px', fontSize: 14, background: T.cream, outline: 'none', boxSizing: 'border-box', color: T.text, transition: 'border-color 0.2s' }}
-            type="email" placeholder="email@gmail.com" value={email}
+            type="email"
+            placeholder="email@domain.com"
+            value={email}
             onChange={e => setEmail(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && submit()}
-            onFocus={e => { e.target.style.borderColor = T.accent; e.target.style.boxShadow = '0 0 0 3px rgba(201,168,76,0.15)'; }}
-            onBlur={e => { e.target.style.borderColor = T.border; e.target.style.boxShadow = 'none'; }} />
-        </div>
-        <div style={{ marginBottom: 28 }}>
-          <label style={{ fontSize: 11, color: T.muted, fontWeight: 700, display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>Parol</label>
-          <input
-            style={{ width: '100%', border: `1.5px solid ${T.border}`, borderRadius: T.rs, padding: '13px 16px', fontSize: 14, background: T.cream, outline: 'none', boxSizing: 'border-box', color: T.text }}
-            type="password" placeholder="••••••••" value={parol}
-            onChange={e => setParol(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && submit()} />
+            onFocus={() => setFocus('email')}
+            onBlur={() => setFocus('')}
+            style={{
+              width: '100%',
+              border: `1px solid ${focus === 'email' ? 'rgba(0,212,255,0.5)' : T.border}`,
+              borderRadius: 12,
+              padding: '13px 16px',
+              fontSize: 14,
+              background: 'rgba(255,255,255,0.03)',
+              outline: 'none',
+              boxSizing: 'border-box',
+              color: T.text,
+              boxShadow: focus === 'email' ? '0 0 0 3px rgba(0,212,255,0.1), 0 0 20px rgba(0,212,255,0.06)' : 'none',
+              transition: 'border-color 0.2s, box-shadow 0.2s',
+              backdropFilter: 'blur(8px)',
+            }}
+          />
         </div>
 
-        <button onClick={submit} disabled={yukl}
-          style={{ width: '100%', background: `linear-gradient(135deg, ${T.accent2}, ${T.accent})`, color: '#0a0e1a', border: 'none', borderRadius: T.rs, padding: '14px', fontSize: 14, cursor: yukl ? 'not-allowed' : 'pointer', fontWeight: 800, boxShadow: '0 6px 20px rgba(201,168,76,0.35)', opacity: yukl ? 0.7 : 1, letterSpacing: 0.3 }}>
-          {yukl ? 'Yuklanmoqda…' : rejim === 'kirish' ? 'Kirish →' : "Ro'yxatdan o'tish →"}
+        {/* Password field */}
+        <div style={{ marginBottom: 32 }}>
+          <label style={{
+            fontSize: 10, color: T.muted,
+            fontWeight: 600, display: 'block',
+            marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1.2,
+          }}>Parol</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={parol}
+            onChange={e => setParol(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && submit()}
+            onFocus={() => setFocus('parol')}
+            onBlur={() => setFocus('')}
+            style={{
+              width: '100%',
+              border: `1px solid ${focus === 'parol' ? 'rgba(0,212,255,0.5)' : T.border}`,
+              borderRadius: 12,
+              padding: '13px 16px',
+              fontSize: 14,
+              background: 'rgba(255,255,255,0.03)',
+              outline: 'none',
+              boxSizing: 'border-box',
+              color: T.text,
+              boxShadow: focus === 'parol' ? '0 0 0 3px rgba(0,212,255,0.1), 0 0 20px rgba(0,212,255,0.06)' : 'none',
+              transition: 'border-color 0.2s, box-shadow 0.2s',
+              backdropFilter: 'blur(8px)',
+            }}
+          />
+        </div>
+
+        {/* Submit button */}
+        <button
+          onClick={submit}
+          disabled={yukl}
+          style={{
+            width: '100%',
+            background: yukl
+              ? 'rgba(201,168,76,0.3)'
+              : `linear-gradient(135deg, ${T.accent2} 0%, ${T.accent} 50%, ${T.accent3} 100%)`,
+            color: '#0a0c18',
+            border: 'none',
+            borderRadius: 14,
+            padding: '15px',
+            fontSize: 14,
+            cursor: yukl ? 'not-allowed' : 'pointer',
+            fontWeight: 800,
+            letterSpacing: 0.4,
+            boxShadow: yukl
+              ? 'none'
+              : '0 8px 28px rgba(201,168,76,0.4), 0 2px 8px rgba(0,0,0,0.4)',
+            transition: 'all 0.2s',
+            opacity: yukl ? 0.7 : 1,
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {yukl
+            ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                <span style={{ width: 14, height: 14, border: '2px solid rgba(10,12,24,0.4)', borderTopColor: '#0a0c18', borderRadius: '50%' }} className="alc-spin"/>
+                Yuklanmoqda…
+              </span>
+            : rejim === 'kirish'
+            ? 'Kirish →'
+            : "Ro'yxatdan o'tish →"
+          }
         </button>
 
-        <div onClick={() => { setRejim(r => r === 'kirish' ? 'royxat' : 'kirish'); setXato(''); }}
-          style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: T.accent, cursor: 'pointer', fontWeight: 600, padding: '8px', borderRadius: T.rs }}>
-          {rejim === 'kirish' ? "Hisob yo'qmi? Ro'yxatdan o'tish →" : '← Hisobingiz bormi? Kirish'}
+        {/* Bottom divider */}
+        <div style={{
+          height: 1,
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
+          margin: '20px 0',
+        }}/>
+
+        <div style={{ textAlign: 'center', fontSize: 12, color: T.muted, fontWeight: 500 }}>
+          {rejim === 'kirish' ? 'Hisobingiz yo\'qmi?' : 'Hisobingiz bormi?'}{' '}
+          <span
+            onClick={() => { setRejim(r => r === 'kirish' ? 'royxat' : 'kirish'); setXato(''); }}
+            style={{
+              color: T.cyan, cursor: 'pointer', fontWeight: 700,
+              textDecoration: 'none',
+            }}
+          >
+            {rejim === 'kirish' ? "Ro'yxatdan o'tish →" : '← Kirish'}
+          </span>
         </div>
       </div>
     </div>
