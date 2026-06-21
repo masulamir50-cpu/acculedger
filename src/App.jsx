@@ -404,7 +404,7 @@ function MainApp() {
                   src="/logo.png"
                   alt="AccuLedger"
                   style={{
-                    width: 40, height: 40,
+                    width: 52, height: 52,
                     objectFit: "contain",
                     borderRadius: 12,
                     position: "relative",
