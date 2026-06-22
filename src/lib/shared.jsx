@@ -67,74 +67,54 @@ export function flushPendingWrites() {
   pendingWrites.clear();
 }
 
-// ─── PREMIUM DIZAYN TOKENLARI — Marcelo-style Dark Fintech ──
 export const T = {
-  // Core backgrounds
-  bg:       "#050810",
-  card:     "rgba(13,20,40,0.75)",
-  card2:    "rgba(18,28,55,0.8)",
-  cardSolid:"#0d1428",
-  cream:    "rgba(10,16,32,0.9)",
-
-  // Accent palette
-  accent:   "#c9a84c",           // gold primary
-  accent2:  "#d4b96a",           // gold light
-  accent3:  "#a8853d",           // gold deep
-  cyan:     "#00d4ff",           // neon cyan (signature)
-  cyanDim:  "rgba(0,212,255,0.15)",
-  violet:   "#7c3aed",           // violet accent
-  violetDim:"rgba(124,58,237,0.12)",
-
-  // Text
-  text:     "#e8eeff",
-  textMid:  "#9aa8cc",
-  muted:    "#5a6a8a",
-
-  // Semantic
-  green:    "#22c55e",
-  red:      "#ef4444",
-  danger:   "#ef4444",
-  warn:     "#f59e0b",
-  info:     "#60a5fa",
-
-  // Semantic backgrounds
-  dangerBg:  "rgba(239,68,68,0.08)",
-  warnBg:    "rgba(245,158,11,0.08)",
-  successBg: "rgba(34,197,94,0.08)",
-  infoBg:    "rgba(96,165,250,0.08)",
-  accentBg:  "rgba(201,168,76,0.1)",
-  cyanBg:    "rgba(0,212,255,0.06)",
-  joriyBg:   "rgba(0,212,255,0.04)",
-
-  // Semantic borders
-  border:    "rgba(255,255,255,0.07)",
-  borderGlow:"rgba(0,212,255,0.2)",
-  dangerBdr: "rgba(239,68,68,0.3)",
-  warnBdr:   "rgba(245,158,11,0.3)",
-  accentBdr: "rgba(201,168,76,0.25)",
-  cyanBdr:   "rgba(0,212,255,0.25)",
-
-  // Radius
+  bg:       "#eef4fd",
+  card:     "rgba(255,255,255,0.75)",
+  card2:    "rgba(240,247,255,0.85)",
+  cardSolid:"#ffffff",
+  cream:    "rgba(255,255,255,0.9)",
+  accent:   "#b8860b",
+  accent2:  "#d4a017",
+  accent3:  "#8b6508",
+  cyan:     "#2563eb",
+  cyanDim:  "rgba(37,99,235,0.12)",
+  violet:   "#7c3aed",
+  violetDim:"rgba(124,58,237,0.1)",
+  text:     "#1a2942",
+  textMid:  "#3d5278",
+  muted:    "#7a90b0",
+  green:    "#16a34a",
+  red:      "#dc2626",
+  danger:   "#dc2626",
+  warn:     "#d97706",
+  info:     "#2563eb",
+  dangerBg:  "rgba(220,38,38,0.07)",
+  warnBg:    "rgba(217,119,6,0.07)",
+  successBg: "rgba(22,163,74,0.07)",
+  infoBg:    "rgba(37,99,235,0.07)",
+  accentBg:  "rgba(184,134,11,0.08)",
+  cyanBg:    "rgba(37,99,235,0.08)",
+  joriyBg:   "rgba(37,99,235,0.04)",
+  border:    "rgba(37,99,235,0.12)",
+  borderGlow:"rgba(37,99,235,0.3)",
+  dangerBdr: "rgba(220,38,38,0.25)",
+  warnBdr:   "rgba(217,119,6,0.25)",
+  accentBdr: "rgba(184,134,11,0.2)",
+  cyanBdr:   "rgba(37,99,235,0.2)",
   r:  "16px",
   rs: "12px",
   rx: "20px",
   rxx:"28px",
-
-  // Shadows
-  shadow:     "0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
-  shadowMd:   "0 12px 48px rgba(0,0,0,0.6)",
-  shadowLg:   "0 24px 80px rgba(0,0,0,0.7)",
-  shadowGold: "0 0 32px rgba(201,168,76,0.2), 0 0 64px rgba(201,168,76,0.08)",
-  shadowCyan: "0 0 24px rgba(0,212,255,0.15), 0 0 48px rgba(0,212,255,0.06)",
-
-  // Gradients (strings for reuse)
-  gradAccent: "linear-gradient(135deg, #d4b96a 0%, #c9a84c 50%, #a8853d 100%)",
-  gradCyan:   "linear-gradient(135deg, #00d4ff 0%, #0099cc 100%)",
-  gradDark:   "linear-gradient(135deg, #0d1428 0%, #08101e 100%)",
-  gradHero:   "linear-gradient(135deg, #0a0c18 0%, #050d1a 40%, #050810 100%)",
-
-  // Backdrop
-  blur: "blur(20px) saturate(1.4)",
+  shadow:     "0 4px 24px rgba(37,99,235,0.08), 0 1px 4px rgba(26,41,66,0.06)",
+  shadowMd:   "0 12px 48px rgba(37,99,235,0.12)",
+  shadowLg:   "0 24px 80px rgba(37,99,235,0.15)",
+  shadowGold: "0 0 32px rgba(184,134,11,0.2)",
+  shadowCyan: "0 0 24px rgba(37,99,235,0.15)",
+  gradAccent: "linear-gradient(135deg, #d4a017 0%, #b8860b 50%, #8b6508 100%)",
+  gradCyan:   "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+  gradDark:   "linear-gradient(135deg, #f0f7ff 0%, #e4effe 100%)",
+  gradHero:   "linear-gradient(135deg, #eef4fd 0%, #ddeafb 40%, #cfe0f9 100%)",
+  blur: "blur(20px) saturate(1.8)",
 };
 
 export const NAV_TABS = ["Bosh sahifa","Inventar","Tranzaksiyalar","Moliya","Kategoriyalar","Tahlil","Sozlamalar"];
