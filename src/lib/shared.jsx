@@ -1,6 +1,8 @@
 // src/lib/shared.jsx — umumiy konstantalar, formulalar va Firestore yordamchilari
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 // ─── Konstantalar ───────────────────────────────────────
 export const OYLAR    = ["Yan","Feb","Mar","Apr","May","Iyn","Iyl","Avg","Sen","Okt","Noy","Dek"];
@@ -339,51 +341,67 @@ export const Prog = ({ pct, oshgan, kamaygan }) => {
   );
 };
 
-export const Met = ({ label, val, sub, color=T.accent, icon }) => (
-  <div
-    className="alc-met-card"
-    style={{
-      background: T.card,
-      borderRadius: T.r,
-      padding: "18px 20px",
-      border: `1px solid ${T.border}`,
-      boxShadow: T.shadow,
-      position: "relative",
-      overflow: "hidden",
-    }}
-  >
-    {/* Mesh glow */}
-    <div style={{
-      position: "absolute",
-      top: -20,
-      right: -20,
-      width: 80,
-      height: 80,
-      borderRadius: "50%",
-      background: `radial-gradient(circle, ${color}18 0%, transparent 70%)`,
-      pointerEvents: "none",
-    }}/>
-    {/* Bottom accent line */}
-    <div style={{
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: 2,
-      background: `linear-gradient(90deg, ${color}, transparent)`,
-      opacity: 0.6,
-    }}/>
-    <div style={{ position: "absolute", right: 14, top: 12, fontSize: 22, opacity: 0.12 }}>{icon}</div>
-    <div style={{
-      fontSize: 10, color: T.muted, fontWeight: 600,
-      textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 8,
-    }}>{label}</div>
-    <div style={{
-      fontSize: 19, fontWeight: 800, color: T.text,
-      lineHeight: 1.2, letterSpacing: -0.3,
-    }}>{val}</div>
-    {sub && (
-      <div style={{ fontSize: 11, color, marginTop: 5, fontWeight: 600 }}>{sub}</div>
-    )}
-  </div>
-);
+export const Met = ({ label, val, sub, color=T.accent, icon }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [hover, setHover] = useState(false);
+  const isMob = typeof window !== "undefined" && window.innerWidth <= 900;
+
+  const onMove = (e) => {
+    if (isMob) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const cx = (e.clientX - rect.left) / rect.width - 0.5;
+    const cy = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: cy * -16, y: cx * 16 });
+  };
+  const onLeave = () => { setTilt({ x: 0, y: 0 }); setHover(false); };
+
+  return (
+    <motion.div
+      className="alc-met-card"
+      onMouseMove={onMove}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={onLeave}
+      animate={{
+        rotateX: tilt.x,
+        rotateY: tilt.y,
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      style={{
+        background: T.card,
+        borderRadius: T.r,
+        padding: "18px 20px",
+        border: `1px solid ${T.border}`,
+        boxShadow: hover ? `${T.shadow}, 0 0 24px rgba(201,168,76,0.15)` : T.shadow,
+        position: "relative",
+        overflow: "hidden",
+        perspective: 1000,
+        transformStyle: "preserve-3d",
+        transition: "box-shadow 0.3s",
+      }}
+    >
+      <div style={{
+        position: "absolute", top: -20, right: -20,
+        width: 80, height: 80, borderRadius: "50%",
+        background: `radial-gradient(circle, ${color}18 0%, transparent 70%)`,
+        pointerEvents: "none",
+      }}/>
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0, height: 2,
+        background: `linear-gradient(90deg, ${color}, transparent)`,
+        opacity: 0.6,
+      }}/>
+      <div style={{ position: "absolute", right: 14, top: 12, fontSize: 22, opacity: 0.12 }}>{icon}</div>
+      <div style={{
+        fontSize: 10, color: T.muted, fontWeight: 600,
+        textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 8,
+      }}>{label}</div>
+      <div style={{
+        fontSize: 19, fontWeight: 800, color: T.text,
+        lineHeight: 1.2, letterSpacing: -0.3,
+      }}>{val}</div>
+      {sub && (
+        <div style={{ fontSize: 11, color, marginTop: 5, fontWeight: 600 }}>{sub}</div>
+      )}
+    </motion.div>
+  );
+};

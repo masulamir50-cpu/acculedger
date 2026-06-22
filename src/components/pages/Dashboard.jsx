@@ -3,6 +3,7 @@ import { T, Card, H2, Btn, Ico, Tag, Badge, Prog, Met, OYLAR_TO, OYLAR, mkKey } 
 import { fmt, fmtN } from '../../utils/format.js';
 import TxForm from '../ui/TxForm.jsx';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { motion } from 'framer-motion';
 
 const PERIODS = [
   { k: 'kun',   l: 'Bugun'  },
@@ -375,13 +376,18 @@ export default function Dashboard() {
             </div>
           )
           : periodData.txList.map((tx, i) => (
-            <div key={tx.id} style={{
-              display: 'flex', alignItems: 'center', gap: 12,
-              padding: '13px 0',
-              borderBottom: i < periodData.txList.length - 1
-                ? '1px solid rgba(255,255,255,0.04)'
-                : 'none',
-            }}>
+            <motion.div
+              key={tx.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05, duration: 0.3 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 12,
+                padding: '13px 0',
+                borderBottom: i < periodData.txList.length - 1
+                  ? '1px solid rgba(255,255,255,0.04)'
+                  : 'none',
+              }}>
               <div style={{
                 width: 42, height: 42, borderRadius: 12, flexShrink: 0,
                 background: tx.tur === 'kirim'
@@ -413,7 +419,7 @@ export default function Dashboard() {
                   <div style={{ fontSize: 11, color: T.muted }}>{fmt(tx.qiymat)} {sozl.valyuta}</div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))
         }
       </Card>

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider, useData } from './contexts/DataContext';
 import { usePWA } from './hooks/usePWA.js';
@@ -10,6 +11,7 @@ import {
 import { fmtN, mkKey } from './utils/format.js';
 
 import LoginPage from './components/pages/Login.jsx';
+import CursorGlow from './components/ui/CursorGlow.jsx';
 import Dashboard from './components/pages/Dashboard.jsx';
 import Inventory from './components/pages/Inventory.jsx';
 import Transactions from './components/pages/Transactions.jsx';
@@ -151,6 +153,7 @@ function MainApp() {
       minHeight: "100vh",
       paddingBottom: isMobile ? 88 : 24,
     }}>
+      {!isMobile && <CursorGlow />}
 
       {/* ── TOAST ── */}
       {xabar && (
@@ -408,10 +411,12 @@ function MainApp() {
             {NAV_TABS.map((t, i) => {
               const isOn = tab === t;
               return (
-                <button
+                <motion.button
                   key={t}
                   onClick={() => setTab(t)}
                   className="alc-nav-item"
+                  whileHover={{ x: 4 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -427,11 +432,9 @@ function MainApp() {
                     textAlign: "left",
                     position: "relative",
                     boxShadow: "none",
-                    transition: "all 0.2s",
+                    borderLeft: isOn ? "2px solid #C9A84C" : "2px solid transparent",
                   }}
                 >
-                  {/* Active indicator */}
-                  {isOn && <div className="alc-sidebar-active-line"/>}
                   {/* Icon wrapper */}
                   <div style={{
                     width: 32, height: 32,
@@ -444,17 +447,15 @@ function MainApp() {
                     {NAV_ICO[i]}
                   </div>
                   <span style={{ fontSize: 13, fontWeight: isOn ? 700 : 500, letterSpacing: 0.1 }}>{t}</span>
-                  {/* Active dot */}
                   {isOn && (
                     <div style={{
                       marginLeft: "auto",
                       width: 6, height: 6,
                       borderRadius: "50%",
                       background: "#C9A84C",
-                      boxShadow: "none",
                     }}/>
                   )}
-                </button>
+                </motion.button>
               );
             })}
           </nav>
