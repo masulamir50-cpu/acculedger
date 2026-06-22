@@ -54,10 +54,10 @@ export default function Settings({ pwa }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
               <div style={{
                 width: 44, height: 44, borderRadius: 12,
-                background: 'rgba(0,212,255,0.1)',
+                background: 'rgba(59,130,246,0.1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 20,
-                border: '1px solid rgba(0,212,255,0.2)',
+                border: '1px solid rgba(59,130,246,0.2)',
               }}>👤</div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: T.text }}>{user.email}</div>
@@ -205,7 +205,7 @@ export default function Settings({ pwa }) {
         }}>
           <div style={{
             fontSize: 24, marginBottom: 8,
-            filter: 'drop-shadow(0 0 8px rgba(0,212,255,0.3))',
+            filter: 'drop-shadow(0 0 8px rgba(59,130,246,0.3))',
           }}>⚡</div>
           <div style={{ fontSize: 13, fontWeight: 700, color: T.text }}>AccuLedger v1.0</div>
           <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>

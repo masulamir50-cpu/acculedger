@@ -68,53 +68,53 @@ export function flushPendingWrites() {
 }
 
 export const T = {
-  bg:       "transparent",
-  card:     "rgba(255,255,255,0.06)",
-  card2:    "rgba(255,255,255,0.04)",
-  cardSolid:"rgba(10,12,30,0.85)",
-  cream:    "rgba(10,12,30,0.8)",
-  accent:   "#f0c040",
-  accent2:  "#f5d060",
-  accent3:  "#c09020",
-  cyan:     "#00eeff",
-  cyanDim:  "rgba(0,238,255,0.1)",
-  violet:   "#a855f7",
-  violetDim:"rgba(168,85,247,0.1)",
-  text:     "#ffffff",
-  textMid:  "rgba(255,255,255,0.7)",
-  muted:    "rgba(255,255,255,0.35)",
-  green:    "#00ff88",
-  red:      "#ff4466",
-  danger:   "#ff4466",
-  warn:     "#ffaa00",
-  info:     "#00eeff",
-  dangerBg:  "rgba(255,68,102,0.08)",
-  warnBg:    "rgba(255,170,0,0.08)",
-  successBg: "rgba(0,255,136,0.08)",
-  infoBg:    "rgba(0,238,255,0.08)",
-  accentBg:  "rgba(240,192,64,0.06)",
-  cyanBg:    "rgba(0,238,255,0.06)",
-  joriyBg:   "rgba(0,238,255,0.04)",
-  border:    "rgba(255,255,255,0.08)",
-  borderGlow:"rgba(0,238,255,0.3)",
-  dangerBdr: "rgba(255,68,102,0.3)",
-  warnBdr:   "rgba(255,170,0,0.3)",
-  accentBdr: "rgba(240,192,64,0.25)",
-  cyanBdr:   "rgba(0,238,255,0.25)",
+  bg:       "#090C15",
+  card:     "#131826",
+  card2:    "#1a2030",
+  cardSolid:"#131826",
+  cream:    "#131826",
+  accent:   "#C9A84C",
+  accent2:  "#D4AF37",
+  accent3:  "#a8853d",
+  cyan:     "#3B82F6",
+  cyanDim:  "rgba(59,130,246,0.1)",
+  violet:   "#7c3aed",
+  violetDim:"rgba(124,58,237,0.1)",
+  text:     "#E2E8F0",
+  textMid:  "#94A3B8",
+  muted:    "#64748B",
+  green:    "#10B981",
+  red:      "#EF4444",
+  danger:   "#EF4444",
+  warn:     "#F59E0B",
+  info:     "#3B82F6",
+  dangerBg:  "rgba(239,68,68,0.08)",
+  warnBg:    "rgba(245,158,11,0.08)",
+  successBg: "rgba(16,185,129,0.08)",
+  infoBg:    "rgba(59,130,246,0.08)",
+  accentBg:  "rgba(201,168,76,0.08)",
+  cyanBg:    "rgba(59,130,246,0.06)",
+  joriyBg:   "rgba(59,130,246,0.04)",
+  border:    "rgba(255,255,255,0.06)",
+  borderGlow:"rgba(255,255,255,0.12)",
+  dangerBdr: "rgba(239,68,68,0.25)",
+  warnBdr:   "rgba(245,158,11,0.25)",
+  accentBdr: "rgba(201,168,76,0.2)",
+  cyanBdr:   "rgba(59,130,246,0.2)",
   r:  "16px",
   rs: "12px",
   rx: "20px",
   rxx:"24px",
-  shadow:     "0 8px 32px rgba(0,0,0,0.6)",
-  shadowMd:   "0 16px 48px rgba(0,0,0,0.7)",
-  shadowLg:   "0 24px 64px rgba(0,0,0,0.8)",
-  shadowGold: "0 0 32px rgba(240,192,64,0.25)",
-  shadowCyan: "0 0 24px rgba(0,238,255,0.2)",
-  gradAccent: "linear-gradient(135deg, #f5d060, #f0c040, #c09020)",
-  gradCyan:   "linear-gradient(135deg, #00eeff, #0088ff)",
-  gradDark:   "linear-gradient(135deg, rgba(10,12,30,0.9), rgba(5,8,20,0.9))",
-  gradHero:   "linear-gradient(135deg, rgba(0,238,255,0.15), rgba(168,85,247,0.1))",
-  blur: "blur(20px) saturate(1.4)",
+  shadow:     "0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
+  shadowMd:   "0 12px 48px rgba(0,0,0,0.6)",
+  shadowLg:   "0 24px 80px rgba(0,0,0,0.7)",
+  shadowGold: "0 0 32px rgba(201,168,76,0.15)",
+  shadowCyan: "0 0 24px rgba(59,130,246,0.12)",
+  gradAccent: "linear-gradient(135deg, #D4AF37 0%, #C9A84C 50%, #a8853d 100%)",
+  gradCyan:   "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
+  gradDark:   "linear-gradient(135deg, #131826 0%, #0B0F1A 100%)",
+  gradHero:   "linear-gradient(135deg, #151b2e 0%, #0e1322 100%)",
+  blur: "none",
 };
 
 export const NAV_TABS = ["Bosh sahifa","Inventar","Tranzaksiyalar","Moliya","Kategoriyalar","Tahlil","Sozlamalar"];
@@ -163,7 +163,7 @@ export const Inp = ({ label, type="text", value, onChange, placeholder="" }) => 
         boxSizing: "border-box",
         color: T.text,
         transition: "border-color 0.2s, box-shadow 0.2s",
-        backdropFilter: "blur(8px)",
+
       }}
     />
   </div>
@@ -185,7 +185,7 @@ export const Sel = ({ label, value, onChange, children }) => (
         borderRadius: T.rs,
         padding: "11px 14px",
         fontSize: 13,
-        background: "rgba(10,16,32,0.95)",
+        background: "#131826",
         outline: "none",
         boxSizing: "border-box",
         color: T.text,
@@ -201,8 +201,6 @@ export const Card = ({ children, style={}, className="" }) => (
     className={className}
     style={{
       background: T.card,
-      backdropFilter: T.blur,
-      WebkitBackdropFilter: T.blur,
       borderRadius: T.r,
       border: `1px solid ${T.border}`,
       padding: 20,
@@ -320,7 +318,7 @@ export const Prog = ({ pct, oshgan, kamaygan }) => {
     ? "0 0 8px rgba(239,68,68,0.5)"
     : kamaygan
     ? "0 0 8px rgba(245,158,11,0.4)"
-    : "0 0 8px rgba(0,212,255,0.4)";
+    : "0 0 8px rgba(59,130,246,0.4)";
   return (
     <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, height: 5, overflow: "hidden", marginTop: 8 }}>
       <div
@@ -346,8 +344,6 @@ export const Met = ({ label, val, sub, color=T.accent, icon }) => (
     className="alc-met-card"
     style={{
       background: T.card,
-      backdropFilter: T.blur,
-      WebkitBackdropFilter: T.blur,
       borderRadius: T.r,
       padding: "18px 20px",
       border: `1px solid ${T.border}`,

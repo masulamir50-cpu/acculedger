@@ -39,7 +39,7 @@ function LoadingScreen() {
       <div style={{
         position: "absolute", top: "15%", left: "20%",
         width: 320, height: 320, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%)",
         pointerEvents: "none",
       }}/>
       <div style={{
@@ -68,7 +68,7 @@ function LoadingScreen() {
           position: "absolute",
           inset: -16,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,212,255,0.2) 0%, rgba(201,168,76,0.1) 50%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(201,168,76,0.1) 50%, transparent 70%)",
         }}/>
         <img
           src="/logo.png"
@@ -79,7 +79,7 @@ function LoadingScreen() {
             borderRadius: 20,
             position: "relative",
             zIndex: 1,
-            filter: "drop-shadow(0 0 16px rgba(0,212,255,0.3)) drop-shadow(0 0 32px rgba(201,168,76,0.2))",
+            filter: "drop-shadow(0 0 16px rgba(59,130,246,0.3)) drop-shadow(0 0 32px rgba(201,168,76,0.2))",
           }}
         />
       </div>
@@ -175,7 +175,7 @@ function MainApp() {
               xabar.tur === "xato" ? "rgba(239,68,68,0.4)"
               : xabar.tur === "muvaffaq" ? "rgba(34,197,94,0.35)"
               : xabar.tur === "ogoh" ? "rgba(245,158,11,0.35)"
-              : "rgba(0,212,255,0.35)"
+              : "rgba(59,130,246,0.35)"
             }`,
             borderRadius: 14,
             padding: "11px 22px",
@@ -199,7 +199,7 @@ function MainApp() {
           borderBottom: `1px solid ${T.cyanBdr}`,
           padding: "12px 16px",
           display: "flex", alignItems: "center", gap: 12,
-          boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 24px rgba(0,212,255,0.08)`,
+          boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 24px rgba(59,130,246,0.08)`,
         }}>
           <img src="/logo.png" alt="" style={{ width: 36, height: 36, borderRadius: 10, objectFit: "contain" }}/>
           <div style={{ flex: 1 }}>
@@ -246,7 +246,7 @@ function MainApp() {
               padding: "28px 28px 24px",
               width: "100%", maxWidth: 480,
               maxHeight: "90vh", overflowY: "auto",
-              boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,212,255,0.12), 0 0 32px rgba(0,212,255,0.06)",
+              boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(59,130,246,0.12), 0 0 32px rgba(59,130,246,0.06)",
               border: `1px solid rgba(255,255,255,0.08)`,
             }}
             onClick={e => e.stopPropagation()}
@@ -341,7 +341,7 @@ function MainApp() {
               padding: "0 20px 32px",
               maxHeight: "90vh",
               overflowY: "auto",
-              boxShadow: "0 -8px 48px rgba(0,0,0,0.7), 0 -1px 0 rgba(0,212,255,0.15)",
+              boxShadow: "0 -8px 48px rgba(0,0,0,0.7), 0 -1px 0 rgba(59,130,246,0.15)",
               paddingBottom: "calc(32px + env(safe-area-inset-bottom, 0px))",
             }}
             onClick={e => e.stopPropagation()}
@@ -365,14 +365,12 @@ function MainApp() {
           position: "fixed",
           left: 0, top: 0, bottom: 0,
           width: SIDEBAR_W,
-          background: "rgba(5,8,25,0.6)",
-          backdropFilter: "blur(24px) saturate(1.5)",
-          WebkitBackdropFilter: "blur(24px) saturate(1.5)",
-          borderRight: "1px solid rgba(255,255,255,0.08)",
+          background: "#0B0F1A",
+          borderRight: "1px solid rgba(255,255,255,0.06)",
           zIndex: 100,
           display: "flex",
           flexDirection: "column",
-          boxShadow: "4px 0 32px rgba(0,0,0,0.5)",
+          boxShadow: "none",
           outline: "none",
         }}>
 
@@ -383,11 +381,6 @@ function MainApp() {
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{ position: "relative" }}>
-                <div style={{
-                  position: "absolute", inset: -4,
-                  borderRadius: 14,
-                  background: "radial-gradient(circle, rgba(0,238,255,0.15) 0%, transparent 70%)",
-                }}/>
                 <img
                   src="/logo.png"
                   alt="AccuLedger"
@@ -396,19 +389,16 @@ function MainApp() {
                     objectFit: "contain",
                     borderRadius: 12,
                     position: "relative",
-                    filter: "drop-shadow(0 0 10px rgba(0,238,255,0.25))",
                   }}
                 />
               </div>
               <div>
                 <div style={{
                   fontSize: 16, fontWeight: 800,
-                  background: "linear-gradient(135deg, #ffffff, #00eeff)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: "#E2E8F0",
                   letterSpacing: -0.3,
                 }}>AccuLedger</div>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
+                <div style={{ fontSize: 10, color: "#64748B", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
               </div>
             </div>
           </div>
@@ -430,13 +420,13 @@ function MainApp() {
                     padding: "11px 14px",
                     borderRadius: 12,
                     border: "none",
-                    background: isOn ? "rgba(0,238,255,0.1)" : "transparent",
-                    color: isOn ? "#00eeff" : "rgba(255,255,255,0.4)",
+                    background: isOn ? "rgba(201,168,76,0.08)" : "transparent",
+                    color: isOn ? "#C9A84C" : "#64748B",
                     cursor: "pointer",
                     marginBottom: 2,
                     textAlign: "left",
                     position: "relative",
-                    boxShadow: isOn ? "inset 0 0 0 1px rgba(0,238,255,0.2)" : "none",
+                    boxShadow: "none",
                     transition: "all 0.2s",
                   }}
                 >
@@ -446,7 +436,7 @@ function MainApp() {
                   <div style={{
                     width: 32, height: 32,
                     borderRadius: 9,
-                    background: isOn ? "rgba(0,238,255,0.12)" : "rgba(255,255,255,0.04)",
+                    background: isOn ? "rgba(201,168,76,0.1)" : "rgba(255,255,255,0.03)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                     transition: "background 0.15s",
@@ -460,8 +450,8 @@ function MainApp() {
                       marginLeft: "auto",
                       width: 6, height: 6,
                       borderRadius: "50%",
-                      background: "#00eeff",
-                      boxShadow: "0 0 8px #00eeff",
+                      background: "#C9A84C",
+                      boxShadow: "none",
                     }}/>
                   )}
                 </button>
@@ -498,8 +488,8 @@ function MainApp() {
                 title="Bekor qilish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background: tarix.length > 0 ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: tarix.length > 0 ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: tarix.length > 0 ? T.warn : "rgba(255,255,255,0.5)",
@@ -511,8 +501,8 @@ function MainApp() {
                 title="Moliya"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: T.accent, fontSize: 16,
@@ -524,8 +514,8 @@ function MainApp() {
                 title="CSV export"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: "rgba(255,255,255,0.5)",
@@ -537,8 +527,8 @@ function MainApp() {
                 title="Chiqish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: "rgba(255,255,255,0.5)",
@@ -561,24 +551,19 @@ function MainApp() {
             position: "sticky",
             top: 0,
             zIndex: 90,
-            background: "rgba(5,8,25,0.8)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
+            background: "#0B0F1A",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
             padding: "14px 16px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <img src="/logo.png" alt="" style={{ width: 30, height: 30, objectFit: "contain", borderRadius: 8 }}/>
               <div>
                 <div style={{
                   fontSize: 15, fontWeight: 800,
-                  background: `linear-gradient(135deg, ${T.text}, ${T.accent})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: T.text,
                   letterSpacing: -0.2,
                 }}>AccuLedger</div>
                 <div style={{ fontSize: 9, color: T.muted, fontWeight: 500, letterSpacing: 0.5 }}>{tab.toUpperCase()}</div>
@@ -805,9 +790,7 @@ function MainApp() {
         <div style={{
           position: "fixed",
           bottom: 0, left: 0, right: 0,
-          background: "rgba(5,8,25,0.85)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
+          background: "#0B0F1A",
           borderTop: "1px solid rgba(255,255,255,0.06)",
           display: "flex",
           justifyContent: "space-around",
@@ -833,12 +816,12 @@ function MainApp() {
                 style={{
                   width: 54, height: 54,
                   borderRadius: "50%",
-                  background: "linear-gradient(135deg, #f5d060, #f0c040)",
+                  background: T.gradAccent,
                   border: "none",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: "#0a0c18",
-                  boxShadow: "0 4px 24px rgba(240,192,64,0.45), 0 0 0 1px rgba(240,192,64,0.3), 0 2px 8px rgba(0,0,0,0.6)",
+                  boxShadow: "0 4px 24px rgba(201,168,76,0.35), 0 2px 8px rgba(0,0,0,0.5)",
                   transform: "translateY(-12px)",
                   flexShrink: 0,
                   transition: "transform 0.2s, box-shadow 0.2s",
@@ -857,7 +840,7 @@ function MainApp() {
                   border: "none", background: "transparent",
                   cursor: "pointer", padding: "8px 10px",
                   borderRadius: 12,
-                  color: isOn ? T.cyan : T.muted,
+                  color: isOn ? T.accent : T.muted,
                   minWidth: 48, flex: 1,
                   transition: "color 0.2s",
                 }}
@@ -865,10 +848,10 @@ function MainApp() {
                 <div style={{
                   width: 38, height: 30,
                   borderRadius: 10,
-                  background: isOn ? "rgba(0,212,255,0.1)" : "transparent",
+                  background: isOn ? "rgba(201,168,76,0.08)" : "transparent",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   transition: "background 0.2s",
-                  boxShadow: isOn ? "0 0 12px rgba(0,212,255,0.2)" : "none",
+                  boxShadow: "none",
                 }}>
                   {item.i}
                 </div>
@@ -884,8 +867,8 @@ function MainApp() {
                     bottom: 4,
                     width: 4, height: 4,
                     borderRadius: "50%",
-                    background: T.cyan,
-                    boxShadow: `0 0 6px ${T.cyan}`,
+                    background: T.accent,
+                    boxShadow: "none",
                   }}/>
                 )}
               </button>

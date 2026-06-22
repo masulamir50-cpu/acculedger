@@ -67,13 +67,13 @@ export default function Login() {
 
   // Light-mode rang palitrasi
   const C = {
-    ink:    '#1a2942',   // asosiy qora-ko'k matn
-    inkDim: '#5a6b85',   // ikkilamchi
-    muted:  '#8a98b0',   // xira
-    blue:   '#2563eb',   // primary ko'k
+    ink:    '#E2E8F0',
+    inkDim: '#94A3B8',
+    muted:  '#64748B',
+    blue:   '#C9A84C',
     blueLt: '#60a5fa',
-    border: 'rgba(37,99,235,0.15)',
-    glass:  'rgba(255,255,255,0.65)',
+    border: 'rgba(201,168,76,0.15)',
+    glass:  'rgba(19,24,38,0.85)',
   };
 
   return (
@@ -86,8 +86,7 @@ export default function Login() {
       position: 'relative',
       overflow: 'hidden',
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-      // Tongi och ko'k osmon gradient
-      background: 'linear-gradient(160deg, #eaf2fd 0%, #d6e6fb 30%, #c4dcf7 55%, #dce9fa 100%)',
+      background: '#090C15',
     }}>
 
       {/* ── Inline keyframes ── */}
@@ -114,16 +113,16 @@ export default function Login() {
       <div style={{
         position: 'absolute', top: '-10%', right: '-5%',
         width: 480, height: 480, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(255,247,224,0.9) 0%, rgba(255,236,180,0.4) 30%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 30%, transparent 65%)',
         animation: 'sun-pulse 8s ease-in-out infinite',
         pointerEvents: 'none',
       }}/>
 
       {/* ── Bulutlar ── */}
       {[
-        { top: '12%', w: 180, h: 50, dur: 60, delay: 0,   op: 0.6 },
-        { top: '22%', w: 130, h: 38, dur: 80, delay: -20, op: 0.45 },
-        { top: '68%', w: 200, h: 56, dur: 70, delay: -40, op: 0.5 },
+        { top: '12%', w: 180, h: 50, dur: 60, delay: 0,   op: 0.03 },
+        { top: '22%', w: 130, h: 38, dur: 80, delay: -20, op: 0.03 },
+        { top: '68%', w: 200, h: 56, dur: 70, delay: -40, op: 0.03 },
       ].map((cl, i) => (
         <div key={i} style={{
           position: 'absolute', top: cl.top, left: 0,
@@ -148,12 +147,12 @@ export default function Login() {
       >
         <defs>
           <linearGradient id="bldg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#a8c5ed"/>
-            <stop offset="100%" stopColor="#7da3d4"/>
+            <stop offset="0%" stopColor="#1a2540"/>
+            <stop offset="100%" stopColor="#0e1424"/>
           </linearGradient>
           <linearGradient id="bldg2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#bcd4f2"/>
-            <stop offset="100%" stopColor="#93b5e0"/>
+            <stop offset="0%" stopColor="#152035"/>
+            <stop offset="100%" stopColor="#0c1020"/>
           </linearGradient>
         </defs>
         {/* Orqa qator binolar */}
@@ -182,7 +181,7 @@ export default function Login() {
           <rect x="1340" y="120" width="70"  height="200" rx="4"/>
         </g>
         {/* Deraza nuqtalari (eng baland binolarda) */}
-        <g fill="rgba(255,255,255,0.5)">
+        <g fill="rgba(255,255,255,0.15)">
           {[260, 280, 560, 580, 720, 880, 1200, 1220].map((x, i) => (
             <g key={i}>
               <rect x={x} y={80}  width="6" height="6" rx="1"/>
@@ -213,13 +212,13 @@ export default function Login() {
         zIndex: 10,
         width: '100%',
         maxWidth: 410,
-        background: 'rgba(255,255,255,0.55)',
+        background: 'rgba(19,24,38,0.85)',
         backdropFilter: 'blur(40px) saturate(1.8)',
         WebkitBackdropFilter: 'blur(40px) saturate(1.8)',
         borderRadius: 28,
         padding: '40px 36px 32px',
-        border: '1px solid rgba(255,255,255,0.8)',
-        boxShadow: '0 30px 80px rgba(37,99,235,0.15), 0 8px 24px rgba(26,41,66,0.08), inset 0 1px 0 rgba(255,255,255,0.9)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3)',
         animation: 'login-rise 0.6s cubic-bezier(.16,1,.3,1)',
       }}>
 
@@ -231,7 +230,7 @@ export default function Login() {
             borderRadius: 22,
             background: 'rgba(255,255,255,0.7)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 12px 32px rgba(37,99,235,0.18), inset 0 1px 0 rgba(255,255,255,0.9)',
+            boxShadow: '0 12px 32px rgba(201,168,76,0.18), inset 0 1px 0 rgba(255,255,255,0.9)',
             border: '1px solid rgba(255,255,255,0.9)',
           }}>
             <img
@@ -261,11 +260,11 @@ export default function Login() {
         {/* Tab switcher */}
         <div style={{
           display: 'flex',
-          background: 'rgba(37,99,235,0.06)',
+          background: 'rgba(201,168,76,0.06)',
           borderRadius: 13,
           padding: 4,
           marginBottom: 26,
-          border: '1px solid rgba(37,99,235,0.1)',
+          border: '1px solid rgba(201,168,76,0.1)',
         }}>
           {[['kirish', 'Kirish'], ['royxat', "Ro'yxat"]].map(([k, l]) => (
             <button
@@ -275,9 +274,9 @@ export default function Login() {
                 flex: 1, padding: '10px',
                 borderRadius: 9, border: 'none', cursor: 'pointer',
                 fontSize: 13, fontWeight: rejim === k ? 800 : 600,
-                background: rejim === k ? '#fff' : 'transparent',
-                color: rejim === k ? C.blue : C.muted,
-                boxShadow: rejim === k ? '0 2px 8px rgba(37,99,235,0.15)' : 'none',
+                background: rejim === k ? 'rgba(201,168,76,0.15)' : 'transparent',
+                color: rejim === k ? '#C9A84C' : C.muted,
+                boxShadow: rejim === k ? '0 2px 8px rgba(201,168,76,0.15)' : 'none',
                 transition: 'all 0.2s',
                 letterSpacing: 0.2,
               }}
@@ -314,14 +313,14 @@ export default function Login() {
             onBlur={() => setFocus('')}
             style={{
               width: '100%',
-              border: `1.5px solid ${focus === 'email' ? C.blue : 'rgba(37,99,235,0.15)'}`,
+              border: `1.5px solid ${focus === 'email' ? C.blue : 'rgba(201,168,76,0.15)'}`,
               borderRadius: 13,
               padding: '13px 16px',
               fontSize: 14,
-              background: 'rgba(255,255,255,0.7)',
+              background: 'rgba(255,255,255,0.04)',
               outline: 'none', boxSizing: 'border-box',
               color: C.ink, fontWeight: 500,
-              boxShadow: focus === 'email' ? '0 0 0 4px rgba(37,99,235,0.1)' : 'none',
+              boxShadow: focus === 'email' ? '0 0 0 4px rgba(201,168,76,0.1)' : 'none',
               transition: 'border-color 0.2s, box-shadow 0.2s',
             }}
           />
@@ -344,14 +343,14 @@ export default function Login() {
             onBlur={() => setFocus('')}
             style={{
               width: '100%',
-              border: `1.5px solid ${focus === 'parol' ? C.blue : 'rgba(37,99,235,0.15)'}`,
+              border: `1.5px solid ${focus === 'parol' ? C.blue : 'rgba(201,168,76,0.15)'}`,
               borderRadius: 13,
               padding: '13px 16px',
               fontSize: 14,
-              background: 'rgba(255,255,255,0.7)',
+              background: 'rgba(255,255,255,0.04)',
               outline: 'none', boxSizing: 'border-box',
               color: C.ink, fontWeight: 500,
-              boxShadow: focus === 'parol' ? '0 0 0 4px rgba(37,99,235,0.1)' : 'none',
+              boxShadow: focus === 'parol' ? '0 0 0 4px rgba(201,168,76,0.1)' : 'none',
               transition: 'border-color 0.2s, box-shadow 0.2s',
             }}
           />
@@ -364,13 +363,13 @@ export default function Login() {
           style={{
             width: '100%',
             background: yukl
-              ? 'rgba(37,99,235,0.4)'
-              : 'linear-gradient(135deg, #3b82f6 0%, #2563eb 60%, #1d4ed8 100%)',
-            color: '#fff', border: 'none',
+              ? 'rgba(201,168,76,0.4)'
+              : 'linear-gradient(135deg, #D4AF37 0%, #C9A84C 60%, #a8853d 100%)',
+            color: '#0a0c18', border: 'none',
             borderRadius: 14, padding: '15px',
             fontSize: 14, cursor: yukl ? 'not-allowed' : 'pointer',
             fontWeight: 800, letterSpacing: 0.4,
-            boxShadow: yukl ? 'none' : '0 10px 30px rgba(37,99,235,0.35)',
+            boxShadow: yukl ? 'none' : '0 10px 30px rgba(201,168,76,0.3)',
             transition: 'all 0.2s',
           }}
         >
@@ -382,7 +381,7 @@ export default function Login() {
         {/* Divider */}
         <div style={{
           height: 1,
-          background: 'linear-gradient(90deg, transparent, rgba(37,99,235,0.12), transparent)',
+          background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.12), transparent)',
           margin: '20px 0',
         }}/>
 

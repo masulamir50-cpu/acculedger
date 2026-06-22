@@ -53,11 +53,10 @@ export default function Dashboard() {
       <div style={{
         display: 'flex', gap: 4,
         marginBottom: 16,
-        background: 'rgba(255,255,255,0.04)',
+        background: 'rgba(255,255,255,0.03)',
         borderRadius: 14,
         padding: 4,
         border: '1px solid rgba(255,255,255,0.06)',
-        backdropFilter: 'blur(12px)',
       }}>
         {PERIODS.map(p => {
           const isOn = period === p.k;
@@ -70,9 +69,9 @@ export default function Dashboard() {
                 borderRadius: 10, border: 'none', cursor: 'pointer',
                 fontSize: 12,
                 fontWeight: isOn ? 700 : 500,
-                background: isOn ? 'rgba(0,238,255,0.1)' : 'transparent',
+                background: isOn ? 'rgba(201,168,76,0.12)' : 'transparent',
                 color: isOn ? T.cyan : T.muted,
-                boxShadow: isOn ? 'inset 0 0 0 1px rgba(0,238,255,0.2)' : 'none',
+                boxShadow: 'none',
                 transition: 'all 0.2s',
                 letterSpacing: 0.2,
               }}
@@ -88,11 +87,9 @@ export default function Dashboard() {
         marginBottom: 16,
         position: 'relative',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, rgba(0,238,255,0.1) 0%, rgba(168,85,247,0.08) 100%)',
-        backdropFilter: 'blur(20px) saturate(1.4)',
-        WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-        border: '1px solid rgba(0,238,255,0.2)',
-        boxShadow: '0 12px 48px rgba(0,0,0,0.5), 0 0 24px rgba(0,238,255,0.06)',
+        background: 'linear-gradient(135deg, #151b2e 0%, #0e1322 100%)',
+        border: '1px solid rgba(255,255,255,0.06)',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
       }}>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{
@@ -107,29 +104,28 @@ export default function Dashboard() {
               <AreaChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="heroGreen" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#00ff88" stopOpacity={0.4}/>
-                    <stop offset="100%" stopColor="#00ff88" stopOpacity={0.02}/>
+                    <stop offset="0%" stopColor="#10B981" stopOpacity={0.4}/>
+                    <stop offset="100%" stopColor="#10B981" stopOpacity={0.02}/>
                   </linearGradient>
                   <linearGradient id="heroRed" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#ff4466" stopOpacity={0.35}/>
-                    <stop offset="100%" stopColor="#ff4466" stopOpacity={0.02}/>
+                    <stop offset="0%" stopColor="#EF4444" stopOpacity={0.35}/>
+                    <stop offset="100%" stopColor="#EF4444" stopOpacity={0.02}/>
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="name" tick={{ fontSize: 10, fill: 'rgba(255,255,255,0.4)' }} axisLine={false} tickLine={false}/>
-                <YAxis tick={{ fontSize: 9, fill: 'rgba(255,255,255,0.4)' }} axisLine={false} tickLine={false}/>
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#64748B' }} axisLine={false} tickLine={false}/>
+                <YAxis tick={{ fontSize: 9, fill: '#64748B' }} axisLine={false} tickLine={false}/>
                 <Tooltip
                   contentStyle={{
-                    background: 'rgba(5,8,25,0.95)',
-                    border: '1px solid rgba(0,238,255,0.2)',
+                    background: '#131826',
+                    border: '1px solid rgba(255,255,255,0.08)',
                     borderRadius: 10,
                     fontSize: 12,
-                    color: '#ffffff',
+                    color: '#E2E8F0',
                     boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-                    backdropFilter: 'blur(12px)',
                   }}
                 />
-                <Area type="monotone" dataKey="daromad" stroke="#00ff88" strokeWidth={2} fill="url(#heroGreen)" name="Daromad"/>
-                <Area type="monotone" dataKey="xarajat" stroke="#ff4466" strokeWidth={2} fill="url(#heroRed)" name="Xarajat"/>
+                <Area type="monotone" dataKey="daromad" stroke="#10B981" strokeWidth={2} fill="url(#heroGreen)" name="Daromad"/>
+                <Area type="monotone" dataKey="xarajat" stroke="#EF4444" strokeWidth={2} fill="url(#heroRed)" name="Xarajat"/>
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -152,7 +148,7 @@ export default function Dashboard() {
           {/* Three stats row */}
           <div style={{
             display: 'flex', gap: isMobile ? 0 : 1,
-            background: 'rgba(255,255,255,0.04)',
+            background: 'rgba(255,255,255,0.03)',
             borderRadius: 14,
             border: '1px solid rgba(255,255,255,0.06)',
             overflow: 'hidden',

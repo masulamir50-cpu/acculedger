@@ -77,7 +77,7 @@ export default function Transactions() {
                   outline: 'none',
                   width: 140,
                   color: T.text,
-                  backdropFilter: 'blur(8px)',
+                  backdropFilter: 'none',
                   transition: 'border-color 0.2s',
                 }}
                 placeholder="Qidirish…"
@@ -195,7 +195,7 @@ export default function Transactions() {
                       background: i % 2 ? 'rgba(255,255,255,0.01)' : 'transparent',
                       transition: 'background 0.15s',
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,212,255,0.03)'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(59,130,246,0.03)'}
                     onMouseLeave={e => e.currentTarget.style.background = i % 2 ? 'rgba(255,255,255,0.01)' : 'transparent'}
                   >
                     <td style={{ padding: '9px 14px', fontSize: 11, color: T.muted, borderBottom: '1px solid rgba(255,255,255,0.04)' }}>{i + 1}</td>
