@@ -563,7 +563,7 @@ function MainApp() {
       {/* ══════════════════════════════════════════════════
           MAIN CONTENT AREA
       ══════════════════════════════════════════════════ */}
-      <div style={{ marginLeft: isMobile ? 0 : SIDEBAR_W }}>
+      <div style={{ marginLeft: isMobile ? 0 : SIDEBAR_W, background: "#f0f4f8", minHeight: "100vh" }}>
 
         {/* MOBILE TOPBAR */}
         {isMobile && (
