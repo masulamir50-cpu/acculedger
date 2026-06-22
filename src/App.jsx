@@ -365,37 +365,50 @@ function MainApp() {
           position: "fixed",
           left: 0, top: 0, bottom: 0,
           width: SIDEBAR_W,
-          background: "#111111",
-          borderRight: "1px solid #2a2a2a",
+          background: "rgba(5,8,25,0.6)",
+          backdropFilter: "blur(24px) saturate(1.5)",
+          WebkitBackdropFilter: "blur(24px) saturate(1.5)",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
           zIndex: 100,
           display: "flex",
           flexDirection: "column",
-          boxShadow: "none",
+          boxShadow: "4px 0 32px rgba(0,0,0,0.5)",
           outline: "none",
         }}>
 
           {/* Logo area */}
           <div style={{
             padding: "24px 20px 20px",
-            borderBottom: "1px solid #2a2a2a",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <img
-                src="/logo.png"
-                alt="AccuLedger"
-                style={{
-                  width: 36, height: 36,
-                  objectFit: "contain",
-                  borderRadius: 8,
-                }}
-              />
+              <div style={{ position: "relative" }}>
+                <div style={{
+                  position: "absolute", inset: -4,
+                  borderRadius: 14,
+                  background: "radial-gradient(circle, rgba(0,238,255,0.15) 0%, transparent 70%)",
+                }}/>
+                <img
+                  src="/logo.png"
+                  alt="AccuLedger"
+                  style={{
+                    width: 44, height: 44,
+                    objectFit: "contain",
+                    borderRadius: 12,
+                    position: "relative",
+                    filter: "drop-shadow(0 0 10px rgba(0,238,255,0.25))",
+                  }}
+                />
+              </div>
               <div>
                 <div style={{
-                  fontSize: 15, fontWeight: 700,
-                  color: "#ffffff",
+                  fontSize: 16, fontWeight: 800,
+                  background: "linear-gradient(135deg, #ffffff, #00eeff)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                   letterSpacing: -0.3,
                 }}>AccuLedger</div>
-                <div style={{ fontSize: 10, color: "#444444", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
               </div>
             </div>
           </div>
@@ -414,17 +427,17 @@ function MainApp() {
                     alignItems: "center",
                     gap: 12,
                     width: "100%",
-                    padding: "10px 14px",
-                    borderRadius: 8,
+                    padding: "11px 14px",
+                    borderRadius: 12,
                     border: "none",
-                    background: isOn ? "#1e1e1e" : "transparent",
-                    color: isOn ? "#ffffff" : "#555555",
+                    background: isOn ? "rgba(0,238,255,0.1)" : "transparent",
+                    color: isOn ? "#00eeff" : "rgba(255,255,255,0.4)",
                     cursor: "pointer",
                     marginBottom: 2,
                     textAlign: "left",
                     position: "relative",
-                    boxShadow: "none",
-                    transition: "all 0.15s",
+                    boxShadow: isOn ? "inset 0 0 0 1px rgba(0,238,255,0.2)" : "none",
+                    transition: "all 0.2s",
                   }}
                 >
                   {/* Active indicator */}
@@ -433,7 +446,7 @@ function MainApp() {
                   <div style={{
                     width: 32, height: 32,
                     borderRadius: 9,
-                    background: isOn ? "rgba(255,255,255,0.08)" : "transparent",
+                    background: isOn ? "rgba(0,238,255,0.12)" : "rgba(255,255,255,0.04)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                     transition: "background 0.15s",
@@ -447,7 +460,8 @@ function MainApp() {
                       marginLeft: "auto",
                       width: 6, height: 6,
                       borderRadius: "50%",
-                      background: "#22c55e",
+                      background: "#00eeff",
+                      boxShadow: "0 0 8px #00eeff",
                     }}/>
                   )}
                 </button>
@@ -458,7 +472,7 @@ function MainApp() {
           {/* Bottom sidebar actions */}
           <div style={{
             padding: "12px 14px",
-            borderTop: "1px solid #2a2a2a",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
           }}>
             {/* Alerts */}
             {ogohlar.length > 0 && (
@@ -484,7 +498,7 @@ function MainApp() {
                 title="Bekor qilish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid #2a2a2a",
+                  border: "1px solid rgba(255,255,255,0.08)",
                   background: tarix.length > 0 ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -497,7 +511,7 @@ function MainApp() {
                 title="Moliya"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid #2a2a2a",
+                  border: "1px solid rgba(255,255,255,0.08)",
                   background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -510,7 +524,7 @@ function MainApp() {
                 title="CSV export"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid #2a2a2a",
+                  border: "1px solid rgba(255,255,255,0.08)",
                   background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -523,7 +537,7 @@ function MainApp() {
                 title="Chiqish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid #2a2a2a",
+                  border: "1px solid rgba(255,255,255,0.08)",
                   background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -547,12 +561,15 @@ function MainApp() {
             position: "sticky",
             top: 0,
             zIndex: 90,
-            background: "rgba(10,10,10,0.98)",
-            borderBottom: "1px solid #2a2a2a",
+            background: "rgba(5,8,25,0.8)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
             padding: "14px 16px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <img src="/logo.png" alt="" style={{ width: 30, height: 30, objectFit: "contain", borderRadius: 8 }}/>
@@ -788,8 +805,10 @@ function MainApp() {
         <div style={{
           position: "fixed",
           bottom: 0, left: 0, right: 0,
-          background: "rgba(10,10,10,0.98)",
-          borderTop: "1px solid #2a2a2a",
+          background: "rgba(5,8,25,0.85)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
@@ -814,12 +833,12 @@ function MainApp() {
                 style={{
                   width: 54, height: 54,
                   borderRadius: "50%",
-                  background: T.gradAccent,
+                  background: "linear-gradient(135deg, #f5d060, #f0c040)",
                   border: "none",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: "#0a0c18",
-                  boxShadow: "0 4px 24px rgba(201,168,76,0.45), 0 0 0 1px rgba(201,168,76,0.3), 0 2px 8px rgba(0,0,0,0.6)",
+                  boxShadow: "0 4px 24px rgba(240,192,64,0.45), 0 0 0 1px rgba(240,192,64,0.3), 0 2px 8px rgba(0,0,0,0.6)",
                   transform: "translateY(-12px)",
                   flexShrink: 0,
                   transition: "transform 0.2s, box-shadow 0.2s",

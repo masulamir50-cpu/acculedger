@@ -7,16 +7,17 @@ import {
 import { T, fmt, fmtN } from "../lib/shared.jsx";
 
 const ttStyle = {
-  background: "rgba(8,12,24,0.97)",
-  border: "1px solid rgba(0,212,255,0.18)",
+  background: "rgba(5,8,25,0.95)",
+  border: "1px solid rgba(0,238,255,0.2)",
   borderRadius: 12,
   fontSize: 12,
-  color: "#f0f4ff",
-  boxShadow: "0 12px 36px rgba(0,0,0,0.7), 0 0 12px rgba(0,212,255,0.06)",
+  color: "#ffffff",
+  boxShadow: "0 12px 36px rgba(0,0,0,0.7), 0 0 12px rgba(0,238,255,0.06)",
+  backdropFilter: "blur(12px)",
 };
-const ttLabelStyle = { color: "#c9a84c", fontWeight: 700 };
-const axisStyle = { fill: "#6b7a99", fontSize: 11 };
-const gridStyle = { strokeDasharray: "4 4", stroke: "rgba(255,255,255,0.06)" };
+const ttLabelStyle = { color: "#f0c040", fontWeight: 700 };
+const axisStyle = { fill: "rgba(255,255,255,0.4)", fontSize: 11 };
+const gridStyle = { strokeDasharray: "4 4", stroke: "rgba(255,255,255,0.05)" };
 
 export function InventarPieChart({ pieData }) {
   if (pieData.length === 0) {
