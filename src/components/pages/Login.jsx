@@ -1,7 +1,43 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 
+function TiltCard({ src, alt, rot, delay, shadow }) {
+  const ref = useRef(null);
+
+  const onMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    el.querySelector('img').style.transform =
+      `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) rotate(${rot})`;
+  };
+
+  const onLeave = () => {
+    const img = ref.current?.querySelector('img');
+    if (img) img.style.transform = `rotate(${rot})`;
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ pointerEvents: 'auto' }}
+    >
+      <img src={src} alt={alt} style={{
+        width: 320, borderRadius: 16,
+        transform: `rotate(${rot})`,
+        animation: 'card-float 8s ease-in-out infinite',
+        animationDelay: delay,
+        filter: shadow,
+        transition: 'transform 0.1s ease',
+      }}/>
+    </div>
+  );
+}
 
 export default function Login() {
   const [email, setEmail]  = useState('');
@@ -160,25 +196,12 @@ export default function Login() {
       {/* ── Suzuvchi kartalar (desktop'da ko'rinadi) ── */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <div style={{ '--rot': '-12deg', position: 'absolute', top: '14%', left: '8%', display: window.innerWidth < 900 ? 'none' : 'block' }}>
-          <img src="/amex-gold.png" alt="Amex Gold" style={{
-            width: 320, borderRadius: 16, transform: 'rotate(-12deg)',
-            animation: 'card-float 8s ease-in-out infinite', animationDelay: '0s',
-            filter: 'drop-shadow(0 20px 40px rgba(201,150,46,0.35))',
-          }}/>
+          <TiltCard src="/amex-gold.png" alt="Amex Gold" rot="-12deg" delay="0s"
+            shadow="drop-shadow(0 20px 40px rgba(201,150,46,0.35))"/>
         </div>
         <div style={{ '--rot': '10deg', position: 'absolute', bottom: '16%', right: '7%', display: window.innerWidth < 900 ? 'none' : 'block' }}>
-          <img src="/amex-platinum.png" alt="Amex Platinum" style={{
-            width: 320, borderRadius: 16, transform: 'rotate(10deg)',
-            animation: 'card-float 8s ease-in-out infinite', animationDelay: '-3s',
-            filter: 'drop-shadow(0 20px 40px rgba(154,163,178,0.35))',
-          }}/>
-        </div>
-        <div style={{ '--rot': '6deg', position: 'absolute', top: '22%', right: '14%', display: window.innerWidth < 1300 ? 'none' : 'block', opacity: 0.85 }}>
-          <img src="/amex-platinum.png" alt="Amex Platinum" style={{
-            width: 320, borderRadius: 16, transform: 'rotate(6deg) scale(0.82)',
-            animation: 'card-float 8s ease-in-out infinite', animationDelay: '-5s',
-            filter: 'drop-shadow(0 20px 40px rgba(154,163,178,0.3))',
-          }}/>
+          <TiltCard src="/amex-platinum.png" alt="Amex Platinum" rot="10deg" delay="-3s"
+            shadow="drop-shadow(0 20px 40px rgba(154,163,178,0.35))"/>
         </div>
       </div>
 
