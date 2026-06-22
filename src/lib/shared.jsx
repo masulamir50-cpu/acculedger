@@ -68,8 +68,8 @@ export function flushPendingWrites() {
 }
 
 export const T = {
-  bg:       "#c0d4f2",
-  card:     "rgba(255,255,255,0.88)",
+  bg:       "#1e3a5f",
+  card:     "rgba(255,255,255,0.95)",
   card2:    "rgba(240,247,255,0.85)",
   cardSolid:"#ffffff",
   cream:    "rgba(255,255,255,0.9)",
@@ -82,7 +82,7 @@ export const T = {
   violetDim:"rgba(124,58,237,0.1)",
   text:     "#1a2942",
   textMid:  "#3d5278",
-  muted:    "#7a90b0",
+  muted:    "#6b7f9e",
   green:    "#16a34a",
   red:      "#dc2626",
   danger:   "#dc2626",

@@ -368,10 +368,10 @@ function MainApp() {
           position: "fixed",
           left: 0, top: 0, bottom: 0,
           width: SIDEBAR_W,
-          background: "linear-gradient(180deg, #b8cef0 0%, #a8c0eb 50%, #98b2e6 100%)",
+          background: "linear-gradient(180deg, #1a3358 0%, #1e3a5f 100%)",
           backdropFilter: "blur(24px) saturate(1.5)",
           WebkitBackdropFilter: "blur(24px) saturate(1.5)",
-          borderRight: "1px solid rgba(37,99,235,0.15)",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
           zIndex: 100,
           display: "flex",
           flexDirection: "column",
@@ -415,12 +415,10 @@ function MainApp() {
               <div>
                 <div style={{
                   fontSize: 16, fontWeight: 800,
-                  background: `linear-gradient(135deg, ${T.text} 40%, ${T.accent})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
+                  color: "#ffffff",
                   letterSpacing: -0.3,
                 }}>AccuLedger</div>
-                <div style={{ fontSize: 10, color: T.muted, fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
               </div>
             </div>
           </div>
@@ -442,13 +440,13 @@ function MainApp() {
                     padding: "11px 14px",
                     borderRadius: 12,
                     border: "none",
-                    background: isOn ? "rgba(0,212,255,0.08)" : "transparent",
-                    color: isOn ? T.cyan : T.muted,
+                    background: isOn ? "rgba(255,255,255,0.12)" : "transparent",
+                    color: isOn ? "#ffffff" : "rgba(255,255,255,0.55)",
                     cursor: "pointer",
                     marginBottom: 2,
                     textAlign: "left",
                     position: "relative",
-                    boxShadow: isOn ? "inset 0 0 0 1px rgba(0,212,255,0.15)" : "none",
+                    boxShadow: isOn ? "inset 0 0 0 1px rgba(255,255,255,0.15)" : "none",
                     transition: "all 0.2s",
                   }}
                 >
@@ -458,7 +456,7 @@ function MainApp() {
                   <div style={{
                     width: 32, height: 32,
                     borderRadius: 9,
-                    background: isOn ? "rgba(0,212,255,0.12)" : "rgba(255,255,255,0.04)",
+                    background: isOn ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.06)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                     transition: "background 0.2s",
@@ -510,11 +508,11 @@ function MainApp() {
                 title="Bekor qilish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: `1px solid ${T.border}`,
-                  background: tarix.length > 0 ? "rgba(245,158,11,0.1)" : "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: tarix.length > 0 ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: tarix.length > 0 ? T.warn : T.muted,
+                  color: tarix.length > 0 ? T.warn : "rgba(255,255,255,0.5)",
                   transition: "all 0.2s",
                 }}
               >{Ico.undo}</button>
@@ -523,8 +521,8 @@ function MainApp() {
                 title="Moliya"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: `1px solid ${T.border}`,
-                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: T.accent, fontSize: 16,
@@ -536,11 +534,11 @@ function MainApp() {
                 title="CSV export"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: `1px solid ${T.border}`,
-                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: T.info,
+                  color: "rgba(255,255,255,0.5)",
                   transition: "all 0.2s",
                 }}
               >{Ico.csv}</button>
@@ -549,11 +547,11 @@ function MainApp() {
                 title="Chiqish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: `1px solid ${T.border}`,
-                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: T.muted,
+                  color: "rgba(255,255,255,0.5)",
                   transition: "all 0.2s",
                 }}
               >{Ico.logout}</button>
@@ -573,7 +571,7 @@ function MainApp() {
             position: "sticky",
             top: 0,
             zIndex: 90,
-            background: "rgba(240,247,255,0.92)",
+            background: "rgba(30,58,95,0.95)",
             backdropFilter: "blur(20px) saturate(1.4)",
             WebkitBackdropFilter: "blur(20px) saturate(1.4)",
             borderBottom: "1px solid rgba(255,255,255,0.06)",
@@ -817,7 +815,7 @@ function MainApp() {
         <div style={{
           position: "fixed",
           bottom: 0, left: 0, right: 0,
-          background: "rgba(240,247,255,0.94)",
+          background: "rgba(30,58,95,0.97)",
           backdropFilter: "blur(24px) saturate(1.4)",
           WebkitBackdropFilter: "blur(24px) saturate(1.4)",
           borderTop: "1px solid rgba(255,255,255,0.06)",
