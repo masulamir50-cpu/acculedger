@@ -2,107 +2,6 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 
-// ═══════════════════════════════════════════════════════
-// Light-mode LOGIN — och ko'k shisha + suzuvchi premium kartalar
-// ═══════════════════════════════════════════════════════
-
-// Premium credit card komponenti (CSS bilan, original dizayn)
-function FloatingCard({ variant, style, delay }) {
-  const isGold = variant === 'gold';
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        width: 300,
-        height: 189,
-        borderRadius: 18,
-        padding: 22,
-        boxSizing: 'border-box',
-        background: isGold
-          ? 'linear-gradient(135deg, #f5d488 0%, #e0b551 35%, #c9962e 70%, #a87822 100%)'
-          : 'linear-gradient(135deg, #f0f3f8 0%, #d4dae3 35%, #b8c0cc 70%, #9aa3b2 100%)',
-        boxShadow: isGold
-          ? '0 20px 60px rgba(201,150,46,0.35), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(0,0,0,0.15)'
-          : '0 20px 60px rgba(154,163,178,0.35), inset 0 1px 1px rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.1)',
-        border: isGold ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(255,255,255,0.5)',
-        animation: `card-float 8s ease-in-out infinite`,
-        animationDelay: delay,
-        overflow: 'hidden',
-        ...style,
-      }}
-    >
-      {/* Shine sweep */}
-      <div style={{
-        position: 'absolute', top: 0, left: '-60%', width: '50%', height: '100%',
-        background: 'linear-gradient(105deg, transparent, rgba(255,255,255,0.45), transparent)',
-        animation: 'card-shine 6s ease-in-out infinite',
-        animationDelay: delay,
-        pointerEvents: 'none',
-      }}/>
-
-      {/* Top row: chip + brand */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        {/* EMV chip */}
-        <div style={{
-          width: 42, height: 32, borderRadius: 6,
-          background: isGold
-            ? 'linear-gradient(135deg, #fbe9b7, #d9b65e)'
-            : 'linear-gradient(135deg, #fafcff, #c2cad6)',
-          border: '1px solid rgba(0,0,0,0.12)',
-          position: 'relative',
-          boxShadow: 'inset 0 0 4px rgba(0,0,0,0.15)',
-        }}>
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3, padding: '0 4px' }}>
-            <div style={{ height: 1, background: 'rgba(0,0,0,0.2)' }}/>
-            <div style={{ height: 1, background: 'rgba(0,0,0,0.2)' }}/>
-            <div style={{ height: 1, background: 'rgba(0,0,0,0.2)' }}/>
-          </div>
-        </div>
-        <div style={{
-          fontSize: 11, fontWeight: 800, letterSpacing: 1,
-          color: isGold ? '#6b4e16' : '#4a5160',
-          textTransform: 'uppercase', textAlign: 'right', lineHeight: 1.3,
-        }}>
-          AccuLedger<br/>
-          <span style={{ fontSize: 8, fontWeight: 600, opacity: 0.7 }}>
-            {isGold ? 'GOLD' : 'PLATINUM'}
-          </span>
-        </div>
-      </div>
-
-      {/* Card number */}
-      <div style={{
-        marginTop: 20,
-        fontSize: 17, fontWeight: 600, letterSpacing: 2,
-        color: isGold ? '#5c4313' : '#3d434f',
-        fontFamily: 'monospace',
-        textShadow: '0 1px 1px rgba(255,255,255,0.4)',
-      }}>
-        ••••  ••••  ••••  2026
-      </div>
-
-      {/* Bottom row */}
-      <div style={{
-        position: 'absolute', bottom: 20, left: 22, right: 22,
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-      }}>
-        <div>
-          <div style={{ fontSize: 7, fontWeight: 600, color: isGold ? '#8a6a28' : '#6a7180', letterSpacing: 1, marginBottom: 2 }}>CARD HOLDER</div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: isGold ? '#5c4313' : '#3d434f', letterSpacing: 1 }}>FAMILY ACCOUNT</div>
-        </div>
-        {/* Brand mark (original, AmEx-inspired but not copy) */}
-        <div style={{
-          width: 38, height: 38, borderRadius: 8,
-          background: isGold ? 'rgba(92,67,19,0.15)' : 'rgba(61,67,79,0.15)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 16, fontWeight: 900,
-          color: isGold ? '#5c4313' : '#3d434f',
-          border: `1px solid ${isGold ? 'rgba(92,67,19,0.2)' : 'rgba(61,67,79,0.2)'}`,
-        }}>AL</div>
-      </div>
-    </div>
-  );
-}
 
 export default function Login() {
   const [email, setEmail]  = useState('');
@@ -161,11 +60,7 @@ export default function Login() {
           0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
           50% { transform: translateY(-24px) rotate(var(--rot, 0deg)); }
         }
-        @keyframes card-shine {
-          0%, 100% { left: -60%; }
-          50% { left: 120%; }
-        }
-        @keyframes cloud-drift {
+@keyframes cloud-drift {
           from { transform: translateX(-100px); }
           to { transform: translateX(calc(100vw + 100px)); }
         }
@@ -265,13 +160,25 @@ export default function Login() {
       {/* ── Suzuvchi kartalar (desktop'da ko'rinadi) ── */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <div style={{ '--rot': '-12deg', position: 'absolute', top: '14%', left: '8%', display: window.innerWidth < 900 ? 'none' : 'block' }}>
-          <FloatingCard variant="gold" delay="0s" style={{ transform: 'rotate(-12deg)' }}/>
+          <img src="/amex-gold.png" alt="Amex Gold" style={{
+            width: 320, borderRadius: 16, transform: 'rotate(-12deg)',
+            animation: 'card-float 8s ease-in-out infinite', animationDelay: '0s',
+            filter: 'drop-shadow(0 20px 40px rgba(201,150,46,0.35))',
+          }}/>
         </div>
         <div style={{ '--rot': '10deg', position: 'absolute', bottom: '16%', right: '7%', display: window.innerWidth < 900 ? 'none' : 'block' }}>
-          <FloatingCard variant="platinum" delay="-3s" style={{ transform: 'rotate(10deg)' }}/>
+          <img src="/amex-platinum.png" alt="Amex Platinum" style={{
+            width: 320, borderRadius: 16, transform: 'rotate(10deg)',
+            animation: 'card-float 8s ease-in-out infinite', animationDelay: '-3s',
+            filter: 'drop-shadow(0 20px 40px rgba(154,163,178,0.35))',
+          }}/>
         </div>
         <div style={{ '--rot': '6deg', position: 'absolute', top: '22%', right: '14%', display: window.innerWidth < 1300 ? 'none' : 'block', opacity: 0.85 }}>
-          <FloatingCard variant="platinum" delay="-5s" style={{ transform: 'rotate(6deg) scale(0.82)' }}/>
+          <img src="/amex-platinum.png" alt="Amex Platinum" style={{
+            width: 320, borderRadius: 16, transform: 'rotate(6deg) scale(0.82)',
+            animation: 'card-float 8s ease-in-out infinite', animationDelay: '-5s',
+            filter: 'drop-shadow(0 20px 40px rgba(154,163,178,0.3))',
+          }}/>
         </div>
       </div>
 
