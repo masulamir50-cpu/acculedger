@@ -68,8 +68,8 @@ export function flushPendingWrites() {
 }
 
 export const T = {
-  bg:       "#eef4fd",
-  card:     "rgba(255,255,255,0.75)",
+  bg:       "#c0d4f2",
+  card:     "rgba(255,255,255,0.88)",
   card2:    "rgba(240,247,255,0.85)",
   cardSolid:"#ffffff",
   cream:    "rgba(255,255,255,0.9)",

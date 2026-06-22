@@ -19,7 +19,7 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(160deg, #eef4fd 0%, #ddeafb 50%, #cfe0f9 100%);
+  background: linear-gradient(160deg, #c8daf5 0%, #b8cef0 40%, #a8c0eb 100%);
   color: #1a2942;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;

@@ -368,7 +368,7 @@ function MainApp() {
           position: "fixed",
           left: 0, top: 0, bottom: 0,
           width: SIDEBAR_W,
-          background: "linear-gradient(180deg, #e8f0fe 0%, #deeafb 50%, #d4e4f7 100%)",
+          background: "linear-gradient(180deg, #b8cef0 0%, #a8c0eb 50%, #98b2e6 100%)",
           backdropFilter: "blur(24px) saturate(1.5)",
           WebkitBackdropFilter: "blur(24px) saturate(1.5)",
           borderRight: "1px solid rgba(37,99,235,0.15)",

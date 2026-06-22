@@ -88,10 +88,10 @@ export default function Dashboard() {
         marginBottom: 16,
         position: 'relative',
         overflow: 'hidden',
-        background: 'rgba(255,255,255,0.7)',
+        background: '#ffffff',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(37,99,235,0.1)',
+        border: '1px solid rgba(37,99,235,0.12)',
         boxShadow: '0 12px 48px rgba(37,99,235,0.1), inset 0 1px 0 rgba(255,255,255,0.9)',
       }}>
         <div style={{ position: 'relative', zIndex: 1 }}>
