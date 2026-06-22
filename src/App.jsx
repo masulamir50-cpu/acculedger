@@ -151,9 +151,6 @@ function MainApp() {
       minHeight: "100vh",
       paddingBottom: isMobile ? 88 : 24,
     }}>
-      <div className="alc-orb alc-orb-1"/>
-      <div className="alc-orb alc-orb-2"/>
-      <div className="alc-orb alc-orb-3"/>
 
       {/* ── TOAST ── */}
       {xabar && (
@@ -368,57 +365,37 @@ function MainApp() {
           position: "fixed",
           left: 0, top: 0, bottom: 0,
           width: SIDEBAR_W,
-          background: "linear-gradient(180deg, #1a3358 0%, #1e3a5f 100%)",
-          backdropFilter: "blur(24px) saturate(1.5)",
-          WebkitBackdropFilter: "blur(24px) saturate(1.5)",
-          borderRight: "1px solid rgba(255,255,255,0.08)",
+          background: "#111111",
+          borderRight: "1px solid #2a2a2a",
           zIndex: 100,
           display: "flex",
           flexDirection: "column",
-          boxShadow: "4px 0 24px rgba(37,99,235,0.08)",
-          // Subtle inner glow on right edge
+          boxShadow: "none",
           outline: "none",
         }}>
-          {/* Right edge neon line */}
-          <div style={{
-            position: "absolute",
-            right: 0, top: "20%", bottom: "20%",
-            width: 1,
-            background: "linear-gradient(180deg, transparent, rgba(0,212,255,0.3) 50%, transparent)",
-            pointerEvents: "none",
-          }}/>
 
           {/* Logo area */}
           <div style={{
             padding: "24px 20px 20px",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            borderBottom: "1px solid #2a2a2a",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ position: "relative" }}>
-                <div style={{
-                  position: "absolute", inset: -4,
-                  borderRadius: 14,
-                  background: "radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%)",
-                }}/>
-                <img
-                  src="/logo.png"
-                  alt="AccuLedger"
-                  style={{
-                    width: 52, height: 52,
-                    objectFit: "contain",
-                    borderRadius: 12,
-                    position: "relative",
-                    filter: "drop-shadow(0 0 10px rgba(0,212,255,0.25))",
-                  }}
-                />
-              </div>
+              <img
+                src="/logo.png"
+                alt="AccuLedger"
+                style={{
+                  width: 36, height: 36,
+                  objectFit: "contain",
+                  borderRadius: 8,
+                }}
+              />
               <div>
                 <div style={{
-                  fontSize: 16, fontWeight: 800,
+                  fontSize: 15, fontWeight: 700,
                   color: "#ffffff",
                   letterSpacing: -0.3,
                 }}>AccuLedger</div>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
+                <div style={{ fontSize: 10, color: "#444444", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
               </div>
             </div>
           </div>
@@ -437,17 +414,17 @@ function MainApp() {
                     alignItems: "center",
                     gap: 12,
                     width: "100%",
-                    padding: "11px 14px",
-                    borderRadius: 12,
+                    padding: "10px 14px",
+                    borderRadius: 8,
                     border: "none",
-                    background: isOn ? "rgba(255,255,255,0.12)" : "transparent",
-                    color: isOn ? "#ffffff" : "rgba(255,255,255,0.55)",
+                    background: isOn ? "#1e1e1e" : "transparent",
+                    color: isOn ? "#ffffff" : "#555555",
                     cursor: "pointer",
                     marginBottom: 2,
                     textAlign: "left",
                     position: "relative",
-                    boxShadow: isOn ? "inset 0 0 0 1px rgba(255,255,255,0.15)" : "none",
-                    transition: "all 0.2s",
+                    boxShadow: "none",
+                    transition: "all 0.15s",
                   }}
                 >
                   {/* Active indicator */}
@@ -456,10 +433,10 @@ function MainApp() {
                   <div style={{
                     width: 32, height: 32,
                     borderRadius: 9,
-                    background: isOn ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.06)",
+                    background: isOn ? "rgba(255,255,255,0.08)" : "transparent",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
-                    transition: "background 0.2s",
+                    transition: "background 0.15s",
                   }}>
                     {NAV_ICO[i]}
                   </div>
@@ -470,8 +447,7 @@ function MainApp() {
                       marginLeft: "auto",
                       width: 6, height: 6,
                       borderRadius: "50%",
-                      background: T.cyan,
-                      boxShadow: `0 0 8px ${T.cyan}`,
+                      background: "#22c55e",
                     }}/>
                   )}
                 </button>
@@ -482,7 +458,7 @@ function MainApp() {
           {/* Bottom sidebar actions */}
           <div style={{
             padding: "12px 14px",
-            borderTop: "1px solid rgba(255,255,255,0.05)",
+            borderTop: "1px solid #2a2a2a",
           }}>
             {/* Alerts */}
             {ogohlar.length > 0 && (
@@ -508,7 +484,7 @@ function MainApp() {
                 title="Bekor qilish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid #2a2a2a",
                   background: tarix.length > 0 ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -521,7 +497,7 @@ function MainApp() {
                 title="Moliya"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid #2a2a2a",
                   background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -534,7 +510,7 @@ function MainApp() {
                 title="CSV export"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid #2a2a2a",
                   background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -547,7 +523,7 @@ function MainApp() {
                 title="Chiqish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid #2a2a2a",
                   background: "rgba(255,255,255,0.05)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -563,7 +539,7 @@ function MainApp() {
       {/* ══════════════════════════════════════════════════
           MAIN CONTENT AREA
       ══════════════════════════════════════════════════ */}
-      <div style={{ marginLeft: isMobile ? 0 : SIDEBAR_W, background: "#f0f4f8", minHeight: "100vh" }}>
+      <div style={{ marginLeft: isMobile ? 0 : SIDEBAR_W, minHeight: "100vh" }}>
 
         {/* MOBILE TOPBAR */}
         {isMobile && (
@@ -571,15 +547,12 @@ function MainApp() {
             position: "sticky",
             top: 0,
             zIndex: 90,
-            background: "rgba(30,58,95,0.95)",
-            backdropFilter: "blur(20px) saturate(1.4)",
-            WebkitBackdropFilter: "blur(20px) saturate(1.4)",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            background: "rgba(10,10,10,0.98)",
+            borderBottom: "1px solid #2a2a2a",
             padding: "14px 16px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <img src="/logo.png" alt="" style={{ width: 30, height: 30, objectFit: "contain", borderRadius: 8 }}/>
@@ -815,10 +788,8 @@ function MainApp() {
         <div style={{
           position: "fixed",
           bottom: 0, left: 0, right: 0,
-          background: "rgba(30,58,95,0.97)",
-          backdropFilter: "blur(24px) saturate(1.4)",
-          WebkitBackdropFilter: "blur(24px) saturate(1.4)",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
+          background: "rgba(10,10,10,0.98)",
+          borderTop: "1px solid #2a2a2a",
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
@@ -826,7 +797,6 @@ function MainApp() {
           paddingRight: 8,
           paddingBottom: "env(safe-area-inset-bottom, 12px)",
           zIndex: 90,
-          boxShadow: "0 -8px 32px rgba(0,0,0,0.5), 0 -1px 0 rgba(0,212,255,0.06)",
           minHeight: 64,
         }}>
           {[
