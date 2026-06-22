@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider, useData } from './contexts/DataContext';
 import { usePWA } from './hooks/usePWA.js';
@@ -11,7 +10,6 @@ import {
 import { fmtN, mkKey } from './utils/format.js';
 
 import LoginPage from './components/pages/Login.jsx';
-import CursorGlow from './components/ui/CursorGlow.jsx';
 import Dashboard from './components/pages/Dashboard.jsx';
 import Inventory from './components/pages/Inventory.jsx';
 import Transactions from './components/pages/Transactions.jsx';
@@ -20,6 +18,8 @@ import Categories from './components/pages/Categories.jsx';
 import Analytics from './components/pages/Analytics.jsx';
 import Settings from './components/pages/Settings.jsx';
 import TxForm from './components/ui/TxForm.jsx';
+import CursorGlow from './components/ui/CursorGlow.jsx';
+import { motion } from 'framer-motion';
 
 // ═══════════════════════════════════════════════════════
 // LOADING SCREEN
@@ -70,7 +70,7 @@ function LoadingScreen() {
           position: "absolute",
           inset: -16,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(201,168,76,0.1) 50%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%)",
         }}/>
         <img
           src="/logo.png"
@@ -81,7 +81,7 @@ function LoadingScreen() {
             borderRadius: 20,
             position: "relative",
             zIndex: 1,
-            filter: "drop-shadow(0 0 16px rgba(59,130,246,0.3)) drop-shadow(0 0 32px rgba(201,168,76,0.2))",
+            filter: "none drop-shadow(0 0 32px rgba(201,168,76,0.2))",
           }}
         />
       </div>
@@ -90,7 +90,7 @@ function LoadingScreen() {
       <div style={{ textAlign: "center" }}>
         <div style={{
           fontSize: 24, fontWeight: 800,
-          background: `linear-gradient(135deg, ${T.text} 30%, ${T.accent} 70%, ${T.cyan} 100%)`,
+          background: `linear-gradient(135deg, ${T.text} 40%, ${T.accent} 100%)`,
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           letterSpacing: -0.5, marginBottom: 6,
@@ -108,7 +108,7 @@ function LoadingScreen() {
             className="alc-dot"
             style={{
               width: 7, height: 7, borderRadius: "50%",
-              background: i === 0 ? T.cyan : i === 1 ? T.accent : T.violet,
+              background: i === 0 ? T.accent : i === 1 ? T.accent2 : T.muted,
             }}
           />
         ))}
@@ -153,7 +153,9 @@ function MainApp() {
       minHeight: "100vh",
       paddingBottom: isMobile ? 88 : 24,
     }}>
-      {!isMobile && <CursorGlow />}
+
+      {/* Cursor glow — desktop only */}
+      <CursorGlow />
 
       {/* ── TOAST ── */}
       {xabar && (
@@ -170,20 +172,19 @@ function MainApp() {
               : xabar.tur === "ogoh"
               ? "rgba(22,14,4,0.95)"
               : "rgba(8,14,28,0.95)",
-            color: xabar.tur === "xato" ? "#ff6b6b"
-              : xabar.tur === "muvaffaq" ? "#22c55e"
-              : xabar.tur === "ogoh" ? "#f59e0b"
-              : T.cyan,
+            color: xabar.tur === "xato" ? "#EF4444"
+              : xabar.tur === "muvaffaq" ? "#10B981"
+              : xabar.tur === "ogoh" ? "#F59E0B"
+              : T.accent,
             border: `1px solid ${
               xabar.tur === "xato" ? "rgba(239,68,68,0.4)"
               : xabar.tur === "muvaffaq" ? "rgba(34,197,94,0.35)"
               : xabar.tur === "ogoh" ? "rgba(245,158,11,0.35)"
-              : "rgba(59,130,246,0.35)"
+              : "rgba(201,168,76,0.35)"
             }`,
             borderRadius: 14,
             padding: "11px 22px",
             fontSize: 13, fontWeight: 700,
-            backdropFilter: "blur(20px)",
             boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
             whiteSpace: "nowrap", maxWidth: "90vw",
             letterSpacing: 0.2,
@@ -197,12 +198,11 @@ function MainApp() {
       {pwa.showBanner && isMobile && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 9998,
-          background: "rgba(8,12,24,0.96)",
-          backdropFilter: "blur(20px)",
+          background: "#0B0F1A",
           borderBottom: `1px solid ${T.cyanBdr}`,
           padding: "12px 16px",
           display: "flex", alignItems: "center", gap: 12,
-          boxShadow: `0 4px 24px rgba(0,0,0,0.5), 0 0 24px rgba(59,130,246,0.08)`,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
         }}>
           <img src="/logo.png" alt="" style={{ width: 36, height: 36, borderRadius: 10, objectFit: "contain" }}/>
           <div style={{ flex: 1 }}>
@@ -233,7 +233,6 @@ function MainApp() {
           style={{
             position: "fixed", inset: 0,
             background: "rgba(0,0,0,0.7)",
-            backdropFilter: "blur(8px)",
             zIndex: 500,
             display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
           }}
@@ -242,14 +241,12 @@ function MainApp() {
           <div
             className="alc-modal"
             style={{
-              background: "rgba(10,16,30,0.97)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
+              background: "#131826",
               borderRadius: T.rxx,
               padding: "28px 28px 24px",
               width: "100%", maxWidth: 480,
               maxHeight: "90vh", overflowY: "auto",
-              boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(59,130,246,0.12), 0 0 32px rgba(59,130,246,0.06)",
+              boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06)",
               border: `1px solid rgba(255,255,255,0.08)`,
             }}
             onClick={e => e.stopPropagation()}
@@ -328,7 +325,6 @@ function MainApp() {
           style={{
             position: "fixed", inset: 0,
             background: "rgba(0,0,0,0.75)",
-            backdropFilter: "blur(8px)",
             zIndex: 400,
             display: "flex", alignItems: "flex-end",
           }}
@@ -338,13 +334,12 @@ function MainApp() {
             className="alc-sheet"
             style={{
               width: "100%",
-              background: "rgba(10,16,30,0.98)",
-              backdropFilter: "blur(24px)",
+              background: "#131826",
               borderRadius: "24px 24px 0 0",
               padding: "0 20px 32px",
               maxHeight: "90vh",
               overflowY: "auto",
-              boxShadow: "0 -8px 48px rgba(0,0,0,0.7), 0 -1px 0 rgba(59,130,246,0.15)",
+              boxShadow: "0 -8px 48px rgba(0,0,0,0.7), 0 -1px 0 rgba(201,168,76,0.12)",
               paddingBottom: "calc(32px + env(safe-area-inset-bottom, 0px))",
             }}
             onClick={e => e.stopPropagation()}
@@ -373,35 +368,90 @@ function MainApp() {
           zIndex: 100,
           display: "flex",
           flexDirection: "column",
-          boxShadow: "none",
+          boxShadow: "4px 0 40px rgba(0,0,0,0.5)",
+          // Subtle inner glow on right edge
           outline: "none",
         }}>
+          {/* Right edge neon line */}
+          <div style={{
+            position: "absolute",
+            right: 0, top: "20%", bottom: "20%",
+            width: 1,
+            background: "linear-gradient(180deg, transparent, rgba(201,168,76,0.2) 50%, transparent)",
+            pointerEvents: "none",
+          }}/>
 
           {/* Logo area */}
           <div style={{
             padding: "24px 20px 20px",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            borderBottom: "1px solid rgba(255,255,255,0.05)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{ position: "relative" }}>
+                <div style={{
+                  position: "absolute", inset: -4,
+                  borderRadius: 14,
+                  background: "radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)",
+                }}/>
                 <img
                   src="/logo.png"
                   alt="AccuLedger"
                   style={{
-                    width: 44, height: 44,
+                    width: 40, height: 40,
                     objectFit: "contain",
                     borderRadius: 12,
                     position: "relative",
+                    filter: "drop-shadow(0 0 10px rgba(201,168,76,0.2))",
                   }}
                 />
               </div>
               <div>
                 <div style={{
                   fontSize: 16, fontWeight: 800,
-                  color: "#E2E8F0",
+                  background: `linear-gradient(135deg, ${T.text} 50%, ${T.accent})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                   letterSpacing: -0.3,
                 }}>AccuLedger</div>
-                <div style={{ fontSize: 10, color: "#64748B", fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
+                <div style={{ fontSize: 10, color: T.muted, fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Period selector in sidebar */}
+          <div style={{ padding: "14px 14px 8px" }}>
+            <div style={{
+              background: "rgba(255,255,255,0.03)",
+              borderRadius: 12,
+              padding: "10px 12px",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}>
+              <div style={{ fontSize: 9, color: T.muted, fontWeight: 600, letterSpacing: 1.2, marginBottom: 8, textTransform: "uppercase" }}>Davr</div>
+              <div style={{ display: "flex", gap: 6 }}>
+                <select
+                  value={sm}
+                  onChange={e => setSm(Number(e.target.value))}
+                  style={{
+                    flex: 1, border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 8, padding: "6px 8px",
+                    fontSize: 11, background: "rgba(255,255,255,0.04)",
+                    outline: "none", color: T.text,
+                  }}
+                >
+                  {OYLAR_TO.map((o,i) => <option key={i} value={i}>{o}</option>)}
+                </select>
+                <select
+                  value={sy}
+                  onChange={e => setSy(Number(e.target.value))}
+                  style={{
+                    width: 64, border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 8, padding: "6px 6px",
+                    fontSize: 11, background: "rgba(255,255,255,0.04)",
+                    outline: "none", color: T.text,
+                  }}
+                >
+                  {[HOZ_YIL-2,HOZ_YIL-1,HOZ_YIL,HOZ_YIL+1].map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
               </div>
             </div>
           </div>
@@ -415,7 +465,8 @@ function MainApp() {
                   key={t}
                   onClick={() => setTab(t)}
                   className="alc-nav-item"
-                  whileHover={{ x: 4 }}
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   style={{
                     display: "flex",
@@ -425,34 +476,37 @@ function MainApp() {
                     padding: "11px 14px",
                     borderRadius: 12,
                     border: "none",
-                    background: isOn ? "rgba(201,168,76,0.08)" : "transparent",
-                    color: isOn ? "#C9A84C" : "#64748B",
+                    background: isOn ? "rgba(201,168,76,0.1)" : "transparent",
+                    color: isOn ? T.accent : T.muted,
                     cursor: "pointer",
                     marginBottom: 2,
                     textAlign: "left",
                     position: "relative",
-                    boxShadow: "none",
-                    borderLeft: isOn ? "2px solid #C9A84C" : "2px solid transparent",
+                    boxShadow: isOn ? "inset 0 0 0 1px rgba(201,168,76,0.12)" : "none",
                   }}
                 >
+                  {/* Active indicator */}
+                  {isOn && <div className="alc-sidebar-active-line"/>}
                   {/* Icon wrapper */}
                   <div style={{
                     width: 32, height: 32,
                     borderRadius: 9,
-                    background: isOn ? "rgba(201,168,76,0.1)" : "rgba(255,255,255,0.03)",
+                    background: isOn ? "rgba(201,168,76,0.14)" : "rgba(255,255,255,0.04)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
-                    transition: "background 0.15s",
+                    transition: "background 0.2s",
                   }}>
                     {NAV_ICO[i]}
                   </div>
                   <span style={{ fontSize: 13, fontWeight: isOn ? 700 : 500, letterSpacing: 0.1 }}>{t}</span>
+                  {/* Active dot */}
                   {isOn && (
                     <div style={{
                       marginLeft: "auto",
                       width: 6, height: 6,
                       borderRadius: "50%",
-                      background: "#C9A84C",
+                      background: T.accent,
+                      boxShadow: "none",
                     }}/>
                   )}
                 </motion.button>
@@ -463,7 +517,7 @@ function MainApp() {
           {/* Bottom sidebar actions */}
           <div style={{
             padding: "12px 14px",
-            borderTop: "1px solid rgba(255,255,255,0.06)",
+            borderTop: "1px solid rgba(255,255,255,0.05)",
           }}>
             {/* Alerts */}
             {ogohlar.length > 0 && (
@@ -489,11 +543,11 @@ function MainApp() {
                 title="Bekor qilish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  background: tarix.length > 0 ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.03)",
+                  border: `1px solid ${T.border}`,
+                  background: tarix.length > 0 ? "rgba(245,158,11,0.1)" : "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: tarix.length > 0 ? T.warn : "rgba(255,255,255,0.5)",
+                  color: tarix.length > 0 ? T.warn : T.muted,
                   transition: "all 0.2s",
                 }}
               >{Ico.undo}</button>
@@ -502,7 +556,7 @@ function MainApp() {
                 title="Moliya"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  border: `1px solid ${T.border}`,
                   background: "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -515,11 +569,11 @@ function MainApp() {
                 title="CSV export"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  border: `1px solid ${T.border}`,
                   background: "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "rgba(255,255,255,0.5)",
+                  color: T.info,
                   transition: "all 0.2s",
                 }}
               >{Ico.csv}</button>
@@ -528,11 +582,11 @@ function MainApp() {
                 title="Chiqish"
                 style={{
                   flex: 1, height: 36, borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  border: `1px solid ${T.border}`,
                   background: "rgba(255,255,255,0.03)",
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "rgba(255,255,255,0.5)",
+                  color: T.muted,
                   transition: "all 0.2s",
                 }}
               >{Ico.logout}</button>
@@ -544,7 +598,7 @@ function MainApp() {
       {/* ══════════════════════════════════════════════════
           MAIN CONTENT AREA
       ══════════════════════════════════════════════════ */}
-      <div style={{ marginLeft: isMobile ? 0 : SIDEBAR_W, minHeight: "100vh" }}>
+      <div style={{ marginLeft: isMobile ? 0 : SIDEBAR_W }}>
 
         {/* MOBILE TOPBAR */}
         {isMobile && (
@@ -558,13 +612,16 @@ function MainApp() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            boxShadow: "0 1px 0 rgba(255,255,255,0.04)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <img src="/logo.png" alt="" style={{ width: 30, height: 30, objectFit: "contain", borderRadius: 8 }}/>
               <div>
                 <div style={{
                   fontSize: 15, fontWeight: 800,
-                  color: T.text,
+                  background: `linear-gradient(135deg, ${T.text}, ${T.accent})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
                   letterSpacing: -0.2,
                 }}>AccuLedger</div>
                 <div style={{ fontSize: 9, color: T.muted, fontWeight: 500, letterSpacing: 0.5 }}>{tab.toUpperCase()}</div>
@@ -626,7 +683,6 @@ function MainApp() {
                 background: "rgba(255,255,255,0.04)",
                 outline: "none",
                 color: T.text,
-                backdropFilter: "blur(8px)",
               }}
             >
               {OYLAR_TO.map((o,i) => <option key={i} value={i}>{o}</option>)}
@@ -675,62 +731,6 @@ function MainApp() {
           </div>
         )}
 
-        {/* DESKTOP PERIOD BAR */}
-        {!isMobile && (
-          <div style={{
-            maxWidth: 1100,
-            margin: "12px auto 0",
-            padding: "0 14px",
-          }}>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              background: "rgba(237,244,255,0.85)",
-              backdropFilter: "blur(12px)",
-              borderRadius: 14,
-              padding: "10px 20px",
-              border: "1px solid rgba(37,99,235,0.1)",
-            }}>
-              <div style={{ fontSize: 11, color: T.muted, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>Davr:</div>
-              <select
-                value={sm}
-                onChange={e => setSm(Number(e.target.value))}
-                style={{
-                  border: "1px solid rgba(37,99,235,0.15)",
-                  borderRadius: 10,
-                  padding: "7px 12px",
-                  fontSize: 12,
-                  background: "rgba(255,255,255,0.8)",
-                  outline: "none",
-                  color: T.text,
-                  fontWeight: 600,
-                }}
-              >
-                {OYLAR_TO.map((o,i) => <option key={i} value={i}>{o}</option>)}
-              </select>
-              <select
-                value={sy}
-                onChange={e => setSy(Number(e.target.value))}
-                style={{
-                  border: "1px solid rgba(37,99,235,0.15)",
-                  borderRadius: 10,
-                  padding: "7px 12px",
-                  fontSize: 12,
-                  background: "rgba(255,255,255,0.8)",
-                  outline: "none",
-                  color: T.text,
-                  fontWeight: 600,
-                  width: 80,
-                }}
-              >
-                {[HOZ_YIL-2,HOZ_YIL-1,HOZ_YIL,HOZ_YIL+1].map(y => <option key={y} value={y}>{y}</option>)}
-              </select>
-            </div>
-          </div>
-        )}
-
         {/* ALERTS */}
         {ogohlar.length > 0 && (
           <div style={{ maxWidth: 1100, margin: "10px auto 0", padding: "0 14px" }}>
@@ -742,7 +742,6 @@ function MainApp() {
                 padding: "10px 16px",
                 marginTop: 8,
                 display: "flex", alignItems: "center", gap: 12,
-                backdropFilter: "blur(8px)",
               }}>
                 <span style={{ fontSize: 18 }}>{o.icon}</span>
                 <div style={{ flex: 1, fontSize: 12, color: T.text }}>
@@ -800,6 +799,7 @@ function MainApp() {
           paddingRight: 8,
           paddingBottom: "env(safe-area-inset-bottom, 12px)",
           zIndex: 90,
+          boxShadow: "0 -4px 24px rgba(0,0,0,0.4)",
           minHeight: 64,
         }}>
           {[
@@ -822,7 +822,7 @@ function MainApp() {
                   cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   color: "#0a0c18",
-                  boxShadow: "0 4px 24px rgba(201,168,76,0.35), 0 2px 8px rgba(0,0,0,0.5)",
+                  boxShadow: "0 4px 24px rgba(201,168,76,0.45), 0 0 0 1px rgba(201,168,76,0.3), 0 2px 8px rgba(0,0,0,0.6)",
                   transform: "translateY(-12px)",
                   flexShrink: 0,
                   transition: "transform 0.2s, box-shadow 0.2s",
@@ -849,7 +849,7 @@ function MainApp() {
                 <div style={{
                   width: 38, height: 30,
                   borderRadius: 10,
-                  background: isOn ? "rgba(201,168,76,0.08)" : "transparent",
+                  background: isOn ? "rgba(201,168,76,0.12)" : "transparent",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   transition: "background 0.2s",
                   boxShadow: "none",

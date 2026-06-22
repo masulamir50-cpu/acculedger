@@ -1,9 +1,8 @@
 import { useData } from '../../contexts/DataContext';
-import { T, Card, H2, Btn, Ico, Tag, Badge, Prog, Met, OYLAR_TO, OYLAR, mkKey } from '../../lib/shared.jsx';
+import { motion } from 'framer-motion';
+import { T, Card, H2, Btn, Ico, Tag, Badge, Prog, Met, OYLAR_TO } from '../../lib/shared.jsx';
 import { fmt, fmtN } from '../../utils/format.js';
 import TxForm from '../ui/TxForm.jsx';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { motion } from 'framer-motion';
 
 const PERIODS = [
   { k: 'kun',   l: 'Bugun'  },
@@ -18,35 +17,7 @@ export default function Dashboard() {
     sofFoyda, faolMol, kapital, foydaMarj, xarajatNis,
     joriyKoef, qarzKap, invXulosa, hammaTx,
     periodData, setTab, setTxF, setBottomModal,
-    mMol, mol,
   } = useData();
-
-  const chartData = (() => {
-    const pts = [];
-    for (let i = 5; i >= 0; i--) {
-      let m = sm - i, y = sy;
-      if (m < 0) { m += 12; y -= 1; }
-      const key = mkKey(m, y);
-      const d = mMol[key];
-      pts.push({
-        name: OYLAR[m],
-        daromad: d ? Number(d.daromad || 0) : 0,
-        xarajat: d ? Number(d.xarajat || 0) : 0,
-      });
-    }
-    const hasData = pts.some(p => p.daromad > 0 || p.xarajat > 0);
-    if (!hasData) {
-      return [
-        { name: OYLAR[(sm + 7) % 12], daromad: 4200, xarajat: 2800 },
-        { name: OYLAR[(sm + 8) % 12], daromad: 5100, xarajat: 3200 },
-        { name: OYLAR[(sm + 9) % 12], daromad: 4800, xarajat: 3600 },
-        { name: OYLAR[(sm + 10) % 12], daromad: 6200, xarajat: 3100 },
-        { name: OYLAR[(sm + 11) % 12], daromad: 5800, xarajat: 4200 },
-        { name: OYLAR[sm], daromad: 7100, xarajat: 3800 },
-      ];
-    }
-    return pts;
-  })();
 
   return (
     <div>
@@ -54,7 +25,7 @@ export default function Dashboard() {
       <div style={{
         display: 'flex', gap: 4,
         marginBottom: 16,
-        background: 'rgba(255,255,255,0.03)',
+        background: 'rgba(255,255,255,0.025)',
         borderRadius: 14,
         padding: 4,
         border: '1px solid rgba(255,255,255,0.06)',
@@ -71,8 +42,8 @@ export default function Dashboard() {
                 fontSize: 12,
                 fontWeight: isOn ? 700 : 500,
                 background: isOn ? 'rgba(201,168,76,0.12)' : 'transparent',
-                color: isOn ? T.cyan : T.muted,
-                boxShadow: 'none',
+                color: isOn ? T.accent : T.muted,
+                boxShadow: isOn ? 'inset 0 0 0 1px rgba(201,168,76,0.25)' : 'none',
                 transition: 'all 0.2s',
                 letterSpacing: 0.2,
               }}
@@ -84,72 +55,86 @@ export default function Dashboard() {
       {/* ── HERO BALANCE CARD ── */}
       <div style={{
         borderRadius: 24,
-        padding: '26px 26px 22px',
+        padding: '30px 26px 26px',
         marginBottom: 16,
         position: 'relative',
         overflow: 'hidden',
         background: 'linear-gradient(135deg, #151b2e 0%, #0e1322 100%)',
-        border: '1px solid rgba(255,255,255,0.06)',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: '0 16px 56px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
       }}>
+        {/* Cyan ambient top-left */}
+        <div style={{
+          position: 'absolute', top: -60, left: -40,
+          width: 280, height: 280, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}/>
+        {/* Gold ambient bottom-right */}
+        <div style={{
+          position: 'absolute', bottom: -40, right: -30,
+          width: 220, height: 220, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}/>
+        {/* Top neon line */}
+        <div style={{
+          position: 'absolute', top: 0, left: '15%', right: '15%', height: 1,
+          background: `linear-gradient(90deg, transparent, ${T.accent}50, transparent)`,
+        }}/>
+
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{
             fontSize: 10, color: T.muted, fontWeight: 600,
-            marginBottom: 14, textTransform: 'uppercase', letterSpacing: 2,
+            marginBottom: 12, textTransform: 'uppercase', letterSpacing: 2,
+            display: 'flex', alignItems: 'center', gap: 8,
           }}>
-            {periodData.label} — Daromad vs Xarajat
-          </div>
-
-          <div style={{ width: '100%', height: 140, marginBottom: 14 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="heroGreen" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10B981" stopOpacity={0.4}/>
-                    <stop offset="100%" stopColor="#10B981" stopOpacity={0.02}/>
-                  </linearGradient>
-                  <linearGradient id="heroRed" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#EF4444" stopOpacity={0.35}/>
-                    <stop offset="100%" stopColor="#EF4444" stopOpacity={0.02}/>
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#64748B' }} axisLine={false} tickLine={false}/>
-                <YAxis tick={{ fontSize: 9, fill: '#64748B' }} axisLine={false} tickLine={false}/>
-                <Tooltip
-                  contentStyle={{
-                    background: '#131826',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: 10,
-                    fontSize: 12,
-                    color: '#E2E8F0',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-                  }}
-                />
-                <Area type="monotone" dataKey="daromad" stroke="#10B981" strokeWidth={2} fill="url(#heroGreen)" name="Daromad"/>
-                <Area type="monotone" dataKey="xarajat" stroke="#EF4444" strokeWidth={2} fill="url(#heroRed)" name="Xarajat"/>
-              </AreaChart>
-            </ResponsiveContainer>
+            <div style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: T.accent,
+              boxShadow: 'none',
+            }}/>
+            {periodData.label} — Sof foyda
           </div>
 
           <div style={{
-            display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 14, flexWrap: 'wrap',
+            display: 'flex', alignItems: 'baseline',
+            gap: 12, marginBottom: 8, flexWrap: 'wrap',
           }}>
-            <div style={{ fontSize: 10, color: T.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Sof foyda:</div>
             <div style={{
-              fontSize: isMobile ? 24 : 28,
+              fontSize: isMobile ? 36 : 48,
               fontWeight: 900,
               color: periodData.net >= 0 ? T.accent : T.danger,
               lineHeight: 1,
-              letterSpacing: -1,
+              letterSpacing: -1.5,
+              textShadow: periodData.net >= 0
+                ? '0 0 32px rgba(201,168,76,0.25)'
+                : '0 0 32px rgba(239,68,68,0.2)',
             }}>
-              {fmt(periodData.net)} <span style={{ fontSize: 14, fontWeight: 600, color: T.muted }}>{sozl.valyuta}</span>
+              {fmt(periodData.net)}
             </div>
+            <div style={{ fontSize: 16, fontWeight: 600, color: T.muted }}>{sozl.valyuta}</div>
+          </div>
+
+          <div style={{ fontSize: 12, color: T.muted, marginBottom: 24 }}>
+            {period === 'oy' && (
+              <>
+                {faolMol.soliq}% soliqdan keyin · Foyda marjasi:{' '}
+                <span style={{
+                  color: foydaMarj > 10 ? T.green : foydaMarj > 0 ? T.warn : T.danger,
+                  fontWeight: 700,
+                }}>{foydaMarj}%</span>
+              </>
+            )}
+            {period === 'yil' && "Yil bo'yicha sof foyda"}
+            {period === 'kun' && 'Bugungi tranzaksiyalar'}
+            {period === 'hafta' && 'Haftalik tranzaksiyalar'}
           </div>
 
           {/* Three stats row */}
           <div style={{
             display: 'flex', gap: isMobile ? 0 : 1,
-            background: 'rgba(255,255,255,0.03)',
+            background: 'rgba(255,255,255,0.025)',
             borderRadius: 14,
             border: '1px solid rgba(255,255,255,0.06)',
             overflow: 'hidden',
@@ -157,7 +142,7 @@ export default function Dashboard() {
             {[
               ['Daromad', `+${fmt(periodData.income)}`, T.green, '↑'],
               ['Xarajat',  `−${fmt(periodData.expense)}`, T.red,   '↓'],
-              ['Kapital',  fmt(kapital), T.cyan, '⬡'],
+              ['Kapital',  fmt(kapital), T.accent2, '⬡'],
             ].map(([l, v, col, ic], i) => (
               <div
                 key={l}
@@ -207,7 +192,6 @@ export default function Dashboard() {
                 display: 'flex', flexDirection: 'column',
                 alignItems: 'center', gap: 8,
                 cursor: 'pointer',
-                backdropFilter: 'blur(8px)',
                 boxShadow: isCTA ? `0 4px 20px ${bg}15` : T.shadow,
               }}
             >
@@ -380,14 +364,14 @@ export default function Dashboard() {
               key={tx.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05, duration: 0.3 }}
+              transition={{ delay: Math.min(i * 0.04, 0.4), duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '13px 0',
-                borderBottom: i < periodData.txList.length - 1
-                  ? '1px solid rgba(255,255,255,0.04)'
-                  : 'none',
-              }}>
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: '13px 0',
+              borderBottom: i < periodData.txList.length - 1
+                ? '1px solid rgba(255,255,255,0.04)'
+                : 'none',
+            }}>
               <div style={{
                 width: 42, height: 42, borderRadius: 12, flexShrink: 0,
                 background: tx.tur === 'kirim'

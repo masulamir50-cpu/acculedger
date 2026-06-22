@@ -1,40 +1,105 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 
-function TiltCard({ src, alt, rot, delay, shadow }) {
-  const ref = useRef(null);
+// ═══════════════════════════════════════════════════════
+// Light-mode LOGIN — och ko'k shisha + suzuvchi premium kartalar
+// ═══════════════════════════════════════════════════════
 
-  const onMove = (e) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.querySelector('img').style.transform =
-      `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) rotate(${rot})`;
-  };
-
-  const onLeave = () => {
-    const img = ref.current?.querySelector('img');
-    if (img) img.style.transform = `rotate(${rot})`;
-  };
-
+// Premium credit card komponenti (CSS bilan, original dizayn)
+function FloatingCard({ variant, style, delay }) {
+  const isGold = variant === 'gold';
   return (
     <div
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{ pointerEvents: 'auto' }}
-    >
-      <img src={src} alt={alt} style={{
-        width: 320, borderRadius: 16,
-        transform: `rotate(${rot})`,
-        animation: 'card-float 8s ease-in-out infinite',
+      style={{
+        position: 'absolute',
+        width: 300,
+        height: 189,
+        borderRadius: 18,
+        padding: 22,
+        boxSizing: 'border-box',
+        background: isGold
+          ? 'linear-gradient(135deg, #f5d488 0%, #e0b551 35%, #c9962e 70%, #a87822 100%)'
+          : 'linear-gradient(135deg, #f0f3f8 0%, #d4dae3 35%, #b8c0cc 70%, #9aa3b2 100%)',
+        boxShadow: isGold
+          ? '0 20px 60px rgba(201,150,46,0.35), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(0,0,0,0.15)'
+          : '0 20px 60px rgba(154,163,178,0.35), inset 0 1px 1px rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.1)',
+        border: isGold ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(255,255,255,0.5)',
+        animation: `card-float 8s ease-in-out infinite`,
         animationDelay: delay,
-        filter: shadow,
-        transition: 'transform 0.1s ease',
+        overflow: 'hidden',
+        ...style,
+      }}
+    >
+      {/* Shine sweep */}
+      <div style={{
+        position: 'absolute', top: 0, left: '-60%', width: '50%', height: '100%',
+        background: 'linear-gradient(105deg, transparent, rgba(255,255,255,0.45), transparent)',
+        animation: 'card-shine 6s ease-in-out infinite',
+        animationDelay: delay,
+        pointerEvents: 'none',
       }}/>
+
+      {/* Top row: chip + brand */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        {/* EMV chip */}
+        <div style={{
+          width: 42, height: 32, borderRadius: 6,
+          background: isGold
+            ? 'linear-gradient(135deg, #fbe9b7, #d9b65e)'
+            : 'linear-gradient(135deg, #fafcff, #c2cad6)',
+          border: '1px solid rgba(0,0,0,0.12)',
+          position: 'relative',
+          boxShadow: 'inset 0 0 4px rgba(0,0,0,0.15)',
+        }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3, padding: '0 4px' }}>
+            <div style={{ height: 1, background: 'rgba(0,0,0,0.2)' }}/>
+            <div style={{ height: 1, background: 'rgba(0,0,0,0.2)' }}/>
+            <div style={{ height: 1, background: 'rgba(0,0,0,0.2)' }}/>
+          </div>
+        </div>
+        <div style={{
+          fontSize: 11, fontWeight: 800, letterSpacing: 1,
+          color: isGold ? '#6b4e16' : '#4a5160',
+          textTransform: 'uppercase', textAlign: 'right', lineHeight: 1.3,
+        }}>
+          AccuLedger<br/>
+          <span style={{ fontSize: 8, fontWeight: 600, opacity: 0.7 }}>
+            {isGold ? 'GOLD' : 'PLATINUM'}
+          </span>
+        </div>
+      </div>
+
+      {/* Card number */}
+      <div style={{
+        marginTop: 20,
+        fontSize: 17, fontWeight: 600, letterSpacing: 2,
+        color: isGold ? '#5c4313' : '#3d434f',
+        fontFamily: 'monospace',
+        textShadow: '0 1px 1px rgba(255,255,255,0.4)',
+      }}>
+        ••••  ••••  ••••  2026
+      </div>
+
+      {/* Bottom row */}
+      <div style={{
+        position: 'absolute', bottom: 20, left: 22, right: 22,
+        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
+      }}>
+        <div>
+          <div style={{ fontSize: 7, fontWeight: 600, color: isGold ? '#8a6a28' : '#6a7180', letterSpacing: 1, marginBottom: 2 }}>CARD HOLDER</div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: isGold ? '#5c4313' : '#3d434f', letterSpacing: 1 }}>FAMILY ACCOUNT</div>
+        </div>
+        {/* Brand mark (original, AmEx-inspired but not copy) */}
+        <div style={{
+          width: 38, height: 38, borderRadius: 8,
+          background: isGold ? 'rgba(92,67,19,0.15)' : 'rgba(61,67,79,0.15)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 16, fontWeight: 900,
+          color: isGold ? '#5c4313' : '#3d434f',
+          border: `1px solid ${isGold ? 'rgba(92,67,19,0.2)' : 'rgba(61,67,79,0.2)'}`,
+        }}>AL</div>
+      </div>
     </div>
   );
 }
@@ -67,13 +132,13 @@ export default function Login() {
 
   // Light-mode rang palitrasi
   const C = {
-    ink:    '#E2E8F0',
-    inkDim: '#94A3B8',
-    muted:  '#64748B',
-    blue:   '#C9A84C',
-    blueLt: '#60a5fa',
-    border: 'rgba(201,168,76,0.15)',
-    glass:  'rgba(19,24,38,0.85)',
+    ink:    '#E2E8F0',   // asosiy qora-ko'k matn
+    inkDim: '#94A3B8',   // ikkilamchi
+    muted:  '#64748B',   // xira
+    blue:   '#C9A84C',   // primary ko'k
+    blueLt: '#D4AF37',
+    border: 'rgba(255,255,255,0.08)',
+    glass:  'rgba(19,24,38,0.9)',
   };
 
   return (
@@ -86,6 +151,7 @@ export default function Login() {
       position: 'relative',
       overflow: 'hidden',
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+      // Tongi och ko'k osmon gradient
       background: '#090C15',
     }}>
 
@@ -95,7 +161,11 @@ export default function Login() {
           0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
           50% { transform: translateY(-24px) rotate(var(--rot, 0deg)); }
         }
-@keyframes cloud-drift {
+        @keyframes card-shine {
+          0%, 100% { left: -60%; }
+          50% { left: 120%; }
+        }
+        @keyframes cloud-drift {
           from { transform: translateX(-100px); }
           to { transform: translateX(calc(100vw + 100px)); }
         }
@@ -113,21 +183,21 @@ export default function Login() {
       <div style={{
         position: 'absolute', top: '-10%', right: '-5%',
         width: 480, height: 480, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 30%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 60%)',
         animation: 'sun-pulse 8s ease-in-out infinite',
         pointerEvents: 'none',
       }}/>
 
       {/* ── Bulutlar ── */}
       {[
-        { top: '12%', w: 180, h: 50, dur: 60, delay: 0,   op: 0.03 },
-        { top: '22%', w: 130, h: 38, dur: 80, delay: -20, op: 0.03 },
-        { top: '68%', w: 200, h: 56, dur: 70, delay: -40, op: 0.03 },
+        { top: '12%', w: 180, h: 50, dur: 60, delay: 0,   op: 0.6 },
+        { top: '22%', w: 130, h: 38, dur: 80, delay: -20, op: 0.45 },
+        { top: '68%', w: 200, h: 56, dur: 70, delay: -40, op: 0.5 },
       ].map((cl, i) => (
         <div key={i} style={{
           position: 'absolute', top: cl.top, left: 0,
           width: cl.w, height: cl.h,
-          background: `rgba(255,255,255,${cl.op})`,
+          background: 'transparent',
           borderRadius: 100,
           filter: 'blur(12px)',
           animation: `cloud-drift ${cl.dur}s linear infinite`,
@@ -142,7 +212,7 @@ export default function Login() {
         preserveAspectRatio="none"
         style={{
           position: 'absolute', bottom: 0, left: 0, width: '100%', height: 280,
-          pointerEvents: 'none', opacity: 0.5,
+          pointerEvents: 'none', opacity: 0.6,
         }}
       >
         <defs>
@@ -151,8 +221,8 @@ export default function Login() {
             <stop offset="100%" stopColor="#0e1424"/>
           </linearGradient>
           <linearGradient id="bldg2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#152035"/>
-            <stop offset="100%" stopColor="#0c1020"/>
+            <stop offset="0%" stopColor="#151d33"/>
+            <stop offset="100%" stopColor="#0c1220"/>
           </linearGradient>
         </defs>
         {/* Orqa qator binolar */}
@@ -181,7 +251,7 @@ export default function Login() {
           <rect x="1340" y="120" width="70"  height="200" rx="4"/>
         </g>
         {/* Deraza nuqtalari (eng baland binolarda) */}
-        <g fill="rgba(255,255,255,0.15)">
+        <g fill="rgba(201,168,76,0.25)">
           {[260, 280, 560, 580, 720, 880, 1200, 1220].map((x, i) => (
             <g key={i}>
               <rect x={x} y={80}  width="6" height="6" rx="1"/>
@@ -195,12 +265,13 @@ export default function Login() {
       {/* ── Suzuvchi kartalar (desktop'da ko'rinadi) ── */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <div style={{ '--rot': '-12deg', position: 'absolute', top: '14%', left: '8%', display: window.innerWidth < 900 ? 'none' : 'block' }}>
-          <TiltCard src="/amex-gold.png" alt="Amex Gold" rot="-12deg" delay="0s"
-            shadow="drop-shadow(0 20px 40px rgba(201,150,46,0.35))"/>
+          <FloatingCard variant="gold" delay="0s" style={{ transform: 'rotate(-12deg)' }}/>
         </div>
         <div style={{ '--rot': '10deg', position: 'absolute', bottom: '16%', right: '7%', display: window.innerWidth < 900 ? 'none' : 'block' }}>
-          <TiltCard src="/amex-platinum.png" alt="Amex Platinum" rot="10deg" delay="-3s"
-            shadow="drop-shadow(0 20px 40px rgba(154,163,178,0.35))"/>
+          <FloatingCard variant="platinum" delay="-3s" style={{ transform: 'rotate(10deg)' }}/>
+        </div>
+        <div style={{ '--rot': '6deg', position: 'absolute', top: '22%', right: '14%', display: window.innerWidth < 1300 ? 'none' : 'block', opacity: 0.85 }}>
+          <FloatingCard variant="platinum" delay="-5s" style={{ transform: 'rotate(6deg) scale(0.82)' }}/>
         </div>
       </div>
 
@@ -213,12 +284,10 @@ export default function Login() {
         width: '100%',
         maxWidth: 410,
         background: 'rgba(19,24,38,0.85)',
-        backdropFilter: 'blur(40px) saturate(1.8)',
-        WebkitBackdropFilter: 'blur(40px) saturate(1.8)',
         borderRadius: 28,
         padding: '40px 36px 32px',
         border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 30px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3)',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)',
         animation: 'login-rise 0.6s cubic-bezier(.16,1,.3,1)',
       }}>
 
@@ -228,10 +297,10 @@ export default function Login() {
             position: 'relative', marginBottom: 18,
             width: 84, height: 84,
             borderRadius: 22,
-            background: 'rgba(255,255,255,0.7)',
+            background: 'rgba(255,255,255,0.04)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 12px 32px rgba(201,168,76,0.18), inset 0 1px 0 rgba(255,255,255,0.9)',
-            border: '1px solid rgba(255,255,255,0.9)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+            border: '1px solid rgba(255,255,255,0.08)',
           }}>
             <img
               src="/logo.png"
@@ -260,11 +329,11 @@ export default function Login() {
         {/* Tab switcher */}
         <div style={{
           display: 'flex',
-          background: 'rgba(201,168,76,0.06)',
+          background: 'rgba(255,255,255,0.03)',
           borderRadius: 13,
           padding: 4,
           marginBottom: 26,
-          border: '1px solid rgba(201,168,76,0.1)',
+          border: '1px solid rgba(255,255,255,0.06)',
         }}>
           {[['kirish', 'Kirish'], ['royxat', "Ro'yxat"]].map(([k, l]) => (
             <button
@@ -274,9 +343,9 @@ export default function Login() {
                 flex: 1, padding: '10px',
                 borderRadius: 9, border: 'none', cursor: 'pointer',
                 fontSize: 13, fontWeight: rejim === k ? 800 : 600,
-                background: rejim === k ? 'rgba(201,168,76,0.15)' : 'transparent',
-                color: rejim === k ? '#C9A84C' : C.muted,
-                boxShadow: rejim === k ? '0 2px 8px rgba(201,168,76,0.15)' : 'none',
+                background: rejim === k ? 'rgba(201,168,76,0.12)' : 'transparent',
+                color: rejim === k ? C.blue : C.muted,
+                boxShadow: rejim === k ? 'inset 0 0 0 1px rgba(201,168,76,0.2)' : 'none',
                 transition: 'all 0.2s',
                 letterSpacing: 0.2,
               }}
@@ -313,14 +382,14 @@ export default function Login() {
             onBlur={() => setFocus('')}
             style={{
               width: '100%',
-              border: `1.5px solid ${focus === 'email' ? C.blue : 'rgba(201,168,76,0.15)'}`,
+              border: `1.5px solid ${focus === 'email' ? C.blue : 'rgba(255,255,255,0.08)'}`,
               borderRadius: 13,
               padding: '13px 16px',
               fontSize: 14,
               background: 'rgba(255,255,255,0.04)',
               outline: 'none', boxSizing: 'border-box',
               color: C.ink, fontWeight: 500,
-              boxShadow: focus === 'email' ? '0 0 0 4px rgba(201,168,76,0.1)' : 'none',
+              boxShadow: focus === 'email' ? '0 0 0 3px rgba(201,168,76,0.12)' : 'none',
               transition: 'border-color 0.2s, box-shadow 0.2s',
             }}
           />
@@ -343,14 +412,14 @@ export default function Login() {
             onBlur={() => setFocus('')}
             style={{
               width: '100%',
-              border: `1.5px solid ${focus === 'parol' ? C.blue : 'rgba(201,168,76,0.15)'}`,
+              border: `1.5px solid ${focus === 'parol' ? C.blue : 'rgba(255,255,255,0.08)'}`,
               borderRadius: 13,
               padding: '13px 16px',
               fontSize: 14,
               background: 'rgba(255,255,255,0.04)',
               outline: 'none', boxSizing: 'border-box',
               color: C.ink, fontWeight: 500,
-              boxShadow: focus === 'parol' ? '0 0 0 4px rgba(201,168,76,0.1)' : 'none',
+              boxShadow: focus === 'parol' ? '0 0 0 3px rgba(201,168,76,0.12)' : 'none',
               transition: 'border-color 0.2s, box-shadow 0.2s',
             }}
           />
@@ -369,7 +438,7 @@ export default function Login() {
             borderRadius: 14, padding: '15px',
             fontSize: 14, cursor: yukl ? 'not-allowed' : 'pointer',
             fontWeight: 800, letterSpacing: 0.4,
-            boxShadow: yukl ? 'none' : '0 10px 30px rgba(201,168,76,0.3)',
+            boxShadow: yukl ? 'none' : '0 8px 28px rgba(201,168,76,0.3)',
             transition: 'all 0.2s',
           }}
         >
@@ -381,7 +450,7 @@ export default function Login() {
         {/* Divider */}
         <div style={{
           height: 1,
-          background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.12), transparent)',
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)',
           margin: '20px 0',
         }}/>
 

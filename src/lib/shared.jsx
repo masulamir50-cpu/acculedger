@@ -1,8 +1,8 @@
 // src/lib/shared.jsx — umumiy konstantalar, formulalar va Firestore yordamchilari
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useState } from "react";
-import { motion } from "framer-motion";
 
 // ─── Konstantalar ───────────────────────────────────────
 export const OYLAR    = ["Yan","Feb","Mar","Apr","May","Iyn","Iyl","Avg","Sen","Okt","Noy","Dek"];
@@ -69,27 +69,37 @@ export function flushPendingWrites() {
   pendingWrites.clear();
 }
 
+// ─── PREMIUM DIZAYN TOKENLARI — Marcelo-style Dark Fintech ──
 export const T = {
+  // Core backgrounds — solid, elegant night tones
   bg:       "#090C15",
   card:     "#131826",
   card2:    "#1a2030",
   cardSolid:"#131826",
-  cream:    "#131826",
+  cream:    "#0e1220",
+
+  // Accent — elegant champagne gold
   accent:   "#C9A84C",
   accent2:  "#D4AF37",
   accent3:  "#a8853d",
   cyan:     "#3B82F6",
   cyanDim:  "rgba(59,130,246,0.1)",
-  violet:   "#7c3aed",
-  violetDim:"rgba(124,58,237,0.1)",
+  violet:   "#8b5cf6",
+  violetDim:"rgba(139,92,246,0.1)",
+
+  // Text — white & dim white (not gray)
   text:     "#E2E8F0",
   textMid:  "#94A3B8",
   muted:    "#64748B",
+
+  // Semantic — serious, not neon
   green:    "#10B981",
   red:      "#EF4444",
   danger:   "#EF4444",
   warn:     "#F59E0B",
   info:     "#3B82F6",
+
+  // Semantic backgrounds — subtle
   dangerBg:  "rgba(239,68,68,0.08)",
   warnBg:    "rgba(245,158,11,0.08)",
   successBg: "rgba(16,185,129,0.08)",
@@ -97,25 +107,35 @@ export const T = {
   accentBg:  "rgba(201,168,76,0.08)",
   cyanBg:    "rgba(59,130,246,0.06)",
   joriyBg:   "rgba(59,130,246,0.04)",
+
+  // Borders — almost invisible, premium
   border:    "rgba(255,255,255,0.06)",
   borderGlow:"rgba(255,255,255,0.12)",
   dangerBdr: "rgba(239,68,68,0.25)",
   warnBdr:   "rgba(245,158,11,0.25)",
   accentBdr: "rgba(201,168,76,0.2)",
   cyanBdr:   "rgba(59,130,246,0.2)",
+
+  // Radius
   r:  "16px",
   rs: "12px",
   rx: "20px",
   rxx:"24px",
-  shadow:     "0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
-  shadowMd:   "0 12px 48px rgba(0,0,0,0.6)",
-  shadowLg:   "0 24px 80px rgba(0,0,0,0.7)",
-  shadowGold: "0 0 32px rgba(201,168,76,0.15)",
-  shadowCyan: "0 0 24px rgba(59,130,246,0.12)",
+
+  // Shadows — soft, deep
+  shadow:     "0 1px 3px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3)",
+  shadowMd:   "0 8px 32px rgba(0,0,0,0.5)",
+  shadowLg:   "0 16px 48px rgba(0,0,0,0.6)",
+  shadowGold: "0 4px 24px rgba(201,168,76,0.15)",
+  shadowCyan: "0 4px 24px rgba(59,130,246,0.15)",
+
+  // Gradients
   gradAccent: "linear-gradient(135deg, #D4AF37 0%, #C9A84C 50%, #a8853d 100%)",
-  gradCyan:   "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
-  gradDark:   "linear-gradient(135deg, #131826 0%, #0B0F1A 100%)",
+  gradCyan:   "linear-gradient(135deg, #3B82F6 0%, #2563eb 100%)",
+  gradDark:   "linear-gradient(135deg, #131826 0%, #0e1220 100%)",
   gradHero:   "linear-gradient(135deg, #151b2e 0%, #0e1322 100%)",
+
+  // No blur — solid elegant
   blur: "none",
 };
 
@@ -165,7 +185,7 @@ export const Inp = ({ label, type="text", value, onChange, placeholder="" }) => 
         boxSizing: "border-box",
         color: T.text,
         transition: "border-color 0.2s, box-shadow 0.2s",
-
+        
       }}
     />
   </div>
@@ -187,7 +207,7 @@ export const Sel = ({ label, value, onChange, children }) => (
         borderRadius: T.rs,
         padding: "11px 14px",
         fontSize: 13,
-        background: "#131826",
+        background: "rgba(10,16,32,0.95)",
         outline: "none",
         boxSizing: "border-box",
         color: T.text,
@@ -203,6 +223,8 @@ export const Card = ({ children, style={}, className="" }) => (
     className={className}
     style={{
       background: T.card,
+      backdropFilter: "none",
+      
       borderRadius: T.r,
       border: `1px solid ${T.border}`,
       padding: 20,
@@ -320,7 +342,7 @@ export const Prog = ({ pct, oshgan, kamaygan }) => {
     ? "0 0 8px rgba(239,68,68,0.5)"
     : kamaygan
     ? "0 0 8px rgba(245,158,11,0.4)"
-    : "0 0 8px rgba(59,130,246,0.4)";
+    : "0 0 8px rgba(0,212,255,0.4)";
   return (
     <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, height: 5, overflow: "hidden", marginTop: 8 }}>
       <div
@@ -342,49 +364,53 @@ export const Prog = ({ pct, oshgan, kamaygan }) => {
 };
 
 export const Met = ({ label, val, sub, color=T.accent, icon }) => {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [hover, setHover] = useState(false);
-  const isMob = typeof window !== "undefined" && window.innerWidth <= 900;
+  // 3D tilt — faqat desktop. Mobil'da oddiy karta (performance).
+  const ref = useRef(null);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, hov: false });
+  const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
 
   const onMove = (e) => {
-    if (isMob) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const cx = (e.clientX - rect.left) / rect.width - 0.5;
-    const cy = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: cy * -16, y: cx * 16 });
+    if (!isDesktop || !ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    // Kursorning karta markaziga nisbatan o'rni (-0.5..0.5)
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    // Maksimal 8 daraja qiyshayish
+    setTilt({ rx: -py * 8, ry: px * 8, hov: true });
   };
-  const onLeave = () => { setTilt({ x: 0, y: 0 }); setHover(false); };
+  const onLeave = () => setTilt({ rx: 0, ry: 0, hov: false });
 
   return (
     <motion.div
-      className="alc-met-card"
+      ref={ref}
       onMouseMove={onMove}
-      onMouseEnter={() => setHover(true)}
       onMouseLeave={onLeave}
-      animate={{
-        rotateX: tilt.x,
-        rotateY: tilt.y,
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      animate={{ rotateX: tilt.rx, rotateY: tilt.ry }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
       style={{
         background: T.card,
         borderRadius: T.r,
         padding: "18px 20px",
-        border: `1px solid ${T.border}`,
-        boxShadow: hover ? `${T.shadow}, 0 0 24px rgba(201,168,76,0.15)` : T.shadow,
+        border: `1px solid ${tilt.hov ? "rgba(201,168,76,0.3)" : T.border}`,
+        boxShadow: tilt.hov
+          ? `${T.shadow}, 0 0 28px rgba(201,168,76,0.12)`
+          : T.shadow,
         position: "relative",
         overflow: "hidden",
-        perspective: 1000,
         transformStyle: "preserve-3d",
-        transition: "box-shadow 0.3s",
+        transformPerspective: 1000,
+        cursor: "default",
+        transition: "border-color 0.2s, box-shadow 0.2s",
       }}
     >
+      {/* Mesh glow */}
       <div style={{
         position: "absolute", top: -20, right: -20,
         width: 80, height: 80, borderRadius: "50%",
         background: `radial-gradient(circle, ${color}18 0%, transparent 70%)`,
         pointerEvents: "none",
       }}/>
+      {/* Bottom accent line */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, height: 2,
         background: `linear-gradient(90deg, ${color}, transparent)`,
