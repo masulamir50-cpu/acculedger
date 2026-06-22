@@ -1,7 +1,8 @@
 import { useData } from '../../contexts/DataContext';
-import { T, Card, H2, Btn, Ico, Tag, Badge, Prog, Met, OYLAR_TO } from '../../lib/shared.jsx';
+import { T, Card, H2, Btn, Ico, Tag, Badge, Prog, Met, OYLAR_TO, OYLAR, mkKey } from '../../lib/shared.jsx';
 import { fmt, fmtN } from '../../utils/format.js';
 import TxForm from '../ui/TxForm.jsx';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const PERIODS = [
   { k: 'kun',   l: 'Bugun'  },
@@ -16,7 +17,35 @@ export default function Dashboard() {
     sofFoyda, faolMol, kapital, foydaMarj, xarajatNis,
     joriyKoef, qarzKap, invXulosa, hammaTx,
     periodData, setTab, setTxF, setBottomModal,
+    mMol, mol,
   } = useData();
+
+  const chartData = (() => {
+    const pts = [];
+    for (let i = 5; i >= 0; i--) {
+      let m = sm - i, y = sy;
+      if (m < 0) { m += 12; y -= 1; }
+      const key = mkKey(m, y);
+      const d = mMol[key];
+      pts.push({
+        name: OYLAR[m],
+        daromad: d ? Number(d.daromad || 0) : 0,
+        xarajat: d ? Number(d.xarajat || 0) : 0,
+      });
+    }
+    const hasData = pts.some(p => p.daromad > 0 || p.xarajat > 0);
+    if (!hasData) {
+      return [
+        { name: OYLAR[(sm + 7) % 12], daromad: 4200, xarajat: 2800 },
+        { name: OYLAR[(sm + 8) % 12], daromad: 5100, xarajat: 3200 },
+        { name: OYLAR[(sm + 9) % 12], daromad: 4800, xarajat: 3600 },
+        { name: OYLAR[(sm + 10) % 12], daromad: 6200, xarajat: 3100 },
+        { name: OYLAR[(sm + 11) % 12], daromad: 5800, xarajat: 4200 },
+        { name: OYLAR[sm], daromad: 7100, xarajat: 3800 },
+      ];
+    }
+    return pts;
+  })();
 
   return (
     <div>
@@ -24,10 +53,10 @@ export default function Dashboard() {
       <div style={{
         display: 'flex', gap: 4,
         marginBottom: 16,
-        background: 'rgba(255,255,255,0.03)',
+        background: 'rgba(237,244,255,0.6)',
         borderRadius: 14,
         padding: 4,
-        border: '1px solid rgba(255,255,255,0.06)',
+        border: '1px solid rgba(37,99,235,0.08)',
         backdropFilter: 'blur(8px)',
       }}>
         {PERIODS.map(p => {
@@ -41,9 +70,9 @@ export default function Dashboard() {
                 borderRadius: 10, border: 'none', cursor: 'pointer',
                 fontSize: 12,
                 fontWeight: isOn ? 700 : 500,
-                background: isOn ? 'rgba(0,212,255,0.1)' : 'transparent',
+                background: isOn ? 'rgba(37,99,235,0.1)' : 'transparent',
                 color: isOn ? T.cyan : T.muted,
-                boxShadow: isOn ? 'inset 0 0 0 1px rgba(0,212,255,0.2)' : 'none',
+                boxShadow: isOn ? 'inset 0 0 0 1px rgba(37,99,235,0.2)' : 'none',
                 transition: 'all 0.2s',
                 letterSpacing: 0.2,
               }}
@@ -55,90 +84,75 @@ export default function Dashboard() {
       {/* ── HERO BALANCE CARD ── */}
       <div style={{
         borderRadius: 24,
-        padding: '30px 26px 26px',
+        padding: '26px 26px 22px',
         marginBottom: 16,
         position: 'relative',
         overflow: 'hidden',
-        background: 'rgba(10,14,26,0.85)',
+        background: 'rgba(255,255,255,0.7)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.07)',
-        boxShadow: '0 16px 56px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+        border: '1px solid rgba(37,99,235,0.1)',
+        boxShadow: '0 12px 48px rgba(37,99,235,0.1), inset 0 1px 0 rgba(255,255,255,0.9)',
       }}>
-        {/* Cyan ambient top-left */}
-        <div style={{
-          position: 'absolute', top: -60, left: -40,
-          width: 280, height: 280, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}/>
-        {/* Gold ambient bottom-right */}
-        <div style={{
-          position: 'absolute', bottom: -40, right: -30,
-          width: 220, height: 220, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}/>
-        {/* Top neon line */}
-        <div style={{
-          position: 'absolute', top: 0, left: '15%', right: '15%', height: 1,
-          background: `linear-gradient(90deg, transparent, ${T.cyan}60, ${T.accent}40, transparent)`,
-        }}/>
-
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{
             fontSize: 10, color: T.muted, fontWeight: 600,
-            marginBottom: 12, textTransform: 'uppercase', letterSpacing: 2,
-            display: 'flex', alignItems: 'center', gap: 8,
+            marginBottom: 14, textTransform: 'uppercase', letterSpacing: 2,
           }}>
-            <div style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: T.cyan,
-              boxShadow: `0 0 8px ${T.cyan}`,
-            }}/>
-            {periodData.label} — Sof foyda
+            {periodData.label} — Daromad vs Xarajat
+          </div>
+
+          <div style={{ width: '100%', height: 140, marginBottom: 14 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="heroGreen" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#16a34a" stopOpacity={0.35}/>
+                    <stop offset="100%" stopColor="#16a34a" stopOpacity={0.02}/>
+                  </linearGradient>
+                  <linearGradient id="heroRed" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#dc2626" stopOpacity={0.3}/>
+                    <stop offset="100%" stopColor="#dc2626" stopOpacity={0.02}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: T.muted }} axisLine={false} tickLine={false}/>
+                <YAxis tick={{ fontSize: 9, fill: T.muted }} axisLine={false} tickLine={false}/>
+                <Tooltip
+                  contentStyle={{
+                    background: 'rgba(255,255,255,0.95)',
+                    border: '1px solid rgba(37,99,235,0.15)',
+                    borderRadius: 10,
+                    fontSize: 12,
+                    boxShadow: '0 8px 24px rgba(37,99,235,0.1)',
+                  }}
+                />
+                <Area type="monotone" dataKey="daromad" stroke="#16a34a" strokeWidth={2} fill="url(#heroGreen)" name="Daromad"/>
+                <Area type="monotone" dataKey="xarajat" stroke="#dc2626" strokeWidth={2} fill="url(#heroRed)" name="Xarajat"/>
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
 
           <div style={{
-            display: 'flex', alignItems: 'baseline',
-            gap: 12, marginBottom: 8, flexWrap: 'wrap',
+            display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 14, flexWrap: 'wrap',
           }}>
+            <div style={{ fontSize: 10, color: T.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Sof foyda:</div>
             <div style={{
-              fontSize: isMobile ? 36 : 48,
+              fontSize: isMobile ? 24 : 28,
               fontWeight: 900,
               color: periodData.net >= 0 ? T.accent : T.danger,
               lineHeight: 1,
-              letterSpacing: -1.5,
-              textShadow: periodData.net >= 0
-                ? '0 0 32px rgba(201,168,76,0.25)'
-                : '0 0 32px rgba(239,68,68,0.2)',
+              letterSpacing: -1,
             }}>
-              {fmt(periodData.net)}
+              {fmt(periodData.net)} <span style={{ fontSize: 14, fontWeight: 600, color: T.muted }}>{sozl.valyuta}</span>
             </div>
-            <div style={{ fontSize: 16, fontWeight: 600, color: T.muted }}>{sozl.valyuta}</div>
-          </div>
-
-          <div style={{ fontSize: 12, color: T.muted, marginBottom: 24 }}>
-            {period === 'oy' && (
-              <>
-                {faolMol.soliq}% soliqdan keyin · Foyda marjasi:{' '}
-                <span style={{
-                  color: foydaMarj > 10 ? T.green : foydaMarj > 0 ? T.warn : T.danger,
-                  fontWeight: 700,
-                }}>{foydaMarj}%</span>
-              </>
-            )}
-            {period === 'yil' && "Yil bo'yicha sof foyda"}
-            {period === 'kun' && 'Bugungi tranzaksiyalar'}
-            {period === 'hafta' && 'Haftalik tranzaksiyalar'}
           </div>
 
           {/* Three stats row */}
           <div style={{
             display: 'flex', gap: isMobile ? 0 : 1,
-            background: 'rgba(255,255,255,0.03)',
+            background: 'rgba(237,244,255,0.6)',
             borderRadius: 14,
-            border: '1px solid rgba(255,255,255,0.06)',
+            border: '1px solid rgba(37,99,235,0.08)',
             overflow: 'hidden',
           }}>
             {[
@@ -151,7 +165,7 @@ export default function Dashboard() {
                 style={{
                   flex: 1,
                   padding: '14px 16px',
-                  borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  borderLeft: i > 0 ? '1px solid rgba(37,99,235,0.08)' : 'none',
                 }}
               >
                 <div style={{

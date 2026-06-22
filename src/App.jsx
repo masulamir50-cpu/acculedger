@@ -368,14 +368,14 @@ function MainApp() {
           position: "fixed",
           left: 0, top: 0, bottom: 0,
           width: SIDEBAR_W,
-          background: "rgba(255,255,255,0.75)",
+          background: "linear-gradient(180deg, #e8f0fe 0%, #deeafb 50%, #d4e4f7 100%)",
           backdropFilter: "blur(24px) saturate(1.5)",
           WebkitBackdropFilter: "blur(24px) saturate(1.5)",
-          borderRight: "1px solid rgba(37,99,235,0.1)",
+          borderRight: "1px solid rgba(37,99,235,0.15)",
           zIndex: 100,
           display: "flex",
           flexDirection: "column",
-          boxShadow: "4px 0 40px rgba(0,0,0,0.5)",
+          boxShadow: "4px 0 24px rgba(37,99,235,0.08)",
           // Subtle inner glow on right edge
           outline: "none",
         }}>
@@ -421,44 +421,6 @@ function MainApp() {
                   letterSpacing: -0.3,
                 }}>AccuLedger</div>
                 <div style={{ fontSize: 10, color: T.muted, fontWeight: 500, letterSpacing: 0.8 }}>FINANCE PLATFORM</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Period selector in sidebar */}
-          <div style={{ padding: "14px 14px 8px" }}>
-            <div style={{
-              background: "rgba(255,255,255,0.03)",
-              borderRadius: 12,
-              padding: "10px 12px",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}>
-              <div style={{ fontSize: 9, color: T.muted, fontWeight: 600, letterSpacing: 1.2, marginBottom: 8, textTransform: "uppercase" }}>Davr</div>
-              <div style={{ display: "flex", gap: 6 }}>
-                <select
-                  value={sm}
-                  onChange={e => setSm(Number(e.target.value))}
-                  style={{
-                    flex: 1, border: "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 8, padding: "6px 8px",
-                    fontSize: 11, background: "rgba(255,255,255,0.04)",
-                    outline: "none", color: T.text,
-                  }}
-                >
-                  {OYLAR_TO.map((o,i) => <option key={i} value={i}>{o}</option>)}
-                </select>
-                <select
-                  value={sy}
-                  onChange={e => setSy(Number(e.target.value))}
-                  style={{
-                    width: 64, border: "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 8, padding: "6px 6px",
-                    fontSize: 11, background: "rgba(255,255,255,0.04)",
-                    outline: "none", color: T.text,
-                  }}
-                >
-                  {[HOZ_YIL-2,HOZ_YIL-1,HOZ_YIL,HOZ_YIL+1].map(y => <option key={y} value={y}>{y}</option>)}
-                </select>
               </div>
             </div>
           </div>
@@ -735,6 +697,62 @@ function MainApp() {
                   color: T.danger, fontSize: 11, fontWeight: 700,
                 }}
               >Tozala</button>
+            </div>
+          </div>
+        )}
+
+        {/* DESKTOP PERIOD BAR */}
+        {!isMobile && (
+          <div style={{
+            maxWidth: 1100,
+            margin: "12px auto 0",
+            padding: "0 14px",
+          }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+              background: "rgba(237,244,255,0.85)",
+              backdropFilter: "blur(12px)",
+              borderRadius: 14,
+              padding: "10px 20px",
+              border: "1px solid rgba(37,99,235,0.1)",
+            }}>
+              <div style={{ fontSize: 11, color: T.muted, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase" }}>Davr:</div>
+              <select
+                value={sm}
+                onChange={e => setSm(Number(e.target.value))}
+                style={{
+                  border: "1px solid rgba(37,99,235,0.15)",
+                  borderRadius: 10,
+                  padding: "7px 12px",
+                  fontSize: 12,
+                  background: "rgba(255,255,255,0.8)",
+                  outline: "none",
+                  color: T.text,
+                  fontWeight: 600,
+                }}
+              >
+                {OYLAR_TO.map((o,i) => <option key={i} value={i}>{o}</option>)}
+              </select>
+              <select
+                value={sy}
+                onChange={e => setSy(Number(e.target.value))}
+                style={{
+                  border: "1px solid rgba(37,99,235,0.15)",
+                  borderRadius: 10,
+                  padding: "7px 12px",
+                  fontSize: 12,
+                  background: "rgba(255,255,255,0.8)",
+                  outline: "none",
+                  color: T.text,
+                  fontWeight: 600,
+                  width: 80,
+                }}
+              >
+                {[HOZ_YIL-2,HOZ_YIL-1,HOZ_YIL,HOZ_YIL+1].map(y => <option key={y} value={y}>{y}</option>)}
+              </select>
             </div>
           </div>
         )}
