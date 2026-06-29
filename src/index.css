@@ -110,7 +110,12 @@ option { background: #131826; color: #E2E8F0; }
 }
 .alc-toast { animation: alc-toast-in 0.28s cubic-bezier(.16,1,.3,1); }
 
-/* ─── CATEGORIES GRID ────────────────────────── */
+/* ─── CATEGORIES GRID / LIST ─────────────────── */
+.alc-kat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 .alc-kat-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

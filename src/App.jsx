@@ -450,7 +450,7 @@ function MainApp() {
                     outline: "none", color: T.text,
                   }}
                 >
-                  {[HOZ_YIL-2,HOZ_YIL-1,HOZ_YIL,HOZ_YIL+1].map(y => <option key={y} value={y}>{y}</option>)}
+                  {[2026,2027,2028,2029,2030].map(y => <option key={y} value={y}>{y}</option>)}
                 </select>
               </div>
             </div>
@@ -700,7 +700,7 @@ function MainApp() {
                 color: T.text,
               }}
             >
-              {[HOZ_YIL-2,HOZ_YIL-1,HOZ_YIL,HOZ_YIL+1].map(y => <option key={y} value={y}>{y}</option>)}
+              {[2026,2027,2028,2029,2030].map(y => <option key={y} value={y}>{y}</option>)}
             </select>
             <div style={{ display: "flex", gap: 6, marginLeft: "auto" }}>
               <button
