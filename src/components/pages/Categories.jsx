@@ -474,7 +474,7 @@ function MobileCard({ kat, e, o, k, pct, onEdit, onDelete, onKirim, onChiqim, on
               {[
                 { label: 'Tahrirlash',    icon: Ico.edit,  color: T.accent, action: () => { setShowCtx(false); onEdit(); } },
                 { label: "O'chirish",     icon: Ico.del,   color: T.danger, action: () => { setShowCtx(false); onDelete(); } },
-                { label: 'Tarix ko'rish', icon: Ico.tx,    color: T.cyan,   action: () => { setShowCtx(false); onHistory(); } },
+                { label: "Tarix ko'rish", icon: Ico.tx,    color: T.cyan,   action: () => { setShowCtx(false); onHistory(); } },
               ].map((item, i, arr) => (
                 <button key={i} onClick={item.action}
                   style={{ width: '100%', padding: '15px 18px', background: 'transparent', border: 'none', borderBottom: i < arr.length - 1 ? `1px solid ${T.border}` : 'none', color: item.color, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, fontWeight: 600, minHeight: 52 }}
