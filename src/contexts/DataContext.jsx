@@ -305,8 +305,48 @@ export function DataProvider({ children, uid }) {
       color: k.color || ranglar[(base + i) % ranglar.length],
     }));
     await setKatlar([...katlar, ...withColors]);
-    showXabar(`Guruh + ${newKatlar.length - 1} variant qo'shildi!`, 'muvaffaq');
+    const gCnt = newKatlar.filter(k => k.isGroup).length;
+    const vCnt = newKatlar.filter(k => !k.isGroup).length;
+    showXabar(gCnt > 0 ? `Guruh + ${vCnt} variant qo'shildi!` : `${vCnt} ta kategoriya qo'shildi!`, 'muvaffaq');
   }, [katlar, setKatlar, showXabar]);
+
+  const variantlarQoshishToGroup = useCallback(async (groupId, variantItems) => {
+    if (!variantItems.length) return;
+    const ranglar = ['#c9a84c','#4a7c59','#3b82f6','#a855f7','#22c55e','#06b6d4','#ec4899','#f97316'];
+    const ts = Date.now();
+    const base = katlar.length;
+    const newKats = variantItems.map((v, i) => ({
+      id: `k${ts}_p${i}`, nom: v.nom, birlik: v.birlik,
+      limit: 0, min: 0, icon: v.icon || '📦',
+      parentId: groupId, isGroup: false,
+      color: ranglar[(base + i) % ranglar.length],
+    }));
+    await setKatlar([...katlar, ...newKats]);
+    showXabar(`${variantItems.length} ta variant qo'shildi!`, 'muvaffaq');
+  }, [katlar, setKatlar, showXabar]);
+
+  const quickTx = useCallback(async (katId, tur, miqdor = 1) => {
+    const kat = katlar.find(k => k.id === katId);
+    if (!kat || miqdor <= 0) return;
+    const key = mkKey(sm, sy);
+    setTarix(prev => [{ mData, mMol }, ...prev.slice(0, 19)]);
+    const yangiMData = { ...mData };
+    const me = { ...(yangiMData[key] || {}) };
+    const ke = me[katId] || { miqdor: 0, tranzaksiyalar: [] };
+    const delta = tur === 'kirim' ? miqdor : -miqdor;
+    const yangiMiq = P(ke.miqdor + delta);
+    const tx = {
+      id: Date.now(), tur, miqdor, narx: 0, qiymat: 0,
+      eslatma: '', yetkazuvchi: '',
+      sana: new Date().toISOString(), balans: yangiMiq,
+    };
+    yangiMData[key] = { ...me, [katId]: { miqdor: yangiMiq, tranzaksiyalar: [tx, ...ke.tranzaksiyalar] } };
+    await setMData(yangiMData);
+    showXabar(
+      `${tur === 'kirim' ? '↑' : '↓'} ${miqdor} ${kat.birlik} — ${kat.nom}`,
+      tur === 'kirim' ? 'muvaffaq' : 'info'
+    );
+  }, [sm, sy, katlar, mData, mMol, setMData, setTarix, showXabar]);
 
   const katSaqlash = useCallback(async () => {
     await setKatlar(katlar.map(k => k.id === tahrirK.id
@@ -387,7 +427,7 @@ export function DataProvider({ children, uid }) {
     getCEntry,
     // actions
     showXabar, txQoshish, txOchir, molSaqlash,
-    katQoshish, katSaqlash, katOchir, variantlarQoshish,
+    katQoshish, katSaqlash, katOchir, variantlarQoshish, variantlarQoshishToGroup, quickTx,
     bekorQilish, csvExport, logout, resetAllData,
     // direct setters
     setKatlar, setMData, setMol, setMMol, setSozl,
