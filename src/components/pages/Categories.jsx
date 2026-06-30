@@ -944,6 +944,7 @@ export default function Categories() {
   const [showAdd, setShowAdd] = useState(false);
   const [editKat, setEditKat] = useState(null);
   const [search, setSearch] = useState('');
+  const [catFilter, setCatFilter] = useState('barchasi');
   const isMob = useIsMobile();
 
   const groups    = katlar.filter(k => k.isGroup);
@@ -958,11 +959,15 @@ export default function Categories() {
   invXulosa.forEach(i => { invMap[i.id] = i.miqdor; });
 
   const q = search.toLowerCase().trim();
-  const visibleGroups = groups.filter(g =>
+  const showGroups = catFilter === 'barchasi' || catFilter === 'guruhlar';
+  const showStandalones = catFilter === 'barchasi' || catFilter === 'mahsulotlar';
+  const ogohList = standalones.filter(k => k.min > 0 && (invMap[k.id] || 0) <= k.min);
+
+  const visibleGroups = showGroups ? groups.filter(g =>
     !q || g.nom.toLowerCase().includes(q) ||
     (childMap[g.id] || []).some(k => k.nom.toLowerCase().includes(q))
-  );
-  const visibleStandalones = standalones.filter(k =>
+  ) : [];
+  const visibleStandalones = (catFilter === 'ogoh' ? ogohList : showStandalones ? standalones : []).filter(k =>
     !q || k.nom.toLowerCase().includes(q)
   );
 
@@ -1003,7 +1008,7 @@ export default function Categories() {
       </div>
 
       {/* Search */}
-      <div style={{ position: 'relative', marginBottom: 20 }}>
+      <div style={{ position: 'relative', marginBottom: 12 }}>
         <span style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', fontSize: 15, color: T.muted }}>🔍</span>
         <input
           value={search}
@@ -1012,7 +1017,7 @@ export default function Categories() {
           style={{
             width: '100%', boxSizing: 'border-box',
             background: 'rgba(255,255,255,0.03)', border: `1px solid ${T.border}`,
-            borderRadius: 12, padding: '11px 14px 11px 38px',
+            borderRadius: 22, padding: '11px 14px 11px 38px',
             fontSize: 13, color: T.text, outline: 'none',
           }}
         />
@@ -1020,6 +1025,39 @@ export default function Categories() {
           <button type="button" onClick={() => setSearch('')}
             style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: T.muted, cursor: 'pointer', fontSize: 15 }}>✕</button>
         )}
+      </div>
+
+      {/* Pill filter chips */}
+      <div style={{ display: 'flex', gap: 8, overflowX: 'auto', scrollbarWidth: 'none', marginBottom: 20, paddingBottom: 2 }}>
+        {[
+          { k: 'barchasi',   l: 'Barchasi',   ic: '📋' },
+          { k: 'guruhlar',   l: 'Guruhlar',   ic: '🗂' },
+          { k: 'mahsulotlar',l: 'Mahsulotlar',ic: '📦' },
+          ...(stats.ogoh > 0 ? [{ k: 'ogoh', l: `Ogoh (${stats.ogoh})`, ic: '⚠️' }] : []),
+        ].map(chip => {
+          const isOn = catFilter === chip.k;
+          return (
+            <motion.button
+              key={chip.k} type="button"
+              onClick={() => setCatFilter(chip.k)}
+              whileTap={{ scale: 0.92 }}
+              style={{
+                flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6,
+                padding: '8px 18px', borderRadius: 50,
+                border: isOn ? `1.5px solid ${chip.k === 'ogoh' ? T.danger : T.accent}80` : `1px solid ${T.border}`,
+                background: isOn ? (chip.k === 'ogoh' ? 'rgba(239,68,68,0.12)' : 'rgba(201,168,76,0.13)') : 'rgba(255,255,255,0.04)',
+                color: isOn ? (chip.k === 'ogoh' ? T.danger : T.accent) : T.muted,
+                fontSize: 12, fontWeight: isOn ? 700 : 500,
+                cursor: 'pointer', outline: 'none', whiteSpace: 'nowrap',
+                transition: 'all .2s',
+                boxShadow: isOn ? `0 0 12px ${chip.k === 'ogoh' ? 'rgba(239,68,68,0.2)' : 'rgba(201,168,76,0.18)'}` : 'none',
+              }}
+            >
+              <span style={{ fontSize: 14 }}>{chip.ic}</span>
+              {chip.l}
+            </motion.button>
+          );
+        })}
       </div>
 
       {/* Groups */}
