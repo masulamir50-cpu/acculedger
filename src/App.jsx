@@ -4,9 +4,10 @@ import { usePWA } from './hooks/usePWA.js';
 import {
   OYLAR, OYLAR_TO, HOZ_YIL,
   T, Ico, NAV_ICO, NAV_TABS,
-  H2, Inp, Btn, SIDEBAR_W,
+  H2, Inp, Sel, Btn, SIDEBAR_W,
   flushPendingWrites,
 } from './lib/shared.jsx';
+import { UNIT_TYPES } from './utils/constants.js';
 import { fmtN, mkKey } from './utils/format.js';
 
 import LoginPage from './components/pages/Login.jsx';
@@ -270,9 +271,15 @@ function MainApp() {
 
             {modal.type === "katTahrirla" && tahrirK && (<>
               <H2>✏️ Kategoriyani tahrirlash</H2>
-              {[["Nomi","nom","text"],["Birlik","birlik","text"],["Limit","limit","number"],["Minimum","min","number"],["Belgi","icon","text"]].map(([l,k,t]) => (
-                <Inp key={k} label={l} type={t} value={tahrirK[k]||""} onChange={e => setTahrirK(f => ({...f,[k]:e.target.value}))}/>
-              ))}
+              <Inp label="Nomi" type="text" value={tahrirK.nom||""} onChange={e => setTahrirK(f => ({...f,nom:e.target.value}))}/>
+              <Sel label="Birlik" value={tahrirK.birlik||"dona"} onChange={e => setTahrirK(f => ({...f,birlik:e.target.value}))}>
+                {UNIT_TYPES.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
+              </Sel>
+              {!tahrirK.isGroup && (<>
+                <Inp label="Limit" type="number" value={tahrirK.limit||""} onChange={e => setTahrirK(f => ({...f,limit:e.target.value}))}/>
+                <Inp label="Minimum" type="number" value={tahrirK.min||""} onChange={e => setTahrirK(f => ({...f,min:e.target.value}))}/>
+              </>)}
+              <Inp label="Belgi" type="text" value={tahrirK.icon||""} onChange={e => setTahrirK(f => ({...f,icon:e.target.value}))}/>
               <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                 <Btn onClick={katSaqlash}>Saqlash</Btn>
                 <Btn ghost onClick={() => setModal(null)}>Bekor</Btn>

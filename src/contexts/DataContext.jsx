@@ -144,7 +144,7 @@ export function DataProvider({ children, uid }) {
   // ── Alerts ───────────────────────────────────────────────
   useEffect(() => {
     const yangi = [];
-    katlar.forEach(kat => {
+    katlar.filter(k => !k.isGroup).forEach(kat => {
       const e = getCEntry(HOZ_OY, HOZ_YIL, kat.id);
       if (kat.limit > 0 && P(e.miqdor) > P(kat.limit)) yangi.push({ ...kat, ishlatilgan: e.miqdor, oshgan: P(e.miqdor - kat.limit), tur: 'limit' });
       if (kat.min > 0   && P(e.miqdor) < P(kat.min))   yangi.push({ ...kat, ishlatilgan: e.miqdor, tur: 'minimum' });
@@ -167,8 +167,8 @@ export function DataProvider({ children, uid }) {
     inventar: yillikData.reduce((s, d) => s + d.inventar, 0),
   }), [yillikData]);
 
-  // ── Computed — inventory summary ──────────────────────────
-  const invXulosa = useMemo(() => katlar.map(kat => {
+  // ── Computed — inventory summary (groups excluded) ────────
+  const invXulosa = useMemo(() => katlar.filter(k => !k.isGroup).map(kat => {
     const e   = getCEntry(sm, sy, kat.id);
     const pct = kat.limit > 0 ? cl(PCT(e.miqdor, kat.limit), 0, 999) : 0;
     return { ...kat, miqdor: e.miqdor, pct, oshgan: kat.limit > 0 && P(e.miqdor) > P(kat.limit), kamaygan: kat.min > 0 && P(e.miqdor) < P(kat.min), txSoni: e.tranzaksiyalar.length };
@@ -178,7 +178,7 @@ export function DataProvider({ children, uid }) {
   const hammaTx = useMemo(() => {
     const key  = mkKey(sm, sy);
     const list = [];
-    katlar.forEach(kat => (mData[key]?.[kat.id]?.tranzaksiyalar || []).forEach(t => list.push({ ...t, katNom: kat.nom, birlik: kat.birlik, icon: kat.icon, katId: kat.id })));
+    katlar.filter(k => !k.isGroup).forEach(kat => (mData[key]?.[kat.id]?.tranzaksiyalar || []).forEach(t => list.push({ ...t, katNom: kat.nom, birlik: kat.birlik, icon: kat.icon, katId: kat.id })));
     return list.sort((a, b) => new Date(b.sana) - new Date(a.sana));
   }, [mData, sm, sy, katlar]);
 
@@ -281,18 +281,32 @@ export function DataProvider({ children, uid }) {
     if (!yangiK.nom.trim()) { showXabar('Nom kiriting!', 'xato'); return; }
     const ranglar = ['#c9a84c','#4a7c59','#3b82f6','#a855f7','#22c55e','#06b6d4','#ec4899','#f97316'];
     const kat = {
-      id:     `k${Date.now()}`,
-      nom:    yangiK.nom.trim(),
-      birlik: yangiK.birlik || 'dona',
-      limit:  P(parseFloat(yangiK.limit) || 0),
-      min:    P(parseFloat(yangiK.min)   || 0),
-      icon:   yangiK.icon || '📦',
-      color:  ranglar[katlar.length % ranglar.length],
+      id:      `k${Date.now()}`,
+      nom:     yangiK.nom.trim(),
+      birlik:  yangiK.birlik || 'dona',
+      limit:   P(parseFloat(yangiK.limit) || 0),
+      min:     P(parseFloat(yangiK.min)   || 0),
+      icon:    yangiK.icon || '📦',
+      color:   ranglar[katlar.length % ranglar.length],
+      isGroup: !!yangiK.isGroup,
+      ...(yangiK.parentId ? { parentId: yangiK.parentId } : {}),
     };
     await setKatlar([...katlar, kat]);
     setYangiK(DEF_KAT);
     showXabar("Kategoriya qo'shildi!", 'muvaffaq');
   }, [yangiK, katlar, setKatlar, showXabar]);
+
+  const variantlarQoshish = useCallback(async (newKatlar) => {
+    if (!newKatlar.length) return;
+    const ranglar = ['#c9a84c','#4a7c59','#3b82f6','#a855f7','#22c55e','#06b6d4','#ec4899','#f97316'];
+    const base = katlar.length;
+    const withColors = newKatlar.map((k, i) => ({
+      ...k,
+      color: k.color || ranglar[(base + i) % ranglar.length],
+    }));
+    await setKatlar([...katlar, ...withColors]);
+    showXabar(`Guruh + ${newKatlar.length - 1} variant qo'shildi!`, 'muvaffaq');
+  }, [katlar, setKatlar, showXabar]);
 
   const katSaqlash = useCallback(async () => {
     await setKatlar(katlar.map(k => k.id === tahrirK.id
@@ -305,7 +319,8 @@ export function DataProvider({ children, uid }) {
   }, [tahrirK, katlar, setKatlar, showXabar]);
 
   const katOchir = useCallback(async id => {
-    await setKatlar(katlar.filter(k => k.id !== id));
+    // Also remove any child variants that belong to this group
+    await setKatlar(katlar.filter(k => k.id !== id && k.parentId !== id));
     showXabar("O'chirildi", 'info');
   }, [katlar, setKatlar, showXabar]);
 
@@ -372,7 +387,7 @@ export function DataProvider({ children, uid }) {
     getCEntry,
     // actions
     showXabar, txQoshish, txOchir, molSaqlash,
-    katQoshish, katSaqlash, katOchir,
+    katQoshish, katSaqlash, katOchir, variantlarQoshish,
     bekorQilish, csvExport, logout, resetAllData,
     // direct setters
     setKatlar, setMData, setMol, setMMol, setSozl,

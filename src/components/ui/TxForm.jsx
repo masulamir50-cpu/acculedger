@@ -1,6 +1,7 @@
 import { useData } from '../../contexts/DataContext';
 import { OYLAR_TO, Btn, T } from '../../lib/shared.jsx';
 import { fmt, P } from '../../utils/format.js';
+import { UNIT_TYPES } from '../../utils/constants.js';
 
 function Field({ label, children }) {
   return (
@@ -35,6 +36,20 @@ const inputStyle = {
 export default function TxForm({ onDone }) {
   const { txF, setTxF, katlar, sozl, txQoshish } = useData();
 
+  // Build grouped category structure
+  const groups      = katlar.filter(k => k.isGroup);
+  const childMap    = {};
+  katlar.filter(k => k.parentId).forEach(k => {
+    if (!childMap[k.parentId]) childMap[k.parentId] = [];
+    childMap[k.parentId].push(k);
+  });
+  const standalones = katlar.filter(k => !k.isGroup && !k.parentId);
+
+  // Unit-aware quantity step
+  const selKat   = katlar.find(k => k.id === txF.katId);
+  const unitMeta = UNIT_TYPES.find(u => u.id === selKat?.birlik);
+  const stepVal  = unitMeta?.decimal ? '0.01' : '1';
+
   const handleSave = () => {
     txQoshish();
     if (onDone) onDone();
@@ -50,7 +65,14 @@ export default function TxForm({ onDone }) {
           style={{ ...inputStyle, background: 'rgba(10,16,30,0.9)' }}
         >
           <option value="">Tanlang…</option>
-          {katlar.map(k => <option key={k.id} value={k.id}>{k.icon} {k.nom}</option>)}
+          {standalones.map(k => <option key={k.id} value={k.id}>{k.icon} {k.nom} ({k.birlik})</option>)}
+          {groups.map(g => (
+            <optgroup key={g.id} label={`${g.icon} ${g.nom}`}>
+              {(childMap[g.id] || []).map(k => (
+                <option key={k.id} value={k.id}>{k.nom}</option>
+              ))}
+            </optgroup>
+          ))}
         </select>
       </Field>
 
@@ -91,6 +113,8 @@ export default function TxForm({ onDone }) {
         <Field label="Miqdor">
           <input
             type="number"
+            step={stepVal}
+            min="0"
             value={txF.miqdor}
             onChange={e => setTxF(f => ({ ...f, miqdor: e.target.value }))}
             placeholder="0"

@@ -4,7 +4,19 @@ export const HOZ_YIL  = new Date().getFullYear();
 export const HOZ_OY   = new Date().getMonth();
 
 export const DEF_SOZL = { valyuta: "so'm", kompaniya: "Mening Kompaniyam", soliq: 15 };
-export const DEF_KAT  = { nom: "", birlik: "dona", limit: 0, min: 0, icon: "📦" };
+export const DEF_KAT  = { nom: "", birlik: "dona", limit: 0, min: 0, icon: "📦", isGroup: false, parentId: null };
+
+export const UNIT_TYPES = [
+  { id: "dona",  label: "Dona",           decimal: false, presets: null },
+  { id: "kg",    label: "Kilogram (kg)",   decimal: true,  presets: null },
+  { id: "gr",    label: "Gram (gr)",       decimal: false, presets: null },
+  { id: "L",     label: "Litr (L)",        decimal: true,  presets: [0.5, 1, 1.5, 2, 2.5] },
+  { id: "ml",    label: "Millilitr (ml)",  decimal: false, presets: [250, 330, 500, 1000] },
+  { id: "metr",  label: "Metr (m)",        decimal: true,  presets: null },
+  { id: "paket", label: "Paket",           decimal: false, presets: null },
+  { id: "rulon", label: "Rulon",           decimal: false, presets: null },
+  { id: "shish", label: "Shisha",          decimal: false, presets: null },
+];
 export const DEF_TXF  = { katId: "", tur: "kirim", miqdor: "", eslatma: "", oy: HOZ_OY, yil: HOZ_YIL, narx: "", yetkazuvchi: "" };
 
 export const DEF_KATEGORIYALAR = [
