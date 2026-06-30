@@ -309,45 +309,54 @@ function GroupCard({ group, children, invMap, onEditGroup, onDeleteGroup, onEdit
     <motion.div
       layout
       style={{
-        background: 'rgba(255,255,255,0.025)',
-        border: `1px solid rgba(201,168,76,0.2)`,
-        borderRadius: 18,
+        position: 'relative',
+        background: 'linear-gradient(135deg, #8B6914 0%, #C9A84C 10%, #E8CC6A 22%, #C9A84C 35%, #B8943C 50%, #D4B554 65%, #C9A84C 78%, #A87830 90%, #C9A84C 100%)',
+        border: '1px solid rgba(201,168,76,0.4)',
+        borderRadius: 22,
         overflow: 'hidden',
-        marginBottom: 12,
+        marginBottom: 14,
+        boxShadow: '0 12px 48px rgba(0,0,0,0.6), 0 4px 16px rgba(201,168,76,0.15), inset 0 1px 0 rgba(255,255,255,0.2)',
       }}
     >
+      {/* Brushed metal texture */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.05, background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.5) 2px, rgba(255,255,255,0.5) 3px)', pointerEvents: 'none' }}/>
+      <div className="alc-card-shimmer"/>
+
       {/* Group header */}
       <div
         style={{
           display: 'flex', alignItems: 'center', gap: 12,
-          padding: '14px 16px', cursor: 'pointer',
-          borderBottom: expanded ? `1px solid rgba(255,255,255,0.06)` : 'none',
+          padding: '16px 18px', cursor: 'pointer',
+          borderBottom: expanded ? `1px solid rgba(0,0,0,0.15)` : 'none',
+          position: 'relative', zIndex: 1,
         }}
         onClick={() => setExpanded(e => !e)}
       >
         <span style={{
-          width: 40, height: 40, borderRadius: 12,
-          background: `linear-gradient(135deg, rgba(201,168,76,0.25), rgba(201,168,76,0.08))`,
-          border: `1px solid rgba(201,168,76,0.3)`,
+          width: 42, height: 42, borderRadius: 13,
+          background: 'rgba(0,0,0,0.12)',
+          border: '1px solid rgba(0,0,0,0.15)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 20, flexShrink: 0,
+          fontSize: 22, flexShrink: 0,
         }}>{group.icon}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: T.text }}>{group.nom}</div>
-          <div style={{ fontSize: 11, color: T.muted, marginTop: 1 }}>
-            {children.length} variant · {fmtN(totalStock)} jami
+          <div style={{ fontSize: 13, fontWeight: 900, color: 'rgba(0,0,0,0.75)', textTransform: 'uppercase', letterSpacing: 0.5 }}>{group.nom}</div>
+          <div style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', marginTop: 2, fontWeight: 600, letterSpacing: 0.8 }}>
+            {children.length} variant · {fmtN(totalStock)} {group.birlik}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Badge>{group.birlik}</Badge>
+          <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: 'rgba(0,0,0,0.15)', color: 'rgba(0,0,0,0.6)', border: '1px solid rgba(0,0,0,0.1)', textTransform: 'uppercase', letterSpacing: 0.8 }}>
+            {group.birlik}
+          </span>
           <button type="button" onClick={e => { e.stopPropagation(); onEditGroup(group); }}
-            style={{ background: 'none', border: 'none', color: T.muted, fontSize: 15, cursor: 'pointer', padding: '4px 6px' }}>✏️</button>
+            style={{ background: 'none', border: 'none', color: 'rgba(0,0,0,0.45)', fontSize: 15, cursor: 'pointer', padding: '4px 6px' }}>✏️</button>
           <button type="button" onClick={e => { e.stopPropagation(); onDeleteGroup(group.id); }}
-            style={{ background: 'none', border: 'none', color: T.danger, fontSize: 13, cursor: 'pointer', padding: '4px 6px' }}>🗑</button>
+            style={{ background: 'none', border: 'none', color: 'rgba(120,20,20,0.6)', fontSize: 13, cursor: 'pointer', padding: '4px 6px' }}>🗑</button>
           <motion.span
             animate={{ rotate: expanded ? 180 : 0 }}
             transition={{ duration: 0.2 }}
-            style={{ color: T.muted, fontSize: 12, display: 'block' }}
+            style={{ color: 'rgba(0,0,0,0.4)', fontSize: 11, display: 'block' }}
           >▼</motion.span>
         </div>
       </div>
@@ -360,7 +369,7 @@ function GroupCard({ group, children, invMap, onEditGroup, onDeleteGroup, onEdit
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-            style={{ overflow: 'hidden', padding: '10px 14px 4px' }}
+            style={{ overflow: 'hidden', padding: '10px 16px 8px', background: 'rgba(0,0,0,0.12)', position: 'relative', zIndex: 1 }}
           >
             <AnimatePresence>
               {addingProduct && (
@@ -396,11 +405,11 @@ function GroupCard({ group, children, invMap, onEditGroup, onDeleteGroup, onEdit
               onClick={() => setAddingProduct(a => !a)}
               style={{
                 width: '100%', padding: '9px',
-                background: addingProduct ? 'rgba(201,168,76,0.08)' : 'rgba(255,255,255,0.03)',
-                border: `1px dashed ${addingProduct ? T.accent : T.border}`,
-                borderRadius: 10, color: addingProduct ? T.accent : T.muted,
-                fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                marginTop: 4, marginBottom: 10,
+                background: addingProduct ? 'rgba(0,0,0,0.25)' : 'rgba(0,0,0,0.15)',
+                border: `1px dashed ${addingProduct ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.2)'}`,
+                borderRadius: 10, color: addingProduct ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.5)',
+                fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                marginTop: 4, marginBottom: 8,
                 transition: 'all .2s',
               }}
             >
@@ -413,68 +422,91 @@ function GroupCard({ group, children, invMap, onEditGroup, onDeleteGroup, onEdit
   );
 }
 
-// ─── Standalone card ──────────────────────────────────────────
+// ─── Standalone card (Platinum Amex style) ───────────────────
 function StandaloneCard({ kat, stock, onEdit, onDelete }) {
   const { quickTx } = useData();
   const pct = kat.limit > 0 ? Math.min(100, (stock / kat.limit) * 100) : null;
   const warn = kat.min > 0 && stock <= kat.min;
-  const barColor = pct === null ? T.accent : pct < 25 ? T.danger : pct < 60 ? '#f59e0b' : '#22c55e';
+  const barColor = pct === null ? '#C9A84C' : pct < 25 ? '#EF4444' : pct < 60 ? '#F59E0B' : '#10B981';
+  const accentCol = kat.color || '#8A9AAA';
 
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.94 }}
-      transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+      exit={{ opacity: 0, scale: 0.93 }}
+      transition={{ type: 'spring', stiffness: 340, damping: 28 }}
       style={{
-        background: warn ? 'rgba(239,68,68,0.06)' : 'rgba(255,255,255,0.03)',
-        border: `1px solid ${warn ? T.danger + '55' : T.border}`,
-        borderRadius: 16, padding: '14px 16px',
-        display: 'flex', flexDirection: 'column', gap: 10,
+        position: 'relative', overflow: 'hidden',
+        background: warn
+          ? 'linear-gradient(145deg, #2a1010, #1a0808)'
+          : 'linear-gradient(145deg, #1a2236, #111828)',
+        border: warn ? '1px solid rgba(239,68,68,0.35)' : '1px solid rgba(255,255,255,0.07)',
+        borderRadius: 20,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+        padding: '16px 18px',
+        display: 'flex', flexDirection: 'column', gap: 12,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{
-          width: 38, height: 38, borderRadius: 11, flexShrink: 0,
-          background: `${kat.color}22`,
-          border: `1px solid ${kat.color}44`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 18,
-        }}>{kat.icon}</span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: T.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {kat.nom}
+      {/* Brushed metal lines */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.02, background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.6) 2px, rgba(255,255,255,0.6) 3px)', pointerEvents: 'none' }}/>
+      <div className="alc-card-shimmer"/>
+      {/* Bottom accent */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${accentCol}80, transparent)` }}/>
+
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 10 }}>
+          <span style={{
+            width: 40, height: 40, borderRadius: 13, flexShrink: 0,
+            background: `linear-gradient(135deg, ${accentCol}28, ${accentCol}10)`,
+            border: `1px solid ${accentCol}40`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 20, boxShadow: `0 0 12px ${accentCol}18`,
+          }}>{kat.icon}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#E2E8F0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              {kat.nom}
+            </div>
+            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', marginTop: 2, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+              {kat.birlik}
+            </div>
           </div>
-          <div style={{ fontSize: 11, color: T.muted, marginTop: 2 }}>{fmtN(stock)} {kat.birlik}</div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <QuickBtn label="−" color={T.danger} onClick={() => quickTx(kat.id, 'chiqim', 1)} />
-          <span style={{ fontSize: 13, fontWeight: 700, color: T.text, minWidth: 32, textAlign: 'center' }}>{fmtN(stock)}</span>
-          <QuickBtn label="+" color="#22c55e" onClick={() => quickTx(kat.id, 'kirim', 1)} />
+        {/* Stock count + quick buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: warn ? '#EF4444' : '#C9A84C', fontVariantNumeric: 'tabular-nums', letterSpacing: -0.5, textShadow: warn ? '0 0 16px rgba(239,68,68,0.3)' : '0 0 16px rgba(201,168,76,0.2)' }}>
+              {fmtN(stock)}
+            </div>
+            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: 1.2, fontWeight: 600 }}>
+              {warn ? '⚠ Minimum' : 'Zaxira'}
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <QuickBtn label="−" color="#EF4444" onClick={() => quickTx(kat.id, 'chiqim', 1)}/>
+            <QuickBtn label="+" color="#10B981" onClick={() => quickTx(kat.id, 'kirim', 1)}/>
+          </div>
         </div>
+        {/* Progress bar */}
+        {pct !== null && (
+          <div style={{ marginTop: 10, height: 3, background: 'rgba(255,255,255,0.06)', borderRadius: 3 }}>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${pct}%` }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              style={{ height: '100%', background: barColor, borderRadius: 3, boxShadow: `0 0 8px ${barColor}60` }}
+            />
+          </div>
+        )}
       </div>
-      {pct !== null && (
-        <div style={{ height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: 3 }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${pct}%` }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-            style={{ height: '100%', background: barColor, borderRadius: 3 }}
-          />
-        </div>
-      )}
-      <div style={{ display: 'flex', gap: 6 }}>
+
+      {/* Edit/delete row */}
+      <div style={{ display: 'flex', gap: 6, position: 'relative', zIndex: 1 }}>
         <button type="button" onClick={onEdit}
-          style={{
-            flex: 1, background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`,
-            borderRadius: 9, padding: '7px', fontSize: 12, color: T.muted, cursor: 'pointer',
-          }}>✏️ Tahrir</button>
+          style={{ flex: 1, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '7px', fontSize: 11, color: 'rgba(255,255,255,0.45)', cursor: 'pointer', fontWeight: 600 }}>✏️ Tahrir</button>
         <button type="button" onClick={onDelete}
-          style={{
-            flex: 1, background: 'rgba(239,68,68,0.06)', border: `1px solid ${T.danger}33`,
-            borderRadius: 9, padding: '7px', fontSize: 12, color: T.danger, cursor: 'pointer',
-          }}>🗑 O'chirish</button>
+          style={{ flex: 1, background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 10, padding: '7px', fontSize: 11, color: '#EF4444', cursor: 'pointer', fontWeight: 600 }}>🗑 O'chirish</button>
       </div>
     </motion.div>
   );
@@ -560,8 +592,8 @@ function AddSheet({ onClose, editKat, onSave }) {
   const sheetStyle = {
     width: isMob ? '100%' : '480px',
     maxHeight: isMob ? '92vh' : '86vh',
-    background: 'linear-gradient(160deg, #141b2d 0%, #0e1525 100%)',
-    border: isMob ? 'none' : `1px solid ${T.border}`,
+    background: 'linear-gradient(145deg, #1a2236 0%, #111828 60%, #192133 100%)',
+    border: isMob ? 'none' : '1px solid rgba(255,255,255,0.07)',
     borderRadius: isMob ? '22px 22px 0 0' : 22,
     overflow: 'hidden',
     display: 'flex', flexDirection: 'column',
@@ -881,8 +913,8 @@ function EditModal({ kat, onClose }) {
         transition={{ type: 'spring', stiffness: 400, damping: 34 }}
         style={{
           width: isMob ? '100%' : 400,
-          background: '#141b2d',
-          border: isMob ? 'none' : `1px solid ${T.border}`,
+          background: 'linear-gradient(145deg, #1a2236 0%, #111828 60%, #192133 100%)',
+          border: isMob ? 'none' : '1px solid rgba(255,255,255,0.07)',
           borderRadius: isMob ? '20px 20px 0 0' : 18,
           padding: 24,
         }}
@@ -978,52 +1010,56 @@ export default function Categories() {
   };
 
   return (
-    <div style={{ padding: isMob ? '16px 12px' : '20px 24px', maxWidth: 860, margin: '0 auto' }}>
+    <div style={{ padding: isMob ? '16px 12px' : '20px 24px', maxWidth: 900, margin: '0 auto' }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <div>
-          <H2 style={{ margin: 0 }}>Kategoriyalar</H2>
-          <div style={{ fontSize: 12, color: T.muted, marginTop: 3 }}>
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 4 }}>
+            Portfolio
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 900, color: '#E2E8F0', letterSpacing: -0.5 }}>Kategoriyalar</div>
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 3 }}>
             {stats.jami} ta mahsulot · {stats.guruh} guruh
-            {stats.ogoh > 0 && <span style={{ color: T.danger }}> · ⚠️ {stats.ogoh} ta kam</span>}
+            {stats.ogoh > 0 && <span style={{ color: '#EF4444' }}> · ⚠️ {stats.ogoh} ta kam</span>}
           </div>
         </div>
         <motion.button
           type="button"
           whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.93 }}
           onClick={() => { setEditKat(null); setShowAdd(true); }}
           style={{
-            background: `linear-gradient(135deg, #d4a843, ${T.accent})`,
-            color: '#0a0c18', border: 'none', borderRadius: 14,
-            padding: isMob ? '10px 16px' : '11px 20px',
-            fontSize: isMob ? 13 : 14, fontWeight: 800, cursor: 'pointer',
-            boxShadow: `0 4px 16px ${T.accent}44`,
+            background: 'linear-gradient(135deg, #8B6914 0%, #C9A84C 30%, #E8CC6A 55%, #C9A84C 75%, #A87830 100%)',
+            color: 'rgba(0,0,0,0.75)', border: 'none', borderRadius: 50,
+            padding: isMob ? '10px 18px' : '11px 24px',
+            fontSize: isMob ? 12 : 13, fontWeight: 900, cursor: 'pointer',
+            boxShadow: '0 4px 20px rgba(201,168,76,0.35)',
             display: 'flex', alignItems: 'center', gap: 6,
+            textTransform: 'uppercase', letterSpacing: 0.5,
           }}
         >
-          <span style={{ fontSize: 17 }}>+</span>
-          {!isMob && 'Yangi kategoriya'}
+          <span style={{ fontSize: 16 }}>+</span>
+          {!isMob && 'Yangi karta'}
         </motion.button>
       </div>
 
       {/* Search */}
       <div style={{ position: 'relative', marginBottom: 12 }}>
-        <span style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', fontSize: 15, color: T.muted }}>🔍</span>
+        <span style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', fontSize: 14, color: 'rgba(255,255,255,0.25)' }}>🔍</span>
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Qidirish…"
           style={{
             width: '100%', boxSizing: 'border-box',
-            background: 'rgba(255,255,255,0.03)', border: `1px solid ${T.border}`,
+            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
             borderRadius: 22, padding: '11px 14px 11px 38px',
-            fontSize: 13, color: T.text, outline: 'none',
+            fontSize: 13, color: '#E2E8F0', outline: 'none',
           }}
         />
         {search && (
           <button type="button" onClick={() => setSearch('')}
-            style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: T.muted, cursor: 'pointer', fontSize: 15 }}>✕</button>
+            style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', fontSize: 15 }}>✕</button>
         )}
       </div>
 
@@ -1044,9 +1080,15 @@ export default function Categories() {
               style={{
                 flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6,
                 padding: '8px 18px', borderRadius: 50,
-                border: isOn ? `1.5px solid ${chip.k === 'ogoh' ? T.danger : T.accent}80` : `1px solid ${T.border}`,
-                background: isOn ? (chip.k === 'ogoh' ? 'rgba(239,68,68,0.12)' : 'rgba(201,168,76,0.13)') : 'rgba(255,255,255,0.04)',
-                color: isOn ? (chip.k === 'ogoh' ? T.danger : T.accent) : T.muted,
+                border: isOn
+                  ? `1.5px solid ${chip.k === 'ogoh' ? 'rgba(239,68,68,0.5)' : 'rgba(201,168,76,0.5)'}`
+                  : '1px solid rgba(255,255,255,0.07)',
+                background: isOn
+                  ? (chip.k === 'ogoh' ? 'rgba(239,68,68,0.12)' : 'rgba(201,168,76,0.12)')
+                  : 'rgba(255,255,255,0.025)',
+                color: isOn
+                  ? (chip.k === 'ogoh' ? '#EF4444' : '#C9A84C')
+                  : 'rgba(255,255,255,0.4)',
                 fontSize: 12, fontWeight: isOn ? 700 : 500,
                 cursor: 'pointer', outline: 'none', whiteSpace: 'nowrap',
                 transition: 'all .2s',
@@ -1063,8 +1105,8 @@ export default function Categories() {
       {/* Groups */}
       {visibleGroups.length > 0 && (
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, color: T.muted, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 10 }}>
-            🗂 Guruhlar
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 10 }}>
+            Guruhlar
           </div>
           <AnimatePresence mode="popLayout">
             {visibleGroups.map(g => (
@@ -1091,8 +1133,8 @@ export default function Categories() {
       {/* Standalones */}
       {visibleStandalones.length > 0 && (
         <div>
-          <div style={{ fontSize: 11, color: T.muted, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 10 }}>
-            📦 Mahsulotlar
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 10 }}>
+            Mahsulotlar
           </div>
           <div style={{
             display: 'grid',
@@ -1117,9 +1159,9 @@ export default function Categories() {
 
       {/* Empty state */}
       {visibleGroups.length === 0 && visibleStandalones.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: T.muted }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'rgba(255,255,255,0.3)' }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>📦</div>
-          <div style={{ fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 6 }}>
+          <div style={{ fontSize: 15, fontWeight: 600, color: '#E2E8F0', marginBottom: 6 }}>
             {search ? 'Natija topilmadi' : 'Hali kategoriya yo\'q'}
           </div>
           <div style={{ fontSize: 13 }}>
@@ -1129,9 +1171,10 @@ export default function Categories() {
             <button type="button" onClick={() => setShowAdd(true)}
               style={{
                 marginTop: 20, padding: '11px 24px',
-                background: `linear-gradient(135deg, #d4a843, ${T.accent})`,
-                border: 'none', borderRadius: 14, color: '#0a0c18',
-                fontSize: 14, fontWeight: 800, cursor: 'pointer',
+                background: 'linear-gradient(135deg, #8B6914 0%, #C9A84C 30%, #E8CC6A 55%, #C9A84C 75%, #A87830 100%)',
+                border: 'none', borderRadius: 50, color: 'rgba(0,0,0,0.75)',
+                fontSize: 13, fontWeight: 900, cursor: 'pointer',
+                textTransform: 'uppercase', letterSpacing: 0.5,
               }}>+ Qo'shish</button>
           )}
         </div>
